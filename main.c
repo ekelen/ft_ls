@@ -2,6 +2,7 @@
 #include <stdio.h> // DELETE
 
 
+
 static void	tree_pr(t_ls *tree)
 {
 	if (!tree)
@@ -42,10 +43,47 @@ static int	s_dir_info(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-int		get_new(struct dirent *dp, t_ls **tree)
+int		get_new(char *s, struct dirent *dp, t_ls **tree)
 {
+	struct stat stp;
+	//char *s2 = ft_strjoin(s, "/");
+	char *s3 = ft_strjoin(s, dp->d_name);
+	printf("s3 : %s\n", s3);
+	//free(s2);
 	t_ls *new;
 	new = malloc(sizeof(t_ls));
+	if (stat(s3, &stp) < 0)
+	{
+		ft_printf("Stat problem\n");
+		return(1);
+	}
+
+
+	   //struct stat stp;
+    // if(stat(av[1],&stp) < 0)    
+    //     return 1;
+ 
+    printf("Information for %s\n",s);
+    printf("---------------------------\n");
+    printf("File Size: \t\t%lld bytes\n",stp.st_size);
+    printf("Number of Links: \t%d\n",stp.st_nlink);
+    printf("File inode: \t\t%lld\n",stp.st_ino);
+ 
+    printf("File Permissions: \t");
+    printf( (S_ISDIR(stp.st_mode)) ? "d" : "-");
+    printf( (stp.st_mode & S_IRUSR) ? "r" : "-");
+    printf( (stp.st_mode & S_IWUSR) ? "w" : "-");
+    printf( (stp.st_mode & S_IXUSR) ? "x" : "-");
+    printf( (stp.st_mode & S_IRGRP) ? "r" : "-");
+    printf( (stp.st_mode & S_IWGRP) ? "w" : "-");
+    printf( (stp.st_mode & S_IXGRP) ? "x" : "-");
+    printf( (stp.st_mode & S_IROTH) ? "r" : "-");
+    printf( (stp.st_mode & S_IWOTH) ? "w" : "-");
+    printf( (stp.st_mode & S_IXOTH) ? "x" : "-");
+    printf("\n\n");
+ 
+    printf("The file %s a symbolic link\n", (S_ISLNK(stp.st_mode)) ? "is" : "is not");
+
 
 	ft_strcpy(new->name, dp->d_name);
 	new->d_ino = dp->d_ino;
@@ -54,6 +92,8 @@ int		get_new(struct dirent *dp, t_ls **tree)
 	s_dir_info(new, tree);
 	return (1);
 }
+
+
 
 int		main(int ac, char **av)
 {
@@ -64,11 +104,12 @@ int		main(int ac, char **av)
     if (ac > 2)
     	return (0);
 	dirp = opendir(av[1]);
+	//rec_check(av[1], dp, &tree);
 	while (dirp) 
 	{
 	    if ((dp = readdir(dirp)) != NULL) 
 	    {
-	    	get_new(dp, &tree);	
+	    	get_new(av[1], dp, &tree);	
 	    }
 	    else 
 	   	{
@@ -78,6 +119,10 @@ int		main(int ac, char **av)
 	    }
 	}
 
+
+
+ 
+ 
 
 
 
