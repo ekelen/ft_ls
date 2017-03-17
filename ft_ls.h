@@ -18,6 +18,7 @@ typedef struct	s_ls
 {
 	mode_t				mode;		//entry type ?
 	int					data;		//test data
+	ino_t				d_ino;
 	//ino_t		st_ino;
 	int					last_access; //time_t - time of last mod to file - STAT
 	unsigned long int 	last_access_msec; // nanoseconds of last mod - STAT

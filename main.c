@@ -5,26 +5,18 @@
 static void	tree_pr(t_ls *tree)
 {
 	if (!tree)
-	{
 		return ;
-	}
-	ft_printf("%s\n", tree->name);
+	ft_printf("%ld\n", tree->d_ino);
 	if (tree->left)
 		tree_pr(tree->left);
 	if (tree->right)
 		tree_pr(tree->right);
 }
 
-static int	dir_info(struct dirent *dp, t_ls **tree)
+static int	s_dir_info(t_ls *new, t_ls **tree)
 {
 	t_ls *tmpTree = *tree;
 	t_ls *tmpNode;
-
-	t_ls *new;
-	new = malloc(sizeof(t_ls));
-	ft_strcpy(new->name, dp->d_name);
-	new->right = NULL;
-	new->left = NULL;
 
 	if (!tmpTree)
 	{
@@ -50,6 +42,19 @@ static int	dir_info(struct dirent *dp, t_ls **tree)
 	return (1);
 }
 
+int		get_new(struct dirent *dp, t_ls **tree)
+{
+	t_ls *new;
+	new = malloc(sizeof(t_ls));
+
+	ft_strcpy(new->name, dp->d_name);
+	new->d_ino = dp->d_ino;
+	new->right = NULL;
+	new->left = NULL;
+	s_dir_info(new, tree);
+	return (1);
+}
+
 int		main(int ac, char **av)
 {
 	DIR *dirp;
@@ -63,7 +68,7 @@ int		main(int ac, char **av)
 	{
 	    if ((dp = readdir(dirp)) != NULL) 
 	    {
-	    	dir_info(dp, &tree);
+	    	get_new(dp, &tree);	
 	    }
 	    else 
 	   	{
