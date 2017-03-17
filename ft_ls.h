@@ -27,12 +27,14 @@ typedef struct	s_ls
 	int					group_id;		//sys/types.h gid_t
 	int					device_t;		//sys/types.h device ID
 	int					user_id;		//sys/types.h userid
-	char				*path;			//current path name
-	char				*name;			//we'll see
+	// char				*path;			//current path name
+	// char				*name;			//we'll see
+	char				path[255];
+	char				name[255];
 	int					opendir;		//fd
 	int					error;
-	struct s_ls	*right;
-	struct s_ls *left;
+	struct s_ls			*right;
+	struct s_ls 		*left;
 }				t_ls;
 
 typedef struct	s_opt
