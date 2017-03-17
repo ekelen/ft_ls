@@ -7,13 +7,13 @@ OBJ		= $(SRC:.c=.o)
 CFLAGS	= -Wall -Wextra -Werror
 
 $(NAME): $(OBJ)
-	@make -C libft/
-	@gcc $(OBJ) -o $(NAME) -L libft/ -lft
+	make -C libft/
+	make -C printf/
+	gcc $(OBJ) -o $(NAME) -L libft -lft -L printf -lftprintf
 
 all: $(NAME)
 
 clean:
-	@make -C libft/ clean
 	@rm -rf $(OBJ)
 
 fclean: clean
