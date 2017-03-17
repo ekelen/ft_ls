@@ -3,16 +3,16 @@
 
 
 
-static void	tree_pr(t_ls *tree)
-{
-	if (!tree)
-		return ;
-	ft_printf("%ld\n", tree->d_ino);
-	if (tree->left)
-		tree_pr(tree->left);
-	if (tree->right)
-		tree_pr(tree->right);
-}
+// static void	tree_pr(t_ls *tree)
+// {
+// 	if (!tree)
+// 		return ;
+// 	ft_printf("%ld\n", tree->d_ino);
+// 	if (tree->left)
+// 		tree_pr(tree->left);
+// 	if (tree->right)
+// 		tree_pr(tree->right);
+// }
 
 static int	s_dir_info(t_ls *new, t_ls **tree)
 {
@@ -112,14 +112,14 @@ void	rec_check(char *s, t_ls **tree)
 			}
 			if (S_ISDIR(stp.st_mode))
 			{
-				printf("s recursive : %s\n", s);
+				printf("s recursive : %s%s\n", s, dp->d_name);
 				rec_check((ft_strjoin(s, dp->d_name)), tree);
 			}
 		    get_new(stp, s, dp, tree);
 	    }
 	    else 
 	   	{
-	   		tree_pr(*tree);
+	   		//tree_pr(*tree);
 	        closedir(dir);
 	        return ;
 	    }

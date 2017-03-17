@@ -48,3 +48,35 @@ typedef struct	s_opt
 }				t_opt;
 
 #endif
+
+
+
+	// DIR 			*dir;
+ //    struct dirent	*dp;
+ //    struct stat		stp;
+ //    char			*s3;
+ //    t_ls			*tree;
+
+    
+ //    tree = NULL;
+	// dir = opendir(s);
+	// while (dir) 
+	// {
+	//     if ((dp = readdir(dir)) != NULL) 
+	//     {
+	//     	if (stat((s3 = ft_strjoin(s, dp->d_name)), &stp) < 0)
+	// 		{
+	// 			ft_printf("Stat problem\n");
+	// 			return ;
+	// 		}
+	// 		// if (S_ISDIR(stp.st_mode))
+	// 		// 	rec_check(s3);
+	// 	    get_new(stp, s, dp, &tree);
+	//     }
+	//     else 
+	//    	{
+	//    		tree_pr(tree);
+	//         closedir(dir);
+	//         return ;
+	//     }
+	// }
