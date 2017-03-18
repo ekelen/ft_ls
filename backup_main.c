@@ -3,116 +3,108 @@
 
 
 
-// static void	tree_pr(t_ls *tree)
-// {
-// 	if (!tree)
-// 		return ;
-// 	ft_printf("%s\n", tree->name);
-// 	if (tree->left)
-// 		tree_pr(tree->left);
-// 	if (tree->right)
-// 		tree_pr(tree->right);
-// }
+static void	tree_pr(t_ls *tree)
+{
+	if (!tree)
+		return ;
+	ft_printf("%s\n", tree->name);
+	if (tree->left)
+		tree_pr(tree->left);
+	if (tree->right)
+		tree_pr(tree->right);
+}
 
-// static int	s_dir_info(t_ls *new, t_ls **tree)
-// {
-// 	t_ls *tmpTree = *tree;
-// 	t_ls *tmpNode;
+static int	s_dir_info(t_ls *new, t_ls **tree)
+{
+	t_ls *tmpTree = *tree;
+	t_ls *tmpNode;
 
-// 	if (!tmpTree)
-// 	{
-// 		*tree = new;
-// 		return (1);
-// 	}
-// 	while (tmpTree)
-// 	{
-// 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-// 		if (new->name[0] > tmpTree->name[0])
-// 		{
-// 			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-// 			if (!tmpTree)
-// 				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 		}
-// 		else
-// 		{
-// 			tmpTree = tmpTree->left;
-// 			if (!tmpTree)
-// 				tmpNode->left = new;
-// 		}
-// 	}
-// 	return (1);
-// }
+	if (!tmpTree)
+	{
+		*tree = new;
+		return (1);
+	}
+	while (tmpTree)
+	{
+		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
+		if (new->name[0] > tmpTree->name[0])
+		{
+			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
+			if (!tmpTree)
+				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
+		}
+		else
+		{
+			tmpTree = tmpTree->left;
+			if (!tmpTree)
+				tmpNode->left = new;
+		}
+	}
+	return (1);
+}
 
-// int		get_new(struct stat stp, char *s, struct dirent *dp, t_ls **tree)
-// {
-// 	t_ls *new;
-// 	new = malloc(sizeof(t_ls));
-// 	(void)stp;
-// 	(void)s;
+int		get_new(struct stat stp, char *s, struct dirent *dp, t_ls **tree)
+{
+	t_ls *new;
+	new = malloc(sizeof(t_ls));
+	(void)stp;
+	(void)s;
 	
 
-// 	ft_strcpy(new->name, dp->d_name);
-// 	new->d_ino = dp->d_ino;
-// 	new->right = NULL;
-// 	new->left = NULL;
-// 	s_dir_info(new, tree);
-// 	return (1);
-// }
+	ft_strcpy(new->name, dp->d_name);
+	new->d_ino = dp->d_ino;
+	new->right = NULL;
+	new->left = NULL;
+	s_dir_info(new, tree);
+	return (1);
+}
 
 
-void	rec_check(char *s)
+void	rec_check(char *s, t_ls **tree)
 {
-	DIR 				*dir;
-    struct dirent		*dp;
-    struct stat			stp;
-    static char				*path = NULL;
+	DIR 			*dir;
+    struct dirent	*dp;
+    struct stat		stp;
 
 	dir = opendir(s);
 	while (dir) 
 	{
-
 	    if ((dp = readdir(dir)) != NULL) 
 	    {
-	    	free(path);
-	    	path = ft_catpath(s, dp->d_name);
+	    	get_new(stp, s, dp, tree);
 	    	if (stat(s, &stp) < 0)
 			{
 				ft_printf("Stat problem\n");
 				return ;
 			}
-			if (S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
+			if (S_ISDIR(stp.st_mode))
 			{
-				//printf("dp->name : %s\n", dp->d_name);
-				printf("path : %s\n", path);
-				rec_check(path);
+				printf("s recursive : %s%s\n", s, dp->d_name);
+				rec_check((ft_strjoin(s, dp->d_name)), tree);
 			}
 		   
 	    }
 	    else 
 	   	{
-	   		//free(path);
-	   		
-	   		//tree_pr(*tree);
+	   		tree_pr(*tree);
 	        closedir(dir);
 	        return ;
 	    }
 	}
-	return ;
 
 }
 
 
 int		main(int ac, char **av)
 {
-	// t_ls *tree;
-	// tree = NULL;
+	t_ls *tree;
+	tree = NULL;
 	if (ac != 2)
 	{
 		printf("handle multiple inputs soon....\n");
 		return (0);
 	}
-	rec_check(av[1]);
-	sleep(30);
+	rec_check(av[1], &tree);
 	// DIR *dirp;
  //    struct dirent *dp;
  //    t_ls 	*tree;

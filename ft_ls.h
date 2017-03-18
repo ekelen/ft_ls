@@ -19,6 +19,8 @@ typedef struct	s_ls
 	mode_t				mode;		//entry type ?
 	int					data;		//test data
 	ino_t				d_ino;		// serial number ..?
+	int					self;
+	int					parent;
 	//ino_t		st_ino;
 	int					last_access; //time_t - time of last mod to file - STAT
 	unsigned long int 	last_access_msec; // nanoseconds of last mod - STAT
@@ -46,6 +48,8 @@ typedef struct	s_opt
 	int			a;
 	int			l;
 }				t_opt;
+
+char					*ft_catpath(char const *s1, char const *s2);
 
 #endif
 

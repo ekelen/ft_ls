@@ -1,6 +1,7 @@
 NAME	= ft_ls
 
 SRC		+=	main.c
+SRC		+=  ft_catpath.c
 
 OBJ		= $(SRC:.c=.o)
 
