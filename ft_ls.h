@@ -109,7 +109,7 @@ typedef struct	s_ls
 	int					parentchild;
 	t_color				color;
 	t_access			acc;
-	//unsigned int		blkct;
+	unsigned int		blkct;
 
 	struct s_ls			*right;
 	struct s_ls 		*left;

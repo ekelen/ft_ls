@@ -9,7 +9,7 @@ char		*ft_strexclude(char *orig, char *excl)
 	olen = ft_strlen(orig);
 	exclen = ft_strlen(excl);
 	s = ft_strsub(orig, 0, olen - exclen);
-	ft_printf("Strsub : %s\n", s);
+	//ft_printf("Strsub : %s\n", s);
 	return (s);
 
 }
