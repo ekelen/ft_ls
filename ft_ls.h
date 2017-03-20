@@ -56,6 +56,26 @@ typedef struct s_access
 	char				xoth;
 }				t_access;
 
+
+	//ft_printf("Test\n");
+
+	//-l, -R, -a, -r and -t
+	//l = "long"
+	//-a = include things with a dot
+	//-t == sort by time
+	//-r == reverse order
+	//-R == recursively list subdirectories encountered
+
+	//BONUS TODO:
+	//-h (uses unit instead of size)
+	//-m (stream output across the page, separated by commas)
+	//-p (add a slash after each directory found
+	//-S sort files by size
+	//-o same as -l but without group id
+	//-G colorized output
+	//invent your own (ask if want to list ? search directory ?)
+	//-A list all entries except . and ..
+
 typedef struct	s_ls
 {
 	//mode_t				mode;		//entry type ?
@@ -79,6 +99,7 @@ typedef struct	s_ls
 	int					hmtime;
 	char				path[PATH_MAX];
 	char				name[NAME_MAX];
+	char				*dirpath;
 	char				linkname[PATH_MAX];
 	int					opendir;		//fd
 	int					error;
@@ -96,13 +117,18 @@ typedef struct	s_ls
 
 typedef struct	s_opt
 {
-	int			ur;
-	int			r;
-	int			t;
 	int			a;
+	int			g;
 	int			l;
-	int			ug;	// color output
+	int			o;  // same as l but no group
 	int			p;	// add trailing slash to directories
+	int			r;	// reverse
+	int			t;	// time
+	int			ug;	// color output
+	int			ur;	// recursive
+	
+	
+	
 	int			us; // sort by size
 	t_ls		*tree;
 }				t_opt;
@@ -112,68 +138,6 @@ typedef struct	s_opt
 
 char					*ft_catpath(char const *directory, char const *name);
 int						ft_ustrcmp(char *s1, char *s2);
-int			get_type(struct stat stp, char *path, struct dirent *dp, t_ls *new);
+int			get_type(struct stat stp, t_opt *e, t_ls *new);
 
 #endif
-
-
-
-	// DIR 			*dir;
- //    struct dirent	*dp;
- //    struct stat		stp;
- //    char			*s3;
- //    t_ls			*tree;
-
-    
- //    tree = NULL;
-	// dir = opendir(s);
-	// while (dir) 
-	// {
-	//     if ((dp = readdir(dir)) != NULL) 
-	//     {
-	//     	if (stat((s3 = ft_strjoin(s, dp->d_name)), &stp) < 0)
-	// 		{
-	// 			ft_printf("Stat problem\n");
-	// 			return ;
-	// 		}
-	// 		// if (S_ISDIR(stp.st_mode))
-	// 		// 	rec_check(s3);
-	// 	    get_new(stp, s, dp, &tree);
-	//     }
-	//     else 
-	//    	{
-	//    		tree_pr(tree);
-	//         closedir(dir);
-	//         return ;
-	//     }
-	// }
-
-
-// if (d_type == DT_UNKNOWN)
-//     		check_type_macros(sb.st_mode);
-//     if S_ISREG(sb.st_mode)
-// // is it a regular file?
-
-// S_ISDIR(m)
-
-// // directory?
-
-// S_ISCHR(m)
-
-// // character device?
-
-// S_ISBLK(m)
-
-// // block device?
-
-// S_ISFIFO(m)
-
-// // FIFO (named pipe)?
-
-// S_ISLNK(m)
-
-// // symbolic link? (Not in POSIX.1-1996.)
-
-// S_ISSOCK(m)
-
-// socket? (Not in POSIX.1-1996.)
