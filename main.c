@@ -7,17 +7,49 @@ static void	tree_pr(t_ls *tree)
 		return ;
 	if (tree->left)
 		tree_pr(tree->left);
-	//ft_printf("%d : %s\n", tree->hmtime, tree->path);
-	ft_printf("%c%c%c%c %ld\t%s %s", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->hlinks, tree->uid_name, tree->grp_name);
+	ft_printf("%c%c%c%c%c%c%c%c%c%c", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xuser, tree->acc.rgrp, tree->acc.wgrp, tree->acc.xgrp, tree->acc.roth, tree->acc.woth, tree->acc.xoth);
+	ft_printf("% ld\t%-s %s", tree->hlinks, tree->uid_name, tree->grp_name);
+	
 	ft_printf("\t%ld", tree->size);
-	ft_printf("%s\t%s%s", FG_BLUE, tree->path, FG_DEFAULT);
+	ft_printf("%s\t%s%s", tree->color.fg, tree->path, FG_DEFAULT);
 	ft_printf("%s", tree->linkname);
 	
-	ft_printf("\t%s%s%s", BG_DEFAULT, tree->mtime, BG_DEFAULT);
+	ft_printf("\t%s%s%s", FG_DEFAULT, tree->mtime, FG_DEFAULT);
 	if (tree->etype == 'd' && !tree->parentchild)
 		ft_printf("\n");
 	if (tree->right)
 		tree_pr(tree->right);
+}
+
+static int	sort_size(t_ls *new, t_ls **tree)
+{
+	t_ls *tmpTree = *tree;
+	t_ls *tmpNode;
+
+	if (!tmpTree)
+	{
+		ft_printf("Some kind of tree error\n");
+		return (0);
+	}
+	while (tmpTree)
+	{
+		tmpNode = tmpTree;
+		if (new->size > tmpTree->size)
+		{
+			tmpTree = tmpTree->right;
+			if (!tmpTree)
+			{
+				tmpNode->right = new;
+			}
+		}
+		else
+		{
+			tmpTree = tmpTree->left;
+			if (!tmpTree)
+				tmpNode->left = new;
+		}
+	}
+	return (1);
 }
 
 static int	sort_time(t_ls *new, t_ls **tree)
@@ -94,6 +126,8 @@ static int	new_tree(t_ls *new, t_ls **tree, int sort_mode)
 		sort_ascii(new, tree);
 	else if (sort_mode == 2)
 		sort_time(new, tree);
+	else if (sort_mode == 3)
+		sort_size(new, tree);
 	return (1);
 }
 
@@ -202,6 +236,8 @@ int		init_opts(char *s, t_opt *flags)
 			flags->ug = 1;
 		else if (ft_strchr(s, 'p'))
 			flags->p = 1;
+		else if (ft_strchr(s, 'S'))
+			flags->us = 1;
 		else
 		{
 			ft_printf("Found unknown flag\n");

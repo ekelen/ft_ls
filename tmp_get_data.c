@@ -2,12 +2,8 @@
 
 int			get_parentchild(t_ls *new)
 {
-	ft_printf("new->name : %s\n", new->name);
 	if (ft_strequ(new->name, ".") || ft_strequ(new->name, ".."))
-	{
-		ft_printf("Found parentchild!\n");
 		new->parentchild = 1;
-	}
 	else
 		new->parentchild = 0;
 	return (1);
@@ -16,7 +12,11 @@ int			get_parentchild(t_ls *new)
 int			get_color(t_ls *new)
 {
 	if (new->etype == 'd')
-		ft_strcpy(new->color.fg, FG_YELLOW);
+		ft_strcpy(new->color.fg, FG_BLUE);
+	else if (new->etype == '-' && (new->acc.xuser == 'x' || new->acc.xgrp == 'x' || new->acc.xoth == 'x'))
+		ft_strcpy(new->color.fg, FG_RED);
+	else if (new->etype == 'l')
+		ft_strcpy(new->color.fg, FG_MAGENTA);
 	return (1);
 }
 
@@ -32,7 +32,6 @@ int			color_init(t_ls *new)
 int			get_mtime(struct stat stp, t_ls *new)
 {
 	new->hmtime = stp.st_mtime;
-	//ft_printf("%d = time\n", new->hmtime);
 	ft_bzero(new->mtime, NAME_MAX);
 	ft_strcpy(new->mtime, ctime(&stp.st_mtime));
 	return (1);

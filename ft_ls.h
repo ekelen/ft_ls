@@ -101,8 +101,9 @@ typedef struct	s_opt
 	int			t;
 	int			a;
 	int			l;
-	int			ug;
-	int			p;
+	int			ug;	// color output
+	int			p;	// add trailing slash to directories
+	int			us; // sort by size
 	t_ls		*tree;
 }				t_opt;
 
