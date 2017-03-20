@@ -7,35 +7,57 @@
 # include <sys/stat.h>
 # include <pwd.h>
 # include <uuid/uuid.h>
+# include <grp.h>
 # include <sys/types.h>
 # include <sys/xattr.h>
 # include <time.h>
 # include <stdio.h> //DELETE
+# include <errno.h>
+# include <limits.h>
 # include "./printf/includes/ft_printf.h"
 # include "./libft/libft.h"
 
+
+typedef struct s_access
+{
+	char				ruser;
+	char				wuser;
+	char				xuser;
+	char				rgrp;
+	char				wgrp;
+	char				xgrp;
+	char				roth;
+	char				woth;
+	char				xoth;
+}				t_access;
+
 typedef struct	s_ls
 {
-	mode_t				mode;		//entry type ?
-	int					data;		//test data
+	//mode_t				mode;		//entry type ?
+	char				etype;
+	//int					data;		//test data
 	ino_t				d_ino;		// serial number ..?
-	int					self;
-	int					parent;
+	//int					self;
+	//int					parent;
 	//ino_t		st_ino;
-	int					last_access; //time_t - time of last mod to file - STAT
+	//int					last_access; //time_t - time of last mod to file - STAT
 	unsigned long int 	last_access_msec; // nanoseconds of last mod - STAT
-	int 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
+	long 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
 	off_t				size;			// signed int type - how big file is
 	unsigned int		filemode;		//also file mode?
 	int					group_id;		//sys/types.h gid_t
 	int					device_t;		//sys/types.h device ID
 	int					user_id;		//sys/types.h userid
-	// char				*path;			//current path name
-	// char				*name;			//we'll see
-	char				path[255];
-	char				name[255];
+	char				uid_name[NAME_MAX];
+	char				grp_name[NAME_MAX];
+	char				mtime[NAME_MAX];
+	char				path[PATH_MAX];
+	char				name[NAME_MAX];
 	int					opendir;		//fd
 	int					error;
+	int					which;
+	t_access			acc;
+
 	struct s_ls			*right;
 	struct s_ls 		*left;
 }				t_ls;
@@ -49,7 +71,8 @@ typedef struct	s_opt
 	int			l;
 }				t_opt;
 
-char					*ft_catpath(char const *s1, char const *s2);
+char					*ft_catpath(char const *directory, char const *name);
+int						ft_ustrcmp(char *s1, char *s2);
 
 #endif
 
@@ -84,3 +107,33 @@ char					*ft_catpath(char const *s1, char const *s2);
 	//         return ;
 	//     }
 	// }
+
+
+// if (d_type == DT_UNKNOWN)
+//     		check_type_macros(sb.st_mode);
+//     if S_ISREG(sb.st_mode)
+// // is it a regular file?
+
+// S_ISDIR(m)
+
+// // directory?
+
+// S_ISCHR(m)
+
+// // character device?
+
+// S_ISBLK(m)
+
+// // block device?
+
+// S_ISFIFO(m)
+
+// // FIFO (named pipe)?
+
+// S_ISLNK(m)
+
+// // symbolic link? (Not in POSIX.1-1996.)
+
+// S_ISSOCK(m)
+
+// socket? (Not in POSIX.1-1996.)

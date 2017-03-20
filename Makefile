@@ -2,10 +2,11 @@ NAME	= ft_ls
 
 SRC		+=	main.c
 SRC		+=  ft_catpath.c
+SRC		+=	ft_ustrcmp.c
 
 OBJ		= $(SRC:.c=.o)
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror
 
 $(NAME): $(OBJ)
 	make -C libft/

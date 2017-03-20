@@ -12,19 +12,25 @@
 
 #include "ft_ls.h"
 
-char	*ft_catpath(char const *s1, char const *s2)
+char	*ft_catpath(char const *directory, char const *name)
 {
-	char		*str;
+	char		*path;
 	size_t		len;
 
-	if (!s1 || !s2)
+	if (!directory || !name)
+	{
+		ft_printf("Missing s1 or s2\n");
 		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	str = (char *)malloc(sizeof(*str) * (len + 2));
-	if (!str)
+	}
+	len = ft_strlen(directory) + ft_strlen(name);
+
+	//ft_printf("Length of two strings : %ld\n", len);
+	//ft_printf("Length allocated : %ld\n", len + 2);
+	path = (char *)malloc(sizeof(char) * (len + 2));
+	if (!path)
 		return ((void *)0);
-	ft_strcpy(str, s1);
-	ft_strcat(str, "/");
-	ft_strcat(str, s2);
-	return (str);
+	ft_strcpy(path, directory);
+	ft_strcat(path, "/");
+	ft_strcat(path, name);
+	return (path);
 }
