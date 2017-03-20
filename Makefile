@@ -2,7 +2,8 @@ NAME	= ft_ls
 
 SRC		+=	main.c
 SRC		+=  ft_catpath.c
-SRC		+=	ft_ustrcmp.c
+SRC		+= ft_ustrcmp.c
+SRC		+= tmp_get_data.c
 
 OBJ		= $(SRC:.c=.o)
 

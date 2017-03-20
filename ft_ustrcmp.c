@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_ustrcmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,10 +14,13 @@
 
 int		ft_ustrcmp(char *s1, char *s2)
 {
+	int difference;
 	while (*s1 && *s2 && *s1 == *s2)
 	{
 		s1++;
 		s2++;
 	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	difference = (*(unsigned char *)s1 - *(unsigned char *)s2);
+	//ft_printf("difference : btw %s and %s : %d\n", s1, s2, difference);
+	return (difference);
 }

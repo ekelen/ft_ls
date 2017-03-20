@@ -51,8 +51,10 @@ typedef struct	s_ls
 	char				uid_name[NAME_MAX];
 	char				grp_name[NAME_MAX];
 	char				mtime[NAME_MAX];
+	int					hmtime;
 	char				path[PATH_MAX];
 	char				name[NAME_MAX];
+	char				linkname[PATH_MAX];
 	int					opendir;		//fd
 	int					error;
 	int					which;
@@ -69,10 +71,12 @@ typedef struct	s_opt
 	int			t;
 	int			a;
 	int			l;
+	s_ls		*tree;
 }				t_opt;
 
 char					*ft_catpath(char const *directory, char const *name);
 int						ft_ustrcmp(char *s1, char *s2);
+int			get_type(struct stat stp, char *path, struct dirent *dp, t_ls *new);
 
 #endif
 
