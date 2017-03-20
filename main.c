@@ -5,17 +5,12 @@ static void	tree_pr(t_ls *tree)
 {
 	if (!tree)
 		return ;
-	//ft_printf("%c %c%c%c %s %s  %s %ld\t", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->uid_name, tree->path, tree->grp_name, tree->hlinks);
-	//ft_printf("%d\n", tree->which);
-	//ft_printf("%s\n", tree->path);
-	//ft_printf("%ld bytes\n", tree->size);
-	
 	if (tree->left)
 		tree_pr(tree->left);
 	//ft_printf("%d : %s\n", tree->hmtime, tree->path);
-	ft_printf("%c%c%c%c %ld %s %s %s %s   ", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->hlinks, tree->uid_name, tree->path, tree->linkname, tree->grp_name);
+	ft_printf("%c%c%c%c %ld %s %s %s %s %s %s  ", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->hlinks, tree->uid_name, BG_DEFAULT, tree->path, tree->linkname, BG_DEFAULT, tree->grp_name);
 	ft_printf("%ld bytes  ", tree->size);
-	ft_printf("%s", tree->mtime);
+	ft_printf("%s%s%s", FG_MAGENTA, tree->mtime, FG_DEFAULT);
 	if (tree->right)
 		tree_pr(tree->right);
 }
@@ -116,7 +111,7 @@ static int	new_tree(t_ls *new, t_ls **tree, int sort_mode)
 
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_ls **tree)
 {
-	int sort_mode = 1;
+	int sort_mode = 2;
 	static int which = 1;
 	if (!(path || dp || tree))
 		return (0);
@@ -143,13 +138,14 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_ls **tree)
 	new->which = which;
 	which++;
 
-	if (S_ISLNK(stp.st_mode))
+	if (new->etype == 'l')
 	{
 		readlink(new->path, tmp_link, PATH_MAX);
 		ft_strcpy(new->linkname, " ->    ");
 		ft_strcat(new->linkname, tmp_link);
 		//ft_printf("link path : %s\n", new->linkname);
 	}
+
 	new_tree(new, tree, sort_mode);
 	return (1);
 }
@@ -173,7 +169,6 @@ int		rec_check(char *s, t_ls **tree)
     	ft_strcpy(path, s);
     	ft_strcat(path, "/");
     	ft_strcat(path, dp->d_name);
-
     	if ((stat_ret = stat(path, &stp)) < 0 || (stat_ret = lstat(path, &ltp)) < 0)
 		{
 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
@@ -237,7 +232,6 @@ int		eval_args(char **s, int ac)
 
 	i = 0;
 	tree = NULL;
-	
 	while (i < ac - 1 && s[i][0] == '-')
 	{
 		if (!(init_opts(s[i], &flags)))

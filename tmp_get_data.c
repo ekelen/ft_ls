@@ -1,5 +1,21 @@
 # include "ft_ls.h"
 
+int			get_color(t_ls *new)
+{
+	if (new->etype == 'd')
+		ft_strcpy(new->color.fg, FG_YELLOW);
+	return (1);
+}
+
+int			color_init(t_ls *new)
+{
+	ft_strcpy(new->color.bg, BG_DEFAULT);
+	ft_strcpy(new->color.fg, FG_DEFAULT);
+	get_color(new);
+	return (1);
+}
+
+
 int			get_mtime(struct stat stp, t_ls *new)
 {
 	new->hmtime = stp.st_mtime;
@@ -83,6 +99,7 @@ int			get_type(struct stat stp, char *path, struct dirent *dp, t_ls *new)
 	get_grp_name(stp, new);
 	get_size(stp, new);
 	get_mtime(stp, new);
+		color_init(new);
 
 	return(1);
 }
