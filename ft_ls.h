@@ -110,7 +110,6 @@ typedef struct	s_opt
 
 
 
-
 char					*ft_catpath(char const *directory, char const *name);
 int						ft_ustrcmp(char *s1, char *s2);
 int			get_type(struct stat stp, char *path, struct dirent *dp, t_ls *new);
