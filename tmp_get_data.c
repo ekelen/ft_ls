@@ -1,5 +1,18 @@
 # include "ft_ls.h"
 
+int			get_parentchild(t_ls *new)
+{
+	ft_printf("new->name : %s\n", new->name);
+	if (ft_strequ(new->name, ".") || ft_strequ(new->name, ".."))
+	{
+		ft_printf("Found parentchild!\n");
+		new->parentchild = 1;
+	}
+	else
+		new->parentchild = 0;
+	return (1);
+}
+
 int			get_color(t_ls *new)
 {
 	if (new->etype == 'd')
@@ -100,6 +113,7 @@ int			get_type(struct stat stp, char *path, struct dirent *dp, t_ls *new)
 	get_size(stp, new);
 	get_mtime(stp, new);
 		color_init(new);
+		get_parentchild(new);
 
 	return(1);
 }

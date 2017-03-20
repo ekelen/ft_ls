@@ -8,28 +8,17 @@ static void	tree_pr(t_ls *tree)
 	if (tree->left)
 		tree_pr(tree->left);
 	//ft_printf("%d : %s\n", tree->hmtime, tree->path);
-	ft_printf("%c%c%c%c %ld %s %s %s %s %s %s  ", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->hlinks, tree->uid_name, BG_DEFAULT, tree->path, tree->linkname, BG_DEFAULT, tree->grp_name);
-	ft_printf("%ld bytes  ", tree->size);
-	ft_printf("%s%s%s", FG_MAGENTA, tree->mtime, FG_DEFAULT);
+	ft_printf("%c%c%c%c %ld\t%s %s", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->hlinks, tree->uid_name, tree->grp_name);
+	ft_printf("\t%ld", tree->size);
+	ft_printf("%s\t%s%s", FG_BLUE, tree->path, FG_DEFAULT);
+	ft_printf("%s", tree->linkname);
+	
+	ft_printf("\t%s%s%s", BG_DEFAULT, tree->mtime, BG_DEFAULT);
+	if (tree->etype == 'd' && !tree->parentchild)
+		ft_printf("\n");
 	if (tree->right)
 		tree_pr(tree->right);
 }
-
-// static void	tree_revpr(t_ls *tree)
-// {
-// 	if (!tree)
-// 		return ;
-// 	//ft_printf("%c %c%c%c %s %s  %s %ld\t", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xgrp, tree->uid_name, tree->path, tree->grp_name, tree->hlinks);
-// 	//ft_printf("%d\n", tree->which);
-// 	//ft_printf("%s\n", tree->path);
-// 	//ft_printf("%ld bytes\n", tree->size);
-	
-// 	if (tree->right)
-// 		tree_pr(tree->right);
-// 	ft_printf("%d : %s\n", tree->hmtime, tree->path);
-// 	if (tree->left)
-// 		tree_pr(tree->left);
-// }
 
 static int	sort_time(t_ls *new, t_ls **tree)
 {
@@ -111,8 +100,8 @@ static int	new_tree(t_ls *new, t_ls **tree, int sort_mode)
 
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_ls **tree)
 {
-	int sort_mode = 2;
-	static int which = 1;
+	int sort_mode = 1;
+	static int which = 0;
 	if (!(path || dp || tree))
 		return (0);
 	t_ls *new;
@@ -122,16 +111,17 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_ls **tree)
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->linkname, PATH_MAX);
 	ft_bzero(tmp_link, PATH_MAX);
-	if (!(get_type(stp, path, dp, new)))
-	{
-		ft_printf("stat_init failed.\n");
-		return (0);
-	}
 	ft_bzero(new->name, NAME_MAX);
 	ft_bzero(new->path, PATH_MAX);
 	
 	ft_strcpy(new->name, dp->d_name);
 	ft_strcpy(new->path, path);
+	if (!(get_type(stp, path, dp, new)))
+	{
+		ft_printf("stat_init failed.\n");
+		return (0);
+	}
+
 	new->d_ino = dp->d_ino;
 	new->right = NULL;
 	new->left = NULL;
@@ -173,7 +163,6 @@ int		rec_check(char *s, t_ls **tree)
 		{
 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
 			break ;
-			;
 		}
 		else
 		{
@@ -209,13 +198,19 @@ int		init_opts(char *s, t_opt *flags)
 			flags->r = 1;
 		else if (ft_strchr(s, 'l'))
 			flags->l = 1;
+		else if (ft_strchr(s, 'G'))
+			flags->ug = 1;
+		else if (ft_strchr(s, 'p'))
+			flags->p = 1;
 		else
 		{
 			ft_printf("Found unknown flag\n");
 			return (0);
 		}
+		ft_printf("-%c ", *s);
 		s++;
 	}
+	ft_printf("<< FLAGS\n");
 
 	return (1);
 }
@@ -259,7 +254,7 @@ int		main(int ac, char **av)
 	while (i < ac)
 	{
 		args[i - 1] = ft_strdup(av[i]); //FREE
-		printf("args[i - 1] : %s\n", args[i - 1]);
+		//printf("args[i - 1] : %s\n", args[i - 1]);
 		i++;
 	}
 	eval_args(args, ac);

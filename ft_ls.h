@@ -84,8 +84,11 @@ typedef struct	s_ls
 	int					error;
 	int					which;
 	int					clic;
+	char				slashtrail;
+	int					parentchild;
 	t_color				color;
 	t_access			acc;
+	//unsigned int		blkct;
 
 	struct s_ls			*right;
 	struct s_ls 		*left;
@@ -98,6 +101,8 @@ typedef struct	s_opt
 	int			t;
 	int			a;
 	int			l;
+	int			ug;
+	int			p;
 	t_ls		*tree;
 }				t_opt;
 
