@@ -37,6 +37,8 @@
 
 # define FBG_DEFAULT	"\x1b[49m\x1b[20m"
 
+
+
 typedef struct			s_color
 {
 	char	fg[7];
@@ -115,6 +117,13 @@ typedef struct	s_ls
 	struct s_ls 		*left;
 }				t_ls;
 
+typedef struct			s_dir
+{
+	char	path[PATH_MAX];
+	//char	name[NAME_MAX];
+	t_ls	*tree;
+}						t_dir;
+
 typedef struct	s_opt
 {
 	int			a;
@@ -130,7 +139,6 @@ typedef struct	s_opt
 	
 	
 	int			us; // sort by size
-	t_ls		*tree;
 }				t_opt;
 
 
