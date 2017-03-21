@@ -1,24 +1,6 @@
 #include "ft_ls.h"
 #include <stdio.h> // DELETE
 
-static void	tree_pr(t_ls *tree)
-{
-	if (!tree)
-		return ;
-	if (tree->left)
-		tree_pr(tree->left);
-	ft_printf("%c%c%c%c%c%c%c%c%c%c", tree->etype, tree->acc.ruser, tree->acc.wuser, tree->acc.xuser, tree->acc.rgrp, tree->acc.wgrp, tree->acc.xgrp, tree->acc.roth, tree->acc.woth, tree->acc.xoth);
-	ft_printf("% ld\t%-s %s", tree->hlinks, tree->uid_name, tree->grp_name);
-	
-	ft_printf("\t%ld", tree->size);
-	ft_printf("%s\t%s%s", tree->color.fg, tree->name, FG_RESET);
-	ft_printf("%s", tree->linkname);
-	
-	ft_printf("\t%s%s%s", FG_RESET, tree->mtime, FG_RESET);
-	if (tree->right)
-		tree_pr(tree->right);
-}
-
 
 static int	sort_size(t_ls *new, t_ls **tree)
 {
@@ -172,7 +154,7 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 		ft_strcpy(new->linkname, " ->  ");
 		ft_strcat(new->linkname, tmp_link);
 	}
-	new_tree(new, &(cwd->tree), sort_mode);
+	new_tree(new, &(cwd->entries), sort_mode);
 	return (1);
 }
 
@@ -240,8 +222,7 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 int		move_cwd(t_dir *cwd)
 {
-	//e->tree_tree = cwd;
-	tree_pr(cwd->tree);
+	tree_pr(cwd->entries);
 	return (0);
 }
 
@@ -259,7 +240,7 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
 		return (0);
 	ft_bzero(cwd.path, PATH_MAX);
 	ft_strcpy(cwd.path, s);
-	cwd.tree = NULL;
+	cwd.entries = NULL;
 
 	while ((dp = readdir(dir)) != NULL)
     {
@@ -290,9 +271,8 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
     }
     ft_printf("\n%s\n", cwd.path);
     move_cwd(&cwd);
-    
     closedir(dir);
-    return (0);
+    return (1);
 }
 
 
@@ -304,8 +284,7 @@ int		eval_args(char **s, int ac)
 	
 	t_opt	e;
 	t_dir	root;
-	//e.tree_tree = NULL;
-	root.tree = NULL;	
+	root.entries = NULL;	
 
 	zero_opt(&e);
 	int		i;
@@ -318,7 +297,8 @@ int		eval_args(char **s, int ac)
 		i++;
 	}
 	//get_padding(s[i], &e, &root);
-	rec_check(s[i], &e, root);
+	if(!(rec_check(s[i], &e, root)))
+		ft_printf(ERR_FILE, s[i]);
 	//ft_printf("~~~~~~~~~~~\n");
 	//ft_printf("Signs of life?? %s %s\n", root.path, e.tree_tree->path);
 	//meta_pr(e.tree_tree);

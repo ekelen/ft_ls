@@ -14,8 +14,8 @@ static int		parse_bonus(char s, t_opt *e)
 		e->o = 1;
 	else
 		return (0);
-	 ft_printf("%c : ", s);
-	 ft_printf("<< e\n");
+	 //ft_printf("%c : ", s);
+	 //ft_printf("<< e\n");
 	return (1);
 }
 
@@ -43,7 +43,7 @@ int		init_opts(char *s, t_opt *e)
 				return (0);
 			}
 		}
-		ft_printf("-%c ", *s);
+		//ft_printf("-%c ", *s);
 		s++;
 	}
 	return (1);

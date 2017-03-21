@@ -7,6 +7,7 @@ SRC		+= tmp_get_data.c
 
 SRC		+= padding.c
 SRC		+= parse_args.c
+SRC		+= print.c
 
 OBJ		= $(SRC:.c=.o)
 

@@ -37,18 +37,6 @@ int			get_color(t_ls *new, t_opt *e)
 	return (1);
 }
 
-int			color_init(t_ls *new, t_opt *e)
-{
-	if (e->ug)
-	{
-		ft_strcpy(new->color.bg, BG_RESET);
-		ft_strcpy(new->color.fg, FG_RESET);
-		get_color(new, e);
-	}
-	return (1);
-}
-
-
 int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 {
 	(void)e;
@@ -144,9 +132,8 @@ int			get_type(struct stat stp, t_opt *e, t_ls *new)
 	get_grp_name(stp, new, e);
 	get_size(stp, new, e);
 	get_mtime(stp, new, e);
-	color_init(new, e);
+	get_color(new, e);
 	get_parentchild(new, e);
-
 	return(1);
 }
 
