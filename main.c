@@ -15,169 +15,9 @@ static void	tree_pr(t_ls *tree)
 	ft_printf("%s", tree->linkname);
 	
 	ft_printf("\t%s%s%s", FG_DEFAULT, tree->mtime, FG_DEFAULT);
-	if (tree->etype == 'd' && !tree->parentchild)
-		ft_printf("\n");
 	if (tree->right)
 		tree_pr(tree->right);
 }
-
-
-// static int	sub_sort_size(t_ls *new, t_ls **tmpTree, t_ls **tmpNode)
-// {
-
-// 	if (!(*tmpTree) || !tmpTree)
-// 	{
-// 		ft_printf("Some kind of tree error\n");
-// 		return (0);
-// 	}
-// 	//ft_printf("tmpTree-> size : %ld tmpNode->size : %d\n", (*tmpTree)->size, (*tmpNode)->size);
-// 	while ((*tmpTree) && ft_strequ(new->dirpath, (*tmpTree)->dirpath))
-// 	{
-// 		//*tmpNode = *tmpTree;
-// 		if (new->size > (*tmpTree)->size)
-// 		{
-// 			*tmpNode = *tmpTree;
-// 			if (ft_strequ(new->dirpath, "/nfs/2016/e/ekelen/1-dir/"))
-// 				printf(">>>> [%s] : %lld\t[%s] : %lld\t\n", new->name, new->size, (*tmpTree)->name, (*tmpTree)->size);
-// 			*tmpTree = (*tmpTree)->right;
-// 			if (!(*tmpTree))
-// 			{
-// 				(*tmpNode)->right = new;
-// 				return(1);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			if (ft_strequ(new->dirpath, "/nfs/2016/e/ekelen/1-dir/"))
-// 				printf("<< [%s] : %lld\t[%s] : %lld\t\n", new->name, new->size, (*tmpTree)->name, (*tmpTree)->size);
-// 			*tmpTree = (*tmpTree)->left;
-// 			if (!(*tmpTree))
-// 			{
-// 				(*tmpNode)->left = new;
-// 				return(1);
-// 			}
-// 		}
-// 	}
-// 	return (1);
-// }
-
-// static int	sub_sort_dir(t_ls **tree)
-// {
-// 	t_ls *tmpTree = *tree;
-// 	t_ls *tmpNode;
-
-// 	int diff;
-
-// 	if (!tmpTree)
-// 	{
-// 		ft_printf("Some kind of tree error\n");
-// 		return (0);
-// 	}
-// 	while (tmpTree)
-// 	{
-// 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-// 		if (new->size > tmpTree)
-// 		{
-// 			tmpTree = tmpTree->right;
-// 			if (!tmpTree)
-// 				tmpNode->right = new;	
-// 		}
-// 		else
-// 		{
-// 			tmpTree = tmpTree->left;
-// 			if (!tmpTree)
-// 				tmpNode->left = new;
-
-
-
-// 			// else if (new->size > tmpTree->size)
-// 			// {
-// 			// 	tmpNode = tmpTree;
-// 			// 	tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-// 			// 	if (!tmpTree)
-// 			// 		tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 			// }
-// 			// else
-// 			// {
-// 			// 	tmpNode = tmpTree;
-// 			// 	tmpTree = tmpTree->left;	//tmpNode is now one node behind tmpTree.
-// 			// 	if (!tmpTree)
-// 			// 		tmpNode->left = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 			//}
-// 		}
-// 	}
-// 	return (1);
-// }
-
-
-
-
-// static int	sub_sort_dir(t_ls *new, t_ls **tree)
-// {
-// 	t_ls *tmpTree = *tree;
-// 	t_ls *tmpNode;
-
-// 	int diff;
-
-// 	if (!tmpTree)
-// 	{
-// 		ft_printf("Some kind of tree error\n");
-// 		return (0);
-// 	}
-// 	while (tmpTree)
-// 	{
-// 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-// 		if ((diff = ft_ustrcmp(new->dirpath, tmpTree->dirpath)) > 0)
-// 		{
-// 			tmpTree = tmpTree->right;
-// 			if (!tmpTree)
-// 				tmpNode->right = new;
-// 			else if (ft_strequ(new->dirpath, tmpTree->dirpath))
-// 			{
-// 				if (new->size > tmpTree->size)
-// 				{
-// 					tmpNode = tmpTree;
-// 					tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-// 					if (!tmpTree)
-// 						tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 				}
-// 				else
-// 				{
-// 					tmpNode = tmpTree;
-// 					tmpTree = tmpTree->left;	//tmpNode is now one node behind tmpTree.
-// 					if (!tmpTree)
-// 						tmpNode->left = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 				}
-// 			}
-// 		}
-// 		else
-// 		{
-// 			tmpTree = tmpTree->left;
-// 			if (!tmpTree)
-// 				tmpNode->left = new;
-// 			else if (ft_strequ(new->dirpath, tmpTree->dirpath))
-// 			{
-// 				if (new->size > tmpTree->size)
-// 				{
-// 					tmpNode = tmpTree;
-// 					tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-// 					if (!tmpTree)
-// 						tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 				}
-// 				else
-// 				{
-// 					tmpNode = tmpTree;
-// 					tmpTree = tmpTree->left;	//tmpNode is now one node behind tmpTree.
-// 					if (!tmpTree)
-// 						tmpNode->left = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 				}
-// 			}
-// 		}
-// 	}
-// 	//sub_sort_size(tree);
-// 	return (1);
-// }
-
 
 
 
@@ -230,9 +70,7 @@ static int	sort_time(t_ls *new, t_ls **tree)
 		{
 			tmpTree = tmpTree->right;
 			if (!tmpTree)
-			{
 				tmpNode->right = new;
-			}
 		}
 		else
 		{
@@ -289,9 +127,6 @@ static int	new_tree(t_ls *new, t_ls **tree, int sort_mode)
 		sort_time(new, tree);
 	else if (sort_mode == 3)
 		sort_size(new, tree);
-	// else if (sort_mode == 4)
-	// 	sub_sort_dir(new, tree);
-	
 	return (1);
 }
 
@@ -316,7 +151,7 @@ t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd)
 {
-	int sort_mode = 3;
+	int sort_mode = 1;
 
 	if (!(path || dp))
 		return (0);
@@ -343,13 +178,26 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 }
 
 
+
+
+
+
+
+
+int		move_cwd(t_dir *cwd, t_opt *e)
+{
+	(void)e;
+	tree_pr(cwd->tree);
+	return (0);
+}
+
+
 int		rec_check(char *s, t_opt *e, t_dir cwd)
 {
 	DIR 				*dir = NULL;
     struct dirent		*dp;
     struct stat			stp;
     struct stat			ltp;
-    int					stat_ret = 0;
     char				path[PATH_MAX];
     
 
@@ -358,13 +206,17 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
 	ft_bzero(cwd.path, PATH_MAX);
 	ft_strcpy(cwd.path, s);
 	cwd.tree = NULL;
+
+	// ft_bzero(e->tree_tree->path);
+	// ft_strcpy(e->tree_tree->path, s);
+	// e->tree_tree->tree = NULL;
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
     	ft_strcpy(path, s);
     	ft_strcat(path, "/");
     	ft_strcat(path, dp->d_name);
-    	if ((stat_ret = stat(path, &stp)) < 0 || (stat_ret = lstat(path, &ltp)) < 0)
+    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
 		{
 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
 			break ;
@@ -385,7 +237,8 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
 		}
     }
     ft_printf("\n%s\n", cwd.path);
-    tree_pr(cwd.tree);
+    move_cwd(&cwd, e);
+    
     closedir(dir);
     return (0);
 }
@@ -433,6 +286,7 @@ int		eval_args(char **s, int ac)
 	t_dir	root;
 
 	root.tree = NULL;
+	e.tree_tree = NULL;
 
 	e.a = 0;
 	e.g = 0;

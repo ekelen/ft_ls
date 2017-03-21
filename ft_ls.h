@@ -59,24 +59,6 @@ typedef struct s_access
 }				t_access;
 
 
-	//ft_printf("Test\n");
-
-	//-l, -R, -a, -r and -t
-	//l = "long"
-	//-a = include things with a dot
-	//-t == sort by time
-	//-r == reverse order
-	//-R == recursively list subdirectories encountered
-
-	//BONUS TODO:
-	//-h (uses unit instead of size)
-	//-m (stream output across the page, separated by commas)
-	//-p (add a slash after each directory found
-	//-S sort files by size
-	//-o same as -l but without group id
-	//-G colorized output
-	//invent your own (ask if want to list ? search directory ?)
-	//-A list all entries except . and ..
 
 typedef struct	s_ls
 {
@@ -120,8 +102,10 @@ typedef struct	s_ls
 typedef struct			s_dir
 {
 	char	path[PATH_MAX];
-	//char	name[NAME_MAX];
 	t_ls	*tree;
+
+	struct s_dir		*right;
+	struct s_dir		*left;
 }						t_dir;
 
 typedef struct	s_opt
@@ -135,17 +119,33 @@ typedef struct	s_opt
 	int			t;	// time
 	int			ug;	// color output
 	int			ur;	// recursive
-	
-	
-	
 	int			us; // sort by size
+	t_dir		*tree_tree;
 }				t_opt;
 
 
 
+	//ft_printf("Test\n");
+
+	//-l, -R, -a, -r and -t
+	//l = "long"
+	//-a = include things with a dot
+	//-t == sort by time
+	//-r == reverse order
+	//-R == recursively list subdirectories encountered
+
+	//BONUS TODO:
+	//-h (uses unit instead of size)
+	//-m (stream output across the page, separated by commas)
+	//-p (add a slash after each directory found
+	//-S sort files by size
+	//-o same as -l but without group id
+	//-G colorized output
+	//invent your own (ask if want to list ? search directory ?)
+	//-A list all entries except . and ..
 
 char					*ft_catpath(char const *directory, char const *name);
 int						ft_ustrcmp(char *s1, char *s2);
-int			get_type(struct stat stp, t_opt *e, t_ls *new);
+int						get_type(struct stat stp, t_opt *e, t_ls *new);
 
 #endif
