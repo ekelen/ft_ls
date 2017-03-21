@@ -92,6 +92,6 @@ int						ft_ustrcmp(char *s1, char *s2);
 int						get_type(struct stat stp, t_opt *e, t_ls *new);
 int		get_padding(char *s, t_opt *e, t_dir *cwd);
 void	tree_pr(t_ls *tree);
-
+void meta_pr(t_dir *tree);
 
 #endif

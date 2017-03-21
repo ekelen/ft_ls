@@ -151,83 +151,84 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 	if (new->etype == 'l')
 	{
 		readlink(new->path, tmp_link, PATH_MAX);
-		ft_strcpy(new->linkname, " ->  ");
+		ft_strcpy(new->linkname, " -> ");
 		ft_strcat(new->linkname, tmp_link);
 	}
 	new_tree(new, &(cwd->entries), sort_mode);
 	return (1);
 }
 
-// static void meta_pr(t_dir *tree)
-// {
-// 	if (!tree)
-// 		return ;
-// 	//ft_printf("\t%s%s%s", FG_GREEN, tree->path, FG_DEFAULT);
-// 	if (tree->left)
-// 	{
-// 		ft_printf("Moves to the left: %s\n ", tree->path);
-// 		meta_pr(tree->left);
-// 	}
-// 	ft_printf("\t%s%s%s", FG_GREEN, tree->path, FG_DEFAULT);
-// 	if (tree->right)
-// 		meta_pr(tree->right);
-// }
 
 
 
-// static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
-// {
-// 	t_dir *tmpTree = *tree;
-// 	t_dir *tmpNode;
 
-// 	int diff;
-
-// 	if (!tmpTree)
-// 	{
-// 		*tree = new;
-// 		return (1);
-// 	}
-// 	while (tmpTree)
-// 	{
-// 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-// 		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
-// 		{
-// 			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-// 			if (!tmpTree)
-// 			{
-// 				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 			}
-// 		}
-// 		else
-// 		{
-// 			tmpTree = tmpTree->left;
-// 			if (!tmpTree)
-// 			{
-// 				tmpNode->left = new;
-// 			}
-// 		}
-// 	}
-// 	return (1);
-// }
-
-// int		move_cwd(t_dir *cwd, t_opt *e)
-// {
-// 	//e->tree_tree = cwd;
-// 	//tree_pr(e->tree_tree->tree);
-// 	if (!cwd || !e)
-// 		return (0);
-// 	sort_dirs_ascii(cwd, &(e->tree_tree));
-// 	return (1);
-//}
-
-int		move_cwd(t_dir *cwd)
+static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
 {
-	tree_pr(cwd->entries);
-	return (0);
+	t_dir *tmpTree = *tree;
+	t_dir *tmpNode;
+
+	int diff;
+	while (tmpTree)
+	{
+		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
+		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
+		{
+			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
+			if (!tmpTree)
+				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
+		}
+		else
+		{
+			tmpTree = tmpTree->left;
+			if (!tmpTree)
+			{
+				//ft_printf("tree->left->path : %s\n", (*tree)->left->path);
+				tmpNode->left = new;
+			}
+		}
+
+	}
+	return (1);
 }
 
+int		move_cwd(t_dir *cwd, t_dir **root)
+{
+	//e->tree_tree = cwd;
+	//tree_pr(e->tree_tree->tree);
+	//ft_printf("root->path : %s\n", (*root)->path);
+	t_dir *new;
+	new = malloc(sizeof(t_dir));
+	*new = *cwd;
+	new->left = NULL;
+	new->right = NULL;
+	new->entries = cwd->entries;
 
-int		rec_check(char *s, t_opt *e, t_dir cwd)
+	if (!(*root)) 
+	{
+		ft_printf("No root...\n");		
+		*root = new;
+		return(1);
+		// (*root)->left = NULL;
+		// (*root)->right = NULL;
+		//(*root)->entries = new->entries;
+	}
+	//tree_pr(new->entries);
+	//ft_printf("root->path : %s\n", (*root)->path);
+	//ft_printf("new->path : %s\n", new->path);
+	sort_dirs_ascii(new, root);
+	
+	return (1);
+}
+
+// int		move_cwd(t_dir *cwd)
+// {
+
+// 	tree_pr(cwd->entries);
+// 	return (0);
+// }
+
+
+int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 {
 	DIR 				*dir = NULL;
     struct dirent		*dp;
@@ -235,13 +236,16 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
     struct stat			ltp;
     char				path[PATH_MAX];
     
-
+	// if (!(*root))
+	// 		ft_printf("----------> NO ROOT!\n");
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
 	ft_bzero(cwd.path, PATH_MAX);
 	ft_strcpy(cwd.path, s);
 	cwd.entries = NULL;
-
+	// cwd.right = NULL;
+	// cwd.left = NULL;
+	
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
@@ -265,26 +269,44 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
 		}
 		if (S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
 		{
-			
-			rec_check(path, e, cwd);
+			rec_check(path, e, cwd, root);
 		}
     }
     ft_printf("\n%s\n", cwd.path);
-    move_cwd(&cwd);
+    move_cwd(&cwd, root);
+    
     closedir(dir);
     return (1);
 }
 
 
 
-
+// static int	init_dir(t_dir *dir)
+// {
+// 	ft_bzero(dir->path, PATH_MAX);
+// 	dir->left = NULL;
+// 	dir->right = NULL;
+// 	return (1);
+// }
 
 int		eval_args(char **s, int ac)
 {
 	
 	t_opt	e;
-	t_dir	root;
-	root.entries = NULL;	
+
+	t_dir	cwd;
+	t_dir	*root = NULL;
+	//root->entries = NULL;
+	cwd.entries = NULL;
+//	root->entries = NULL;
+
+
+
+	// ??
+	// root->left = NULL;
+	// root->right = NULL;
+	//cwd.left = NULL;
+	//cwd.right = NULL;	
 
 	zero_opt(&e);
 	int		i;
@@ -297,8 +319,12 @@ int		eval_args(char **s, int ac)
 		i++;
 	}
 	//get_padding(s[i], &e, &root);
-	if(!(rec_check(s[i], &e, root)))
+	//ft_strcpy(root->path, s[i]);
+
+	if(!(rec_check(s[i], &e, cwd, &root)))
 		ft_printf(ERR_FILE, s[i]);
+	meta_pr(root);
+	//ft_printf("root---->path : %s\n", root->path);
 	//ft_printf("~~~~~~~~~~~\n");
 	//ft_printf("Signs of life?? %s %s\n", root.path, e.tree_tree->path);
 	//meta_pr(e.tree_tree);
