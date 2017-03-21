@@ -181,10 +181,7 @@ static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
 		{
 			tmpTree = tmpTree->left;
 			if (!tmpTree)
-			{
-				//ft_printf("tree->left->path : %s\n", (*tree)->left->path);
 				tmpNode->left = new;
-			}
 		}
 
 	}
@@ -193,40 +190,21 @@ static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
 
 int		move_cwd(t_dir *cwd, t_dir **root)
 {
-	//e->tree_tree = cwd;
-	//tree_pr(e->tree_tree->tree);
-	//ft_printf("root->path : %s\n", (*root)->path);
 	t_dir *new;
+
 	new = malloc(sizeof(t_dir));
 	*new = *cwd;
 	new->left = NULL;
 	new->right = NULL;
 	new->entries = cwd->entries;
-
 	if (!(*root)) 
 	{
-		ft_printf("No root...\n");		
 		*root = new;
 		return(1);
-		// (*root)->left = NULL;
-		// (*root)->right = NULL;
-		//(*root)->entries = new->entries;
 	}
-	//tree_pr(new->entries);
-	//ft_printf("root->path : %s\n", (*root)->path);
-	//ft_printf("new->path : %s\n", new->path);
 	sort_dirs_ascii(new, root);
-	
 	return (1);
 }
-
-// int		move_cwd(t_dir *cwd)
-// {
-
-// 	tree_pr(cwd->entries);
-// 	return (0);
-// }
-
 
 int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 {
@@ -236,16 +214,11 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
     struct stat			ltp;
     char				path[PATH_MAX];
     
-	// if (!(*root))
-	// 		ft_printf("----------> NO ROOT!\n");
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
 	ft_bzero(cwd.path, PATH_MAX);
 	ft_strcpy(cwd.path, s);
 	cwd.entries = NULL;
-	// cwd.right = NULL;
-	// cwd.left = NULL;
-	
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
@@ -272,9 +245,7 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 			rec_check(path, e, cwd, root);
 		}
     }
-    ft_printf("\n%s\n", cwd.path);
     move_cwd(&cwd, root);
-    
     closedir(dir);
     return (1);
 }
@@ -291,22 +262,11 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 
 int		eval_args(char **s, int ac)
 {
-	
 	t_opt	e;
-
 	t_dir	cwd;
+
 	t_dir	*root = NULL;
-	//root->entries = NULL;
 	cwd.entries = NULL;
-//	root->entries = NULL;
-
-
-
-	// ??
-	// root->left = NULL;
-	// root->right = NULL;
-	//cwd.left = NULL;
-	//cwd.right = NULL;	
 
 	zero_opt(&e);
 	int		i;
@@ -318,16 +278,9 @@ int		eval_args(char **s, int ac)
 			return (0);
 		i++;
 	}
-	//get_padding(s[i], &e, &root);
-	//ft_strcpy(root->path, s[i]);
-
 	if(!(rec_check(s[i], &e, cwd, &root)))
 		ft_printf(ERR_FILE, s[i]);
 	meta_pr(root);
-	//ft_printf("root---->path : %s\n", root->path);
-	//ft_printf("~~~~~~~~~~~\n");
-	//ft_printf("Signs of life?? %s %s\n", root.path, e.tree_tree->path);
-	//meta_pr(e.tree_tree);
 	return (0);
 }
 
