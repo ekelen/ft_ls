@@ -11,15 +11,13 @@ static void	tree_pr(t_ls *tree)
 	ft_printf("% ld\t%-s %s", tree->hlinks, tree->uid_name, tree->grp_name);
 	
 	ft_printf("\t%ld", tree->size);
-	ft_printf("%s\t%s%s", tree->color.fg, tree->path, FG_DEFAULT);
+	ft_printf("%s\t%s%s", tree->color.fg, tree->name, FG_RESET);
 	ft_printf("%s", tree->linkname);
 	
-	ft_printf("\t%s%s%s", FG_DEFAULT, tree->mtime, FG_DEFAULT);
+	ft_printf("\t%s%s%s", FG_RESET, tree->mtime, FG_RESET);
 	if (tree->right)
 		tree_pr(tree->right);
 }
-
-
 
 
 static int	sort_size(t_ls *new, t_ls **tree)
@@ -95,6 +93,7 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 		ft_printf("Some kind of tree error\n");
 		return (0);
 	}
+	//ft_printf("--- > \n%s\n", new->path);
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
@@ -177,36 +176,85 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 	return (1);
 }
 
+// static void meta_pr(t_dir *tree)
+// {
+// 	if (!tree)
+// 		return ;
+// 	//ft_printf("\t%s%s%s", FG_GREEN, tree->path, FG_DEFAULT);
+// 	if (tree->left)
+// 	{
+// 		ft_printf("Moves to the left: %s\n ", tree->path);
+// 		meta_pr(tree->left);
+// 	}
+// 	ft_printf("\t%s%s%s", FG_GREEN, tree->path, FG_DEFAULT);
+// 	if (tree->right)
+// 		meta_pr(tree->right);
+// }
 
 
 
+// static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
+// {
+// 	t_dir *tmpTree = *tree;
+// 	t_dir *tmpNode;
+
+// 	int diff;
+
+// 	if (!tmpTree)
+// 	{
+// 		*tree = new;
+// 		return (1);
+// 	}
+// 	while (tmpTree)
+// 	{
+// 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
+// 		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
+// 		{
+// 			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
+// 			if (!tmpTree)
+// 			{
+// 				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
+// 			}
+// 		}
+// 		else
+// 		{
+// 			tmpTree = tmpTree->left;
+// 			if (!tmpTree)
+// 			{
+// 				tmpNode->left = new;
+// 			}
+// 		}
+// 	}
+// 	return (1);
+// }
+
+// int		move_cwd(t_dir *cwd, t_opt *e)
+// {
+// 	//e->tree_tree = cwd;
+// 	//tree_pr(e->tree_tree->tree);
+// 	if (!cwd || !e)
+// 		return (0);
+// 	sort_dirs_ascii(cwd, &(e->tree_tree));
+// 	return (1);
+//}
 
 
-
-
-int		move_cwd(t_dir *cwd, t_opt *e)
-{
-	e->tree_tree = cwd;
-	tree_pr(e->tree_tree->tree);
-	return (0);
-}
-
-
-int		rec_check(char *s, t_opt *e, t_dir cwd)
+int		rec_check(char *s, t_opt *e, t_dir *cwd)
 {
 	DIR 				*dir = NULL;
     struct dirent		*dp;
     struct stat			stp;
     struct stat			ltp;
     char				path[PATH_MAX];
-    
-
+   
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
-	ft_bzero(cwd.path, PATH_MAX);
-	ft_strcpy(cwd.path, s);
-	cwd.tree = NULL;
-
+	ft_bzero(cwd->path, PATH_MAX);
+	ft_strcpy(cwd->path, s);
+	cwd->tree = NULL;
+	cwd->left = NULL;
+	cwd->right = NULL;
+	
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
@@ -223,76 +271,43 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
 			if (S_ISLNK(ltp.st_mode))
 			{
 				lstat(path, &ltp);
-				new_entry(ltp, path, dp, e, &cwd);
+				new_entry(ltp, path, dp, e, cwd);
 			}
 			else
-				new_entry(stp, path, dp, e, &cwd);
+				new_entry(stp, path, dp, e, cwd);
 		}
 		if (S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
 		{
+			ft_printf("\n%s\n", cwd->path);
 			rec_check(path, e, cwd);
 		}
     }
-    ft_printf("\n%s\n", cwd.path);
-    move_cwd(&cwd, e);
-    
+    tree_pr(cwd->tree);
     closedir(dir);
-    return (0);
+    return (1);
 }
 
-int		init_opts(char *s, t_opt *flags)
-{
-	s++;
-	while (*s)
-	{
-		if (ft_strchr(s, 'a'))
-			flags->a = 1;
-		else if (ft_strchr(s, 't'))
-			flags->t = 1;
-		else if (ft_strchr(s, 'R'))
-			flags->ur = 1;
-		else if (ft_strchr(s, 'r'))
-			flags->r = 1;
-		else if (ft_strchr(s, 'l'))
-			flags->l = 1;
-		else if (ft_strchr(s, 'G'))
-			flags->ug = 1;
-		else if (ft_strchr(s, 'g'))
-			flags->g = 1;
-		else if (ft_strchr(s, 'p'))
-			flags->p = 1;
-		else if (ft_strchr(s, 'S'))
-			flags->us = 1;
-		else
-		{
-			ft_printf("Found unknown flag\n");
-			return (0);
-		}
-		ft_printf("-%c ", *s);
-		s++;
-	}
-	ft_printf("<< FLAGS\n");
 
-	return (1);
-}
+
+
 
 int		eval_args(char **s, int ac)
 {
 	
 	t_opt	e;
 	t_dir	root;
-
-	root.tree = NULL;
-	e.tree_tree = NULL;
+	//e.tree_tree = NULL;
+	root.tree = NULL;	
 
 	e.a = 0;
 	e.g = 0;
-	
 	e.l = 0;
+	e.o = 0;
 	e.p = 0;
 	e.r = 0;
 	e.ug = 0;
 	e.ur = 0;
+	e.us = 0;
 	e.t = 0;
 	int		i;
 
@@ -303,8 +318,11 @@ int		eval_args(char **s, int ac)
 			return (0);
 		i++;
 	}
-	rec_check(s[i], &e, root);
-	
+	get_padding(s[i], &e, &root);
+	rec_check(s[i], &e, &root);
+	//ft_printf("~~~~~~~~~~~\n");
+	//ft_printf("Signs of life?? %s %s\n", root.path, e.tree_tree->path);
+	//meta_pr(e.tree_tree);
 	return (0);
 }
 

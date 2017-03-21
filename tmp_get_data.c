@@ -9,7 +9,6 @@ char		*ft_strexclude(char *orig, char *excl)
 	olen = ft_strlen(orig);
 	exclen = ft_strlen(excl);
 	s = ft_strsub(orig, 0, olen - exclen);
-	//ft_printf("Strsub : %s\n", s);
 	return (s);
 
 }
@@ -26,13 +25,15 @@ int			get_parentchild(t_ls *new, t_opt *e)
 
 int			get_color(t_ls *new, t_opt *e)
 {
-	(void)e;
-	if (new->etype == 'd')
-		ft_strcpy(new->color.fg, FG_BLUE);
-	else if (new->etype == '-' && (new->acc.xuser == 'x' || new->acc.xgrp == 'x' || new->acc.xoth == 'x'))
-		ft_strcpy(new->color.fg, FG_RED);
-	else if (new->etype == 'l')
-		ft_strcpy(new->color.fg, FG_MAGENTA);
+	if (e->ug)
+	{
+		if (new->etype == 'd')
+			ft_strcpy(new->color.fg, FG_BLU);
+		else if (new->etype == '-' && (new->acc.xuser == 'x' || new->acc.xgrp == 'x' || new->acc.xoth == 'x'))
+			ft_strcpy(new->color.fg, FG_RED);
+		else if (new->etype == 'l')
+			ft_strcpy(new->color.fg, FG_PNK);
+	}
 	return (1);
 }
 
@@ -40,8 +41,8 @@ int			color_init(t_ls *new, t_opt *e)
 {
 	if (e->ug)
 	{
-		ft_strcpy(new->color.bg, BG_DEFAULT);
-		ft_strcpy(new->color.fg, FG_DEFAULT);
+		ft_strcpy(new->color.bg, BG_RESET);
+		ft_strcpy(new->color.fg, FG_RESET);
 		get_color(new, e);
 	}
 	return (1);
@@ -115,7 +116,6 @@ int			get_dirname(t_ls *new, t_opt *e)
 	return (0);
 }
 
-
 int			get_type(struct stat stp, t_opt *e, t_ls *new)
 {
 	if (S_ISREG(stp.st_mode))
@@ -149,4 +149,6 @@ int			get_type(struct stat stp, t_opt *e, t_ls *new)
 
 	return(1);
 }
+
+
 
