@@ -186,8 +186,8 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 int		move_cwd(t_dir *cwd, t_opt *e)
 {
-	(void)e;
-	tree_pr(cwd->tree);
+	e->tree_tree = cwd;
+	tree_pr(e->tree_tree->tree);
 	return (0);
 }
 
@@ -207,9 +207,6 @@ int		rec_check(char *s, t_opt *e, t_dir cwd)
 	ft_strcpy(cwd.path, s);
 	cwd.tree = NULL;
 
-	// ft_bzero(e->tree_tree->path);
-	// ft_strcpy(e->tree_tree->path, s);
-	// e->tree_tree->tree = NULL;
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
