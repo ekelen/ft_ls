@@ -1,43 +1,43 @@
 #include "ft_ls.h"
 
-static int		parse_bonus(char s, t_opt *flags)
+static int		parse_bonus(char s, t_opt *e)
 {
 	if (s == 'G')
-		flags->ug = 1;
+		e->ug = 1;
 	else if (s == 'g')
-		flags->g = 1;
+		e->g = 1;
 	else if (s == 'p')
-		flags->p = 1;
+		e->p = 1;
 	else if (s == 'S')
-		flags->us = 1;
+		e->us = 1;
 	else if (s == 'o')
-		flags->o = 1;
+		e->o = 1;
 	else
 		return (0);
 	 ft_printf("%c : ", s);
-	 ft_printf("<< FLAGS\n");
+	 ft_printf("<< e\n");
 	return (1);
 }
 
 
-int		init_opts(char *s, t_opt *flags)
+int		init_opts(char *s, t_opt *e)
 {
 	s++;
 	while (*s)
 	{
 		if (ft_strchr(s, 'a'))
-			flags->a = 1;
+			e->a = 1;
 		else if (ft_strchr(s, 't'))
-			flags->t = 1;
+			e->t = 1;
 		else if (ft_strchr(s, 'R'))
-			flags->ur = 1;
+			e->ur = 1;
 		else if (ft_strchr(s, 'r'))
-			flags->r = 1;
+			e->r = 1;
 		else if (ft_strchr(s, 'l'))
-			flags->l = 1;
+			e->l = 1;
 		else
 		{
-			if (!(parse_bonus(*s, flags)))
+			if (!(parse_bonus(*s, e)))
 			{
 				ft_printf(ERR_OPT, *s);
 				return (0);
@@ -46,5 +46,24 @@ int		init_opts(char *s, t_opt *flags)
 		ft_printf("-%c ", *s);
 		s++;
 	}
+	return (1);
+}
+
+int		zero_opt(t_opt *e)
+{
+	if (!e)
+	{
+		return ((ft_printf("ERROR!\n")));
+	}
+	e->a = 0;
+	e->g = 0;
+	e->l = 0;
+	e->o = 0;
+	e->p = 0;
+	e->r = 0;
+	e->ug = 0;
+	e->ur = 0;
+	e->us = 0;
+	e->t = 0;
 	return (1);
 }

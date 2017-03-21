@@ -238,23 +238,29 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 // 	return (1);
 //}
 
+int		move_cwd(t_dir *cwd)
+{
+	//e->tree_tree = cwd;
+	tree_pr(cwd->tree);
+	return (0);
+}
 
-int		rec_check(char *s, t_opt *e, t_dir *cwd)
+
+int		rec_check(char *s, t_opt *e, t_dir cwd)
 {
 	DIR 				*dir = NULL;
     struct dirent		*dp;
     struct stat			stp;
     struct stat			ltp;
     char				path[PATH_MAX];
-   
+    
+
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
-	ft_bzero(cwd->path, PATH_MAX);
-	ft_strcpy(cwd->path, s);
-	cwd->tree = NULL;
-	cwd->left = NULL;
-	cwd->right = NULL;
-	
+	ft_bzero(cwd.path, PATH_MAX);
+	ft_strcpy(cwd.path, s);
+	cwd.tree = NULL;
+
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
@@ -271,20 +277,22 @@ int		rec_check(char *s, t_opt *e, t_dir *cwd)
 			if (S_ISLNK(ltp.st_mode))
 			{
 				lstat(path, &ltp);
-				new_entry(ltp, path, dp, e, cwd);
+				new_entry(ltp, path, dp, e, &cwd);
 			}
 			else
-				new_entry(stp, path, dp, e, cwd);
+				new_entry(stp, path, dp, e, &cwd);
 		}
 		if (S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
 		{
-			ft_printf("\n%s\n", cwd->path);
+			
 			rec_check(path, e, cwd);
 		}
     }
-    tree_pr(cwd->tree);
+    ft_printf("\n%s\n", cwd.path);
+    move_cwd(&cwd);
+    
     closedir(dir);
-    return (1);
+    return (0);
 }
 
 
@@ -299,16 +307,7 @@ int		eval_args(char **s, int ac)
 	//e.tree_tree = NULL;
 	root.tree = NULL;	
 
-	e.a = 0;
-	e.g = 0;
-	e.l = 0;
-	e.o = 0;
-	e.p = 0;
-	e.r = 0;
-	e.ug = 0;
-	e.ur = 0;
-	e.us = 0;
-	e.t = 0;
+	zero_opt(&e);
 	int		i;
 
 	i = 0;
@@ -318,8 +317,8 @@ int		eval_args(char **s, int ac)
 			return (0);
 		i++;
 	}
-	get_padding(s[i], &e, &root);
-	rec_check(s[i], &e, &root);
+	//get_padding(s[i], &e, &root);
+	rec_check(s[i], &e, root);
 	//ft_printf("~~~~~~~~~~~\n");
 	//ft_printf("Signs of life?? %s %s\n", root.path, e.tree_tree->path);
 	//meta_pr(e.tree_tree);

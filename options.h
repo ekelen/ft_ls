@@ -28,7 +28,7 @@ typedef struct s_access
 	char				xoth;
 }				t_access;
 
-
-int						init_opts(char *s, t_opt *flags);
+int						zero_opt(t_opt *e);
+int						init_opts(char *s, t_opt *e);
 
 #endif
