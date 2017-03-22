@@ -75,7 +75,6 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 		ft_printf("Some kind of tree error\n");
 		return (0);
 	}
-	//ft_printf("--- > \n%s\n", new->path);
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
@@ -169,7 +168,7 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 
 
-int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
+int		init_open(char *s, t_opt *e, t_dir cwd, t_dir **root)
 {
 	DIR 				*dir = NULL;
     struct dirent		*dp;
@@ -183,6 +182,7 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 	ft_bzero(cwd.path, PATH_MAX);
 	ft_strcpy(cwd.path, s);
 	cwd.entries = NULL;
+	cwd.n = 0;
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
@@ -190,27 +190,30 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
     	ft_strcat(path, "/");
     	ft_strcat(path, dp->d_name);
     	//ft_printf("Trying path : %s\n", dp->d_name);
+
     	if ((res = stat(path, &stp)) || (lstat(path, &ltp)))
 		{
 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
 			break ;
 		}
-		else
+		// else
+		// {
+
+		// }
+		if (e->ur && S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
 		{
-			if (S_ISLNK(ltp.st_mode))
+			init_open(path, e, cwd, root);
+		}
+					if (S_ISLNK(ltp.st_mode))
 			{
 				lstat(path, &ltp);
 				new_entry(ltp, path, dp, e, &cwd);
 			}
 			else
 				new_entry(stp, path, dp, e, &cwd);
-		}
-		if (S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
-		{
-			rec_check(path, e, cwd, root);
-		}
     }
     move_cwd(e, &cwd, root);
+    //open_rec(s, e, cwd, root);
     closedir(dir);
     return (1);
 }
@@ -243,7 +246,7 @@ int		eval_args(char **s, int ac)
 			return (0);
 		i++;
 	}
-	if(!(rec_check(s[i], &e, cwd, &root)))
+	if(!(init_open(s[i], &e, cwd, &root)))
 		ft_printf(ERR_FILE, s[i]);
 	meta_pr(root, &e);
 	return (0);

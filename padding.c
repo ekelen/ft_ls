@@ -25,6 +25,7 @@ static int		init_pad(t_dir *cwd, t_ls *ls)
 	return (1);
 }	
 
+
 int				get_padding(t_dir *cwd, t_ls *ls)
 {
 	cwd->pad = malloc(sizeof(t_pad));
@@ -40,6 +41,8 @@ int				get_padding(t_dir *cwd, t_ls *ls)
 	init_pad(cwd, ls);
 	return (1);
 }
+
+
 
 // -rwxr-xr-x   1 ekelen  october    4096 Nov  9 11:50 ._lib
 // -rwxr-xr-x   1 ekelen  october    4096 Nov  9 11:50 ._locale

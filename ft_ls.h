@@ -68,7 +68,8 @@ typedef struct	s_ls
 typedef struct			s_dir
 {
 	char				path[PATH_MAX];
-	time_t				mtime;
+	size_t				n;
+	//time_t				mtime;
 	t_pad				*pad;
 	t_ls				*entries;
 	t_ls				*dir_meta;

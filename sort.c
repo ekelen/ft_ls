@@ -54,7 +54,10 @@ int	sort_dirs_ascii(t_dir *new, t_dir **tree)
 int		move_cwd(t_opt *e, t_dir *cwd, t_dir **root)
 {
 	t_dir *new;
-	get_padding(cwd, cwd->entries);
+	// if (e->l)
+		get_padding(cwd, cwd->entries);
+	// else
+	// 	get_col_padding(cwd, cwd->entries);
 
 	new = malloc(sizeof(t_dir));
 	*new = *cwd;
