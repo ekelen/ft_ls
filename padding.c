@@ -1,45 +1,43 @@
 #include "ft_ls.h"
 
 
-// static int		new_padding(struct stat stp, t_dir *cwd)
+// static int		new_pad(struct stat stp, t_dir *cwd)
 // {
-// 	if (stp.st_nlink > cwd->padding.max_hlinks)
-// 		cwd->padding.max_hlinks += stp.st_nlink - cwd->padding.max_hlinks;
+// 	if (stp.st_nlink > cwd->pad.max_hlinks)
+// 		cwd->pad.max_hlinks += stp.st_nlink - cwd->pad.max_hlinks;
 // 	return (1);
 // }
 
-static int		init_padding(t_dir *cwd, t_ls *ls)
+static int		init_pad(t_dir *cwd, t_ls *ls)
 {
 	if (ls->left)
-		init_padding(cwd, ls->left);
-	if (ft_numlen(ls->hlinks) > cwd->padding->lnk)
-		cwd->padding->lnk = ft_numlen(ls->hlinks); // + 1
-	if (ft_strlen(ls->uid_name) > cwd->padding->own)
-		cwd->padding->own = ft_strlen(ls->uid_name); // + 1
-	if (ft_strlen(ls->grp_name) > cwd->padding->grp)
-		cwd->padding->grp = ft_strlen(ls->grp_name); // + 2
-	if (ft_numlen(ls->size) > cwd->padding->size)
-		cwd->padding->size = ft_numlen(ls->size); // + 2
+		init_pad(cwd, ls->left);
+	if (ft_numlen(ls->hlinks) >= cwd->pad->lnk)
+		cwd->pad->lnk = ft_numlen(ls->hlinks); // + 1
+	if (ft_strlen(ls->uid_name) >= cwd->pad->own)
+		cwd->pad->own = ft_strlen(ls->uid_name); // + 1
+	if (ft_strlen(ls->grp_name) >= cwd->pad->grp)
+		cwd->pad->grp = ft_strlen(ls->grp_name); // + 2
+	if (ft_numlen(ls->size) >= cwd->pad->size)
+		cwd->pad->size = ft_numlen(ls->size); // + 2
 	if (ls->right)
-		init_padding(cwd, ls->right);
+		init_pad(cwd, ls->right);
 	return (1);
 }	
 
 int				get_padding(t_dir *cwd, t_ls *ls)
 {
-	cwd->padding = malloc(sizeof(t_padding));
-	cwd->padding->acc = 10;
-	cwd->padding->ext = 1;
-	cwd->padding->lnk = 0;
-	cwd->padding->own = 0;
-	cwd->padding->grp = 0;
-	cwd->padding->size = 0;
-	cwd->padding->mon = 4;
-	cwd->padding->dat = 3;
-	cwd->padding->timyr = 5;
-	init_padding(cwd, ls);
-	//ft_printf("padding for this directory for links : %d\n", cwd->padding->lnk);
-	//ft_printf("padding for this directory for size : %d\n", cwd->padding->size);
+	cwd->pad = malloc(sizeof(t_pad));
+	cwd->pad->acc = 10;
+	cwd->pad->ext = 1;
+	cwd->pad->lnk = 0;
+	cwd->pad->own = 0;
+	cwd->pad->grp = 0;
+	cwd->pad->size = 0;
+	cwd->pad->mon = 4;
+	cwd->pad->dat = 3;
+	cwd->pad->timyr = 5;
+	init_pad(cwd, ls);
 	return (1);
 }
 
@@ -60,62 +58,7 @@ int				get_padding(t_dir *cwd, t_ls *ls)
 // -rw-r--r--@  1 ekelen  october      63 Apr  9  2016 qt.conf
 // -rw-r--r--@  1 ekelen  october    3380 Mar  3  2014 site.pyc
 
-
-
-
-
-
-
-// static int		ft_catpath(char *s, char *path, struct dirent *dp)
-// {
-// 	if (!s || !path || !dp)
-// 	{
-// 		return (0);
-// 	}
-	
-// 	ft_bzero(path, PATH_MAX);
-// 	ft_strcpy(path, s);
-// 	ft_strcat(path, "/");
-// 	ft_strcat(path, dp->d_name);
-// 	return (1);
-// }
-
-// int		get_padding(char *s, t_opt *e, t_dir *cwd)
-// {
-// 	DIR 				*dir = NULL;
-//     struct dirent		*dp;
-//     struct stat			stp;
-//     struct stat			ltp;
-//     char				path[PATH_MAX];
-   
-// 	if ((dir = opendir(s)) == NULL || !s)
-// 		return (0);
-// 	init_padding(&(cwd->padding));
-// 	while ((dp = readdir(dir)) != NULL)
-//     {
-//     	ft_catpath(s, path, dp);
-//     	if ((stat(path, &stp)) || (lstat(path, &ltp)))
-// 		{
-// 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
-// 			break ;
-// 		}
-// 		else
-// 		{
-// 			if (S_ISLNK(ltp.st_mode))
-// 			{
-// 				lstat(path, &ltp);
-// 				new_padding(ltp, cwd);
-// 			}
-// 			else
-// 				new_padding(stp, cwd);
-// 		}
-// 		if (S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
-// 		{
-			
-// 			get_padding(path, e, cwd);
-// 		}
-//     }
-//     ft_printf("cwd->padding->max_hlinks for %s : %d\n", path, cwd->padding.max_hlinks);
-//     closedir(dir);
-//     return (1);
-// }
+// Makefile	error.h		ft_catpath.o	ft_numlen.o	main.c		pad.o	print.o		time.o
+// author		ft_abs.c	ft_ls		ft_ustrcmp.c	main.o		parse_args.c	printf		tmp_get_data.c
+// color.h		ft_abs.o	ft_ls.h		ft_ustrcmp.o	options.h	parse_args.o	symlink.c	tmp_get_data.o
+// env_pad.h	ft_catpath.c	ft_numlen.c	libft		pad.c	print.c		time.c

@@ -9,9 +9,9 @@ int			print_time(t_ls *entry, t_dir *cwd)
 	ft_printf(" %s", entry->mmon);
 	ft_printf(" %s", entry->mdate);
 	if (ft_abs(now - entry->lastmod) < (31540000 / 2))
-		ft_printf(" %s", entry->mhr);
+		ft_printf(" %s ", entry->mhr);
 	else
-		ft_printf("  %s", entry->myr);
+		ft_printf("  %s ", entry->myr);
 	return (1);
 }
 
@@ -21,7 +21,6 @@ static int	parse_time(struct stat stp, t_ls *new, t_opt *e)
 	size_t t[8] = {4, 6, 8, 9, 11, 15, 20, 23};
 	size_t i;
 	i = 0;
-
     
 	ft_bzero(stime, 100);
 	(void)e;

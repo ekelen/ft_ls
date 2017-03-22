@@ -1,7 +1,7 @@
 #ifndef ENV_PADDING_H
 # define ENV_PADDING_H
 
-typedef struct	s_padding
+typedef struct	s_pad
 {
 	size_t			acc;
 	size_t			ext;
@@ -12,6 +12,6 @@ typedef struct	s_padding
 	size_t			mon;
 	size_t			dat;
 	size_t			timyr;
-}				t_padding;
+}				t_pad;
 
 #endif

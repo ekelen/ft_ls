@@ -46,7 +46,7 @@ static int	sort_time(t_ls *new, t_ls **tree)
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;
-		if (new->hmtime > tmpTree->hmtime)
+		if (new->lastmod > tmpTree->lastmod)
 		{
 			tmpTree = tmpTree->right;
 			if (!tmpTree)
@@ -95,19 +95,22 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-static int	new_tree(t_ls *new, t_ls **tree, int sort_mode)
+static int	new_tree(t_ls *new, t_ls **tree, t_opt *e)
 {
 	if (!*tree)
 	{
 		*tree = new;
 		return (1);
 	}
-	if (sort_mode == 1)
-		sort_ascii(new, tree);
-	else if (sort_mode == 2)
+	if (e->t)
+	{
+		ft_printf("Sorting by time.\n");
 		sort_time(new, tree);
-	else if (sort_mode == 3)
+	}
+	else if (e->us)
 		sort_size(new, tree);
+	else
+		sort_ascii(new, tree);
 	return (1);
 }
 
@@ -132,8 +135,6 @@ t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd)
 {
-	int sort_mode = 1;
-
 	if (!(path || dp))
 		return (0);
 	t_ls	*new;
@@ -154,7 +155,9 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 		ft_strcpy(new->linkname, " -> ");
 		ft_strcat(new->linkname, tmp_link);
 	}
-	new_tree(new, &(cwd->entries), sort_mode);
+	if (new->etype == 'd')
+		cwd->dir_meta = new;
+	new_tree(new, &(cwd->entries), e);
 	return (1);
 }
 
@@ -162,50 +165,9 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 
 
-static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
-{
-	t_dir *tmpTree = *tree;
-	t_dir *tmpNode;
 
-	int diff;
-	while (tmpTree)
-	{
-		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
-		{
-			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-			if (!tmpTree)
-				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-		}
-		else
-		{
-			tmpTree = tmpTree->left;
-			if (!tmpTree)
-				tmpNode->left = new;
-		}
 
-	}
-	return (1);
-}
 
-int		move_cwd(t_dir *cwd, t_dir **root)
-{
-	t_dir *new;
-	get_padding(cwd, cwd->entries);
-
-	new = malloc(sizeof(t_dir));
-	*new = *cwd;
-	new->left = NULL;
-	new->right = NULL;
-	new->entries = cwd->entries;
-	if (!(*root)) 
-	{
-		*root = new;
-		return(1);
-	}
-	sort_dirs_ascii(new, root);
-	return (1);
-}
 
 int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 {
@@ -248,7 +210,7 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
 			rec_check(path, e, cwd, root);
 		}
     }
-    move_cwd(&cwd, root);
+    move_cwd(e, &cwd, root);
     closedir(dir);
     return (1);
 }
@@ -281,10 +243,9 @@ int		eval_args(char **s, int ac)
 			return (0);
 		i++;
 	}
-	//get_padding(s[i], &e, &cwd);
 	if(!(rec_check(s[i], &e, cwd, &root)))
 		ft_printf(ERR_FILE, s[i]);
-	meta_pr(root);
+	meta_pr(root, &e);
 	return (0);
 }
 

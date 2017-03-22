@@ -14,26 +14,23 @@ static int		parse_bonus(char s, t_opt *e)
 		e->o = 1;
 	else
 		return (0);
-	 //ft_printf("%c : ", s);
-	 //ft_printf("<< e\n");
 	return (1);
 }
-
 
 int		init_opts(char *s, t_opt *e)
 {
 	s++;
 	while (*s)
 	{
-		if (ft_strchr(s, 'a'))
+		if (*s == 'a')
 			e->a = 1;
-		else if (ft_strchr(s, 't'))
+		else if (*s == 't')
 			e->t = 1;
-		else if (ft_strchr(s, 'R'))
+		else if (*s == 'R')
 			e->ur = 1;
-		else if (ft_strchr(s, 'r'))
+		else if (*s == 'r')
 			e->r = 1;
-		else if (ft_strchr(s, 'l'))
+		else if (*s == 'l')
 			e->l = 1;
 		else
 		{
@@ -43,7 +40,6 @@ int		init_opts(char *s, t_opt *e)
 				return (0);
 			}
 		}
-		//ft_printf("-%c ", *s);
 		s++;
 	}
 	return (1);

@@ -68,8 +68,10 @@ typedef struct	s_ls
 typedef struct			s_dir
 {
 	char				path[PATH_MAX];
-	t_padding			*padding;
+	time_t				mtime;
+	t_pad				*pad;
 	t_ls				*entries;
+	t_ls				*dir_meta;
 	struct s_dir		*right;
 	struct s_dir		*left;
 }						t_dir;
@@ -103,10 +105,16 @@ int						ft_ustrcmp(char *s1, char *s2);
 int						get_type(struct stat stp, t_opt *e, t_ls *new);
 int				get_padding(t_dir *cwd, t_ls *ls);
 // void	tree_pr(t_ls *tree);
-void meta_pr(t_dir *tree);
+//void meta_pr(t_dir *tree);
 size_t	ft_numlen(unsigned int nbr);
-int			get_mtime(struct stat stp, t_ls *new, t_opt *e);
+int		get_mtime(struct stat stp, t_ls *new, t_opt *e);
 int		ft_abs(int a);
-int			print_time(t_ls *entry, t_dir *cwd);
+
+
+int		print_time(t_ls *entry, t_dir *cwd);
+void 	meta_pr(t_dir *tree, t_opt *e);
+int		sort_dirs_time(t_dir *new, t_dir **tree);
+int		sort_dirs_ascii(t_dir *new, t_dir **tree);
+int		move_cwd(t_opt *e, t_dir *cwd, t_dir **root);
 
 #endif
