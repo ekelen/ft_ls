@@ -115,9 +115,9 @@ void					open_rec(t_ls *entry, t_dir cwd, t_opt *e);
 ** Global/directory settings
 */ 
 
-int						get_padding(t_dir *cwd, t_ls *ls);
+int						get_padding(t_dir *cwd, t_ls *ls, t_opt *e);
 int						eval_args(char **s, int ac);
-int		get_total(t_ls *entry, t_dir *cwd);
+int						get_total(t_ls *entry, t_dir *cwd);
 
 /*
 ** Entry metadata

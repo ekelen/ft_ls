@@ -32,42 +32,16 @@ static int	sort_size(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-static int	sort_time(t_ls *new, t_ls **tree)
-{
-	t_ls *tmpTree = *tree;
-	t_ls *tmpNode;
 
-	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
-		return (0);
-	}
-	while (tmpTree)
-	{
-		tmpNode = tmpTree;
-		if (new->time->mmod + new->time->mnsec > tmpTree->time->mmod + new->time->mnsec)
-		{
-			tmpTree = tmpTree->right;
-			if (!tmpTree)
-				tmpNode->right = new;
-		}
-		else
-		{
-			tmpTree = tmpTree->left;
-			if (!tmpTree)
-				tmpNode->left = new;
-		}
-	}
-	return (1);
-}
 
 static int	sort_ascii(t_ls *new, t_ls **tree)
 {
-	t_ls *tmpTree = *tree;
+	t_ls *tmpTree;
 	t_ls *tmpNode;
-
 	int diff;
 
+	tmpTree = *tree;
+	diff = 0;
 	if (!tmpTree)
 	{
 		ft_printf("Some kind of tree error\n");
@@ -91,6 +65,36 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	}
 	return (1);
 }
+
+static int	sort_time(t_ls *new, t_ls **tree)
+{
+	t_ls *tmpTree = *tree;
+	t_ls *tmpNode;
+
+	if (!tmpTree)
+	{
+		ft_printf("Some kind of tree error\n");
+		return (0);
+	}
+	while (tmpTree)
+	{
+		tmpNode = tmpTree;
+		if (new->time->mmod + new->time->mnsec < tmpTree->time->mmod + tmpTree->time->mnsec)
+		{
+			tmpTree = tmpTree->right;
+			if (!tmpTree)
+				tmpNode->right = new;
+		}
+		else
+		{
+			tmpTree = tmpTree->left;
+			if (!tmpTree)
+				tmpNode->left = new;
+		}
+	}
+	return (1);
+}
+
 
 int	sort_entries(t_ls *new, t_ls **tree, t_opt *e)
 {

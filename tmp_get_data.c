@@ -10,7 +10,6 @@ char		*ft_strexclude(char *orig, char *excl)
 	exclen = ft_strlen(excl);
 	s = ft_strsub(orig, 0, olen - exclen);
 	return (s);
-
 }
 
 int		get_blkct(struct stat stp, t_ls *new, t_dir *cwd)

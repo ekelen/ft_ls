@@ -46,17 +46,11 @@ static int	parse_time(char *s_time, t_ls *new, t_opt *e)
 
 int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 {
-	//char s_time[25];
 	char *s_time;
-
-	//s_time = malloc(sizeof(25));
 	s_time = ft_strdup(ctime(&stp.st_mtime));
 	new->time = (t_time *)malloc(sizeof(t_time));
-	//new->time = NULL;
-	new->time->mnsec = stp.st_atimespec.tv_sec;
+	new->time->mnsec = stp.st_atimespec.tv_nsec;
 	new->time->mmod = stp.st_mtime;
-	//ft_strcpy(s_time, ctime(&stp.st_mtime));
-	//ft_printf("%s\n", ctime(&stp.st_mtime));
 	parse_time(s_time, new, e);
 	return (1);
 }

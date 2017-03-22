@@ -70,10 +70,7 @@ int		main(int ac, char **av)
 	i = 1;
 	args = (char **)malloc(sizeof(char *) * ac);
 	if (ac < 2)
-	{
-		printf("handle multiple inputs soon....\n");
-		return (0);
-	}
+		args[0] = ft_strdup(".");
 	while (i < ac)
 	{
 		args[i - 1] = ft_strdup(av[i]);

@@ -1,32 +1,32 @@
 #include "ft_ls.h"
 
-
-// static int		new_pad(struct stat stp, t_dir *cwd)
-// {
-// 	if (stp.st_nlink > cwd->pad.max_hlinks)
-// 		cwd->pad.max_hlinks += stp.st_nlink - cwd->pad.max_hlinks;
-// 	return (1);
-// }
-
-static int		init_pad(t_dir *cwd, t_ls *ls)
+static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 {
 	if (ls->left)
-		init_pad(cwd, ls->left);
-	if (ft_numlen(ls->hlinks) >= cwd->pad->lnk)
-		cwd->pad->lnk = ft_numlen(ls->hlinks); // + 1
-	if (ft_strlen(ls->uid_name) >= cwd->pad->own)
-		cwd->pad->own = ft_strlen(ls->uid_name); // + 1
-	if (ft_strlen(ls->grp_name) >= cwd->pad->grp)
-		cwd->pad->grp = ft_strlen(ls->grp_name); // + 2
-	if (ft_numlen(ls->size) >= cwd->pad->size)
-		cwd->pad->size = ft_numlen(ls->size); // + 2
+		init_pad(cwd, ls->left, e);
+	if (e->l)
+	{
+		if (ft_numlen(ls->hlinks) >= cwd->pad->lnk)
+			cwd->pad->lnk = ft_numlen(ls->hlinks); // + 1
+		if (ft_strlen(ls->uid_name) >= cwd->pad->own)
+			cwd->pad->own = ft_strlen(ls->uid_name); // + 1
+		if (ft_strlen(ls->grp_name) >= cwd->pad->grp)
+			cwd->pad->grp = ft_strlen(ls->grp_name); // + 2
+		if (ft_numlen(ls->size) >= cwd->pad->size)
+			cwd->pad->size = ft_numlen(ls->size); // + 2
+	}
+	else
+	{
+		if (ft_strlen(ls->path) >= cwd->pad->name)
+			cwd->pad->name = ft_strlen(ls->path);
+	}
 	if (ls->right)
-		init_pad(cwd, ls->right);
+		init_pad(cwd, ls->right, e);
 	return (1);
 }	
 
 
-int				get_padding(t_dir *cwd, t_ls *ls)
+int				get_padding(t_dir *cwd, t_ls *ls, t_opt *e)
 {
 	cwd->pad = malloc(sizeof(t_pad));
 	cwd->pad->acc = 10;
@@ -38,7 +38,8 @@ int				get_padding(t_dir *cwd, t_ls *ls)
 	cwd->pad->mon = 4;
 	cwd->pad->dat = 3;
 	cwd->pad->timyr = 5;
-	init_pad(cwd, ls);
+	cwd->pad->name = 0;
+	init_pad(cwd, ls, e);
 	return (1);
 }
 

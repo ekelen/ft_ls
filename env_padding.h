@@ -12,6 +12,7 @@ typedef struct	s_pad
 	size_t			mon;
 	size_t			dat;
 	size_t			timyr;
+	size_t			name;
 }				t_pad;
 
 #endif
