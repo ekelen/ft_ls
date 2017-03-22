@@ -37,14 +37,14 @@ int			get_color(t_ls *new, t_opt *e)
 	return (1);
 }
 
-int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
-{
-	(void)e;
-	new->hmtime = stp.st_mtime;
-	ft_bzero(new->mtime, NAME_MAX);
-	ft_strcpy(new->mtime, ctime(&stp.st_mtime));
-	return (1);
-}
+// int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
+// {
+// 	(void)e;
+// 	new->hmtime = stp.st_mtime;
+// 	ft_bzero(new->mtime, NAME_MAX);
+// 	ft_strcpy(new->mtime, ctime(&stp.st_mtime));
+// 	return (1);
+// }
 
 int			get_size(struct stat stp, t_ls *new, t_opt *e)
 {

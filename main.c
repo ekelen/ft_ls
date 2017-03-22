@@ -191,6 +191,7 @@ static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
 int		move_cwd(t_dir *cwd, t_dir **root)
 {
 	t_dir *new;
+	get_padding(cwd, cwd->entries);
 
 	new = malloc(sizeof(t_dir));
 	*new = *cwd;
@@ -213,6 +214,7 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
     struct stat			stp;
     struct stat			ltp;
     char				path[PATH_MAX];
+    int					res = 0;
     
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
@@ -225,7 +227,8 @@ int		rec_check(char *s, t_opt *e, t_dir cwd, t_dir **root)
     	ft_strcpy(path, s);
     	ft_strcat(path, "/");
     	ft_strcat(path, dp->d_name);
-    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
+    	//ft_printf("Trying path : %s\n", dp->d_name);
+    	if ((res = stat(path, &stp)) || (lstat(path, &ltp)))
 		{
 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
 			break ;
@@ -278,6 +281,7 @@ int		eval_args(char **s, int ac)
 			return (0);
 		i++;
 	}
+	//get_padding(s[i], &e, &cwd);
 	if(!(rec_check(s[i], &e, cwd, &root)))
 		ft_printf(ERR_FILE, s[i]);
 	meta_pr(root);

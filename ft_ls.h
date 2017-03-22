@@ -31,7 +31,18 @@ typedef struct	s_ls
 	//int					parent;
 	//ino_t		st_ino;
 	//int					last_access; //time_t - time of last mod to file - STAT
-	unsigned long int 	last_access_msec; // nanoseconds of last mod - STAT
+	char				mtime[NAME_MAX];
+	time_t				lastmod;
+	char				mmon[4];
+	char				myr[5];
+	char				mdate[3];
+	char				mhr[6];
+	//char				mmin[3];
+	// char				msec
+	char				hmtime;
+	unsigned long int 	m_nsec; // nanoseconds of last mod - STAT
+
+
 	long 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
 	off_t				size;			// signed int type - how big file is
 	//unsigned int		filemode;		//also file mode?
@@ -40,8 +51,7 @@ typedef struct	s_ls
 	int					user_id;		//sys/types.h userid
 	char				uid_name[NAME_MAX];
 	char				grp_name[NAME_MAX];
-	char				mtime[NAME_MAX];
-	int					hmtime;
+
 	char				path[PATH_MAX];
 	char				name[NAME_MAX];
 	char				*dirpath;
@@ -58,7 +68,7 @@ typedef struct	s_ls
 typedef struct			s_dir
 {
 	char				path[PATH_MAX];
-	t_padding			padding;
+	t_padding			*padding;
 	t_ls				*entries;
 	struct s_dir		*right;
 	struct s_dir		*left;
@@ -69,6 +79,7 @@ typedef struct			s_dir
 
 
 	//ft_printf("Test\n");
+
 
 	//-l, -R, -a, -r and -t
 	//l = "long"
@@ -90,8 +101,12 @@ typedef struct			s_dir
 // char					*ft_catpath(char const *directory, char const *name);
 int						ft_ustrcmp(char *s1, char *s2);
 int						get_type(struct stat stp, t_opt *e, t_ls *new);
-int		get_padding(char *s, t_opt *e, t_dir *cwd);
-void	tree_pr(t_ls *tree);
+int				get_padding(t_dir *cwd, t_ls *ls);
+// void	tree_pr(t_ls *tree);
 void meta_pr(t_dir *tree);
+size_t	ft_numlen(unsigned int nbr);
+int			get_mtime(struct stat stp, t_ls *new, t_opt *e);
+int		ft_abs(int a);
+int			print_time(t_ls *entry, t_dir *cwd);
 
 #endif

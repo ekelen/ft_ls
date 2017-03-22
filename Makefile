@@ -8,6 +8,10 @@ SRC		+= tmp_get_data.c
 SRC		+= padding.c
 SRC		+= parse_args.c
 SRC		+= print.c
+SRC		+= time.c
+
+SRC		+= ft_numlen.c
+SRC		+= ft_abs.c
 
 OBJ		= $(SRC:.c=.o)
 
