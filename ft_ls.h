@@ -17,6 +17,7 @@
 # include "./printf/includes/ft_printf.h"
 # include "./libft/libft.h"
 # include "color.h"
+# include "time.h"
 # include "options.h"
 # include "error.h"
 # include "env_padding.h"
@@ -27,22 +28,8 @@ typedef struct	s_ls
 	char				etype;
 	//int					data;		//test data
 	ino_t				d_ino;		// serial number ..?
-	//int					self;
-	//int					parent;
 	//ino_t		st_ino;
 	//int					last_access; //time_t - time of last mod to file - STAT
-	char				mtime[NAME_MAX];
-	time_t				lastmod;
-	char				mmon[4];
-	char				myr[5];
-	char				mdate[3];
-	char				mhr[6];
-	//char				mmin[3];
-	// char				msec
-	char				hmtime;
-	unsigned long int 	m_nsec; // nanoseconds of last mod - STAT
-
-
 	long 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
 	off_t				size;			// signed int type - how big file is
 	//unsigned int		filemode;		//also file mode?
@@ -60,6 +47,7 @@ typedef struct	s_ls
 	int					parentchild;
 	t_color				color;
 	t_access			acc;
+	t_time				*time;
 	unsigned int		blkct;
 	struct s_ls			*right;
 	struct s_ls 		*left;
@@ -69,7 +57,6 @@ typedef struct			s_dir
 {
 	char				path[PATH_MAX];
 	size_t				n;
-	//time_t				mtime;
 	t_pad				*pad;
 	t_ls				*entries;
 	t_ls				*dir_meta;
@@ -102,23 +89,56 @@ typedef struct			s_dir
 	//-A list all entries except . and ..
 
 // char					*ft_catpath(char const *directory, char const *name);
+
+/*
+** Utilities
+*/
+
+int						ft_abs(int a);
 int						ft_ustrcmp(char *s1, char *s2);
-int						get_type(struct stat stp, t_opt *e, t_ls *new);
-int				get_padding(t_dir *cwd, t_ls *ls);
-// void	tree_pr(t_ls *tree);
-//void meta_pr(t_dir *tree);
-size_t	ft_numlen(unsigned int nbr);
-int		get_mtime(struct stat stp, t_ls *new, t_opt *e);
-int		ft_abs(int a);
+size_t					ft_numlen(unsigned int nbr);
 
-int		init_open(char *s, t_opt *e, t_dir cwd);
+/*
+** Initialize objects
+*/
 
-int		print_time(t_ls *entry, t_dir *cwd);
-void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
-void 	meta_pr(t_dir *tree, t_opt *e);
-int		sort_dirs_time(t_dir *new, t_dir **tree);
-int		sort_dirs_ascii(t_dir *new, t_dir **tree);
-int		move_cwd(t_opt *e, t_dir *cwd, t_dir **root);
-void	open_rec(t_ls *entry, t_dir cwd, t_opt *e);
+int						dir_init(t_dir *cwd, char *path);
+int						new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd);
+
+/*
+** Open
+*/
+int						init_open(char *s, t_opt *e, t_dir cwd);
+void					open_rec(t_ls *entry, t_dir cwd, t_opt *e);
+
+/*
+** Global/directory settings
+*/ 
+
+int						get_padding(t_dir *cwd, t_ls *ls);
+int						eval_args(char **s, int ac);
+int		get_total(t_ls *entry, t_dir *cwd);
+
+/*
+** Entry metadata
+*/
+
+int						get_type(struct stat stp, t_opt *e, t_ls *new, t_dir *cwd);
+int						get_mtime(struct stat stp, t_ls *new, t_opt *e);
+
+/*
+** Sort and print
+*/
+
+int						sort_entries(t_ls *new, t_ls **tree, t_opt *e);
+int						print_time(t_ls *entry, t_dir *cwd);
+void					tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
+void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
+
+//void 	meta_pr(t_dir *tree, t_opt *e);
+//int		sort_dirs_time(t_dir *new, t_dir **tree);
+//int		sort_dirs_ascii(t_dir *new, t_dir **tree);
+//int		move_cwd(t_opt *e, t_dir *cwd, t_dir **root);
+
 
 #endif

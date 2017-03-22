@@ -10,6 +10,7 @@ SRC		+= parse_args.c
 SRC		+= print.c
 SRC		+= sort.c
 SRC		+= time.c
+SRC		+= open.c
 
 SRC		+= ft_numlen.c
 SRC		+= ft_abs.c

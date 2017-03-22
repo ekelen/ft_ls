@@ -1,118 +1,6 @@
 #include "ft_ls.h"
 #include <stdio.h> // DELETE
 
-
-static int	sort_size(t_ls *new, t_ls **tree)
-{
-	t_ls *tmpTree = *tree;
-	t_ls *tmpNode;
-
-	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
-		return (0);
-	}
-	while (tmpTree)
-	{
-		tmpNode = tmpTree;
-		if (new->size > tmpTree->size)
-		{
-			tmpTree = tmpTree->right;
-			if (!tmpTree)
-			{
-				tmpNode->right = new;
-			}
-		}
-		else
-		{
-			tmpTree = tmpTree->left;
-			if (!tmpTree)
-				tmpNode->left = new;
-		}
-	}
-	return (1);
-}
-
-static int	sort_time(t_ls *new, t_ls **tree)
-{
-	t_ls *tmpTree = *tree;
-	t_ls *tmpNode;
-
-	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
-		return (0);
-	}
-	while (tmpTree)
-	{
-		tmpNode = tmpTree;
-		if (new->lastmod > tmpTree->lastmod)
-		{
-			tmpTree = tmpTree->right;
-			if (!tmpTree)
-				tmpNode->right = new;
-		}
-		else
-		{
-			tmpTree = tmpTree->left;
-			if (!tmpTree)
-				tmpNode->left = new;
-		}
-	}
-	return (1);
-}
-
-
-static int	sort_ascii(t_ls *new, t_ls **tree)
-{
-	t_ls *tmpTree = *tree;
-	t_ls *tmpNode;
-
-	int diff;
-
-	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
-		return (0);
-	}
-	while (tmpTree)
-	{
-		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
-		{
-			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-			if (!tmpTree)
-				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-		}
-		else
-		{
-			tmpTree = tmpTree->left;
-			if (!tmpTree)
-				tmpNode->left = new;
-		}
-	}
-	return (1);
-}
-
-static int	sort_entries(t_ls *new, t_ls **tree, t_opt *e)
-{
-	if (!*tree)
-	{
-		*tree = new;
-		return (1);
-	}
-	if (e->t)
-	{
-		//ft_printf("Sorting by time.\n");
-		sort_time(new, tree);
-	}
-	else if (e->us)
-		sort_size(new, tree);
-	else
-		sort_ascii(new, tree);
-	return (1);
-}
-
 t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 {
 	static int which = 0;
@@ -131,9 +19,6 @@ t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 	return (*new);
 }
 
-
-
-
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd)
 {
 	if (!(path || dp))
@@ -143,7 +28,7 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 	new = malloc(sizeof(t_ls));
 	*new = zero_entry(path, new, dp);
-	if (!(get_type(stp, e, new)))
+	if (!(get_type(stp, e, new, cwd)))
 	{
 		ft_printf("stat_init failed.\n");
 		return (0);
@@ -161,11 +46,7 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 	return (1);
 }
 
-
-
-
-
-static int	dir_init(t_dir *cwd, char *path)
+int	dir_init(t_dir *cwd, char *path)
 {
 	if (!cwd || !path)
 	{
@@ -174,87 +55,12 @@ static int	dir_init(t_dir *cwd, char *path)
 	}
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
+	cwd->n = 0;
 	cwd->entries = NULL;
 	cwd->left = NULL;
 	cwd->right = NULL;
 	return (1);
 }
-
-
-
-int		init_open(char *s, t_opt *e, t_dir cwd)
-{
-	DIR 				*dir = NULL;
-    struct dirent		*dp;
-    struct stat			stp;
-    struct stat			ltp;
-    char				path[PATH_MAX];
-    int					res = 0;
-    
-	if ((dir = opendir(s)) == NULL || !s)
-		return (0);
-	dir_init(&cwd, s);
-	while ((dp = readdir(dir)) != NULL)
-    {
-    	ft_bzero(path, PATH_MAX);
-    	ft_strcpy(path, s);
-    	ft_strcat(path, "/");
-    	ft_strcat(path, dp->d_name);
-    	//ft_printf("Trying path : %s\n", dp->d_name);
-
-    	if ((res = stat(path, &stp)) || (lstat(path, &ltp)))
-		{
-			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
-			break ;
-		}
-		if (S_ISLNK(ltp.st_mode))
-		{
-				lstat(path, &ltp);
-				new_entry(ltp, path, dp, e, &cwd);
-		}
-		else
-			new_entry(stp, path, dp, e, &cwd);
-		// if (e->ur && S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
-		// {
-		// 	init_open(path, e, cwd, root);
-		// }
-    }
-    tree_pr(cwd.entries, cwd, e);
-    //open_rec(cwd.entries, cwd, e);
-    //move_cwd(e, &cwd, root);
-    //open_rec(s, e, cwd, root);
-    closedir(dir);
-     open_rec(cwd.entries, cwd, e);
-    return (1);
-}
-
-
-
-int		eval_args(char **s, int ac)
-{
-	t_opt	e;
-	t_dir	cwd;
-	t_dir	*root;
-	int		i;
-
-	root = NULL;
-	i = 0;
-	zero_opt(&e);
-	while (i < ac - 1 && s[i][0] == '-')
-	{
-
-		if (!(init_opts(s[i], &e)))
-			return (0);
-		i++;
-	}
-	if (!(dir_init(&cwd, s[i])))
-		ft_printf(ERR_FILE, s[i]);
-	if(!(init_open(s[i], &e, cwd)))
-		ft_printf(ERR_FILE, s[i]);
-	//meta_pr(root, &e);
-	return (0);
-}
-
 
 int		main(int ac, char **av)
 {
@@ -270,7 +76,7 @@ int		main(int ac, char **av)
 	}
 	while (i < ac)
 	{
-		args[i - 1] = ft_strdup(av[i]); //FREE
+		args[i - 1] = ft_strdup(av[i]);
 		i++;
 	}
 	eval_args(args, ac);

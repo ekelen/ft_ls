@@ -1,18 +1,26 @@
 #include "ft_ls.h"
 
-int	sort_dirs_time(t_dir *new, t_dir **tree)
-{
-	t_dir *tmpTree = *tree;
-	t_dir *tmpNode;
 
+static int	sort_size(t_ls *new, t_ls **tree)
+{
+	t_ls *tmpTree = *tree;
+	t_ls *tmpNode;
+
+	if (!tmpTree)
+	{
+		ft_printf("Some kind of tree error\n");
+		return (0);
+	}
 	while (tmpTree)
 	{
-		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-		if (new->dir_meta->lastmod > tmpTree->dir_meta->lastmod)
+		tmpNode = tmpTree;
+		if (new->size < tmpTree->size)
 		{
-			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
+			tmpTree = tmpTree->right;
 			if (!tmpTree)
-				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
+			{
+				tmpNode->right = new;
+			}
 		}
 		else
 		{
@@ -20,17 +28,51 @@ int	sort_dirs_time(t_dir *new, t_dir **tree)
 			if (!tmpTree)
 				tmpNode->left = new;
 		}
-
 	}
 	return (1);
 }
 
-int	sort_dirs_ascii(t_dir *new, t_dir **tree)
+static int	sort_time(t_ls *new, t_ls **tree)
 {
-	t_dir *tmpTree = *tree;
-	t_dir *tmpNode;
+	t_ls *tmpTree = *tree;
+	t_ls *tmpNode;
+
+	if (!tmpTree)
+	{
+		ft_printf("Some kind of tree error\n");
+		return (0);
+	}
+	while (tmpTree)
+	{
+		tmpNode = tmpTree;
+		if (new->time->mmod + new->time->mnsec > tmpTree->time->mmod + new->time->mnsec)
+		{
+			tmpTree = tmpTree->right;
+			if (!tmpTree)
+				tmpNode->right = new;
+		}
+		else
+		{
+			tmpTree = tmpTree->left;
+			if (!tmpTree)
+				tmpNode->left = new;
+		}
+	}
+	return (1);
+}
+
+static int	sort_ascii(t_ls *new, t_ls **tree)
+{
+	t_ls *tmpTree = *tree;
+	t_ls *tmpNode;
 
 	int diff;
+
+	if (!tmpTree)
+	{
+		ft_printf("Some kind of tree error\n");
+		return (0);
+	}
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
@@ -46,69 +88,22 @@ int	sort_dirs_ascii(t_dir *new, t_dir **tree)
 			if (!tmpTree)
 				tmpNode->left = new;
 		}
-
 	}
 	return (1);
 }
 
-int		move_cwd(t_opt *e, t_dir *cwd, t_dir **root)
+int	sort_entries(t_ls *new, t_ls **tree, t_opt *e)
 {
-	t_dir *new;
-	// if (e->l)
-		get_padding(cwd, cwd->entries);
-	// else
-	// 	get_col_padding(cwd, cwd->entries);
-
-	new = malloc(sizeof(t_dir));
-	*new = *cwd;
-	new->left = NULL;
-	new->right = NULL;
-	new->entries = cwd->entries;
-	if (!(*root)) 
+	if (!*tree)
 	{
-		*root = new;
-		return(1);
+		*tree = new;
+		return (1);
 	}
-	if (e->t)
-		sort_dirs_time(new, root);
+	if (e->us)
+		sort_size(new, tree);
+	else if (e->t)
+		sort_time(new, tree);
 	else
-		sort_dirs_ascii(new, root);
+		sort_ascii(new, tree);
 	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// static int	sort_dirs_ascii(t_dir *new, t_dir **tree)
-// {
-// 	t_dir *tmpTree = *tree;
-// 	t_dir *tmpNode;
-
-// 	int diff;
-// 	while (tmpTree)
-// 	{
-// 		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-// 		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
-// 		{
-// 			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
-// 			if (!tmpTree)
-// 				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
-// 		}
-// 		else
-// 		{
-// 			tmpTree = tmpTree->left;
-// 			if (!tmpTree)
-// 				tmpNode->left = new;
-// 		}
-
-// 	}
-// 	return (1);
-// }

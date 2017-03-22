@@ -13,6 +13,15 @@ char		*ft_strexclude(char *orig, char *excl)
 
 }
 
+int		get_blkct(struct stat stp, t_ls *new, t_dir *cwd)
+{
+	new->blkct = stp.st_blocks;
+	cwd->n += new->blkct;
+	return(1);
+}
+
+
+
 int			get_parentchild(t_ls *new, t_opt *e)
 {
 	(void)e;
@@ -36,15 +45,6 @@ int			get_color(t_ls *new, t_opt *e)
 	}
 	return (1);
 }
-
-// int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
-// {
-// 	(void)e;
-// 	new->hmtime = stp.st_mtime;
-// 	ft_bzero(new->mtime, NAME_MAX);
-// 	ft_strcpy(new->mtime, ctime(&stp.st_mtime));
-// 	return (1);
-// }
 
 int			get_size(struct stat stp, t_ls *new, t_opt *e)
 {
@@ -104,7 +104,7 @@ int			get_dirname(t_ls *new, t_opt *e)
 	return (0);
 }
 
-int			get_type(struct stat stp, t_opt *e, t_ls *new)
+int			get_type(struct stat stp, t_opt *e, t_ls *new, t_dir *cwd)
 {
 	if (S_ISREG(stp.st_mode))
 		new->etype = '-';
@@ -129,6 +129,7 @@ int			get_type(struct stat stp, t_opt *e, t_ls *new)
 	get_access(stp, new, e);
 	count_links(stp, new, e);
 	get_uid_name(stp, new, e);
+	get_blkct(stp, new, cwd);
 	get_grp_name(stp, new, e);
 	get_size(stp, new, e);
 	get_mtime(stp, new, e);

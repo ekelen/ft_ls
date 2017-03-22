@@ -63,3 +63,27 @@ int		zero_opt(t_opt *e)
 	e->t = 0;
 	return (1);
 }
+
+int		eval_args(char **s, int ac)
+{
+	t_opt	e;
+	t_dir	cwd;
+	t_dir	*root;
+	int		i;
+
+	root = NULL;
+	i = 0;
+	zero_opt(&e);
+	while (i < ac - 1 && s[i][0] == '-')
+	{
+
+		if (!(init_opts(s[i], &e)))
+			return (0);
+		i++;
+	}
+	if (!(dir_init(&cwd, s[i])))
+		ft_printf(ERR_FILE, s[i]);
+	if(!(init_open(s[i], &e, cwd)))
+		ft_printf(ERR_FILE, s[i]);
+	return (0);
+}
