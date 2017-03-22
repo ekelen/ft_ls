@@ -31,8 +31,7 @@ int		open_rec(char *s, t_opt *e, t_dir cwd, t_dir **root)
 		{
 			if (S_ISLNK(ltp.st_mode))
 			{
-				lstat(path, &ltp);
-				new_entry(ltp, path, dp, e, &cwd);
+				ft_printf("Going thru again")
 			}
 			else
 				new_entry(stp, path, dp, e, &cwd);

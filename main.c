@@ -94,7 +94,7 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-static int	new_tree(t_ls *new, t_ls **tree, t_opt *e)
+static int	sort_entries(t_ls *new, t_ls **tree, t_opt *e)
 {
 	if (!*tree)
 	{
@@ -103,7 +103,7 @@ static int	new_tree(t_ls *new, t_ls **tree, t_opt *e)
 	}
 	if (e->t)
 	{
-		ft_printf("Sorting by time.\n");
+		//ft_printf("Sorting by time.\n");
 		sort_time(new, tree);
 	}
 	else if (e->us)
@@ -112,7 +112,6 @@ static int	new_tree(t_ls *new, t_ls **tree, t_opt *e)
 		sort_ascii(new, tree);
 	return (1);
 }
-
 
 t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 {
@@ -132,6 +131,9 @@ t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 	return (*new);
 }
 
+
+
+
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd)
 {
 	if (!(path || dp))
@@ -141,8 +143,6 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 	new = malloc(sizeof(t_ls));
 	*new = zero_entry(path, new, dp);
-	
-	ft_bzero(tmp_link, PATH_MAX);
 	if (!(get_type(stp, e, new)))
 	{
 		ft_printf("stat_init failed.\n");
@@ -150,13 +150,14 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 	}
 	if (new->etype == 'l')
 	{
+		ft_bzero(tmp_link, PATH_MAX);
 		readlink(new->path, tmp_link, PATH_MAX);
 		ft_strcpy(new->linkname, " -> ");
 		ft_strcat(new->linkname, tmp_link);
 	}
 	if (new->etype == 'd')
 		cwd->dir_meta = new;
-	new_tree(new, &(cwd->entries), e);
+	sort_entries(new, &(cwd->entries), e);
 	return (1);
 }
 
@@ -164,11 +165,24 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 
 
 
+static int	dir_init(t_dir *cwd, char *path)
+{
+	if (!cwd || !path)
+	{
+		ft_printf("Problem initiating directory.\n");
+		return(0);
+	}
+	ft_bzero(cwd->path, PATH_MAX);
+	ft_strcpy(cwd->path, path);
+	cwd->entries = NULL;
+	cwd->left = NULL;
+	cwd->right = NULL;
+	return (1);
+}
 
 
 
-
-int		init_open(char *s, t_opt *e, t_dir cwd, t_dir **root)
+int		init_open(char *s, t_opt *e, t_dir cwd)
 {
 	DIR 				*dir = NULL;
     struct dirent		*dp;
@@ -179,10 +193,7 @@ int		init_open(char *s, t_opt *e, t_dir cwd, t_dir **root)
     
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
-	ft_bzero(cwd.path, PATH_MAX);
-	ft_strcpy(cwd.path, s);
-	cwd.entries = NULL;
-	cwd.n = 0;
+	dir_init(&cwd, s);
 	while ((dp = readdir(dir)) != NULL)
     {
     	ft_bzero(path, PATH_MAX);
@@ -196,59 +207,51 @@ int		init_open(char *s, t_opt *e, t_dir cwd, t_dir **root)
 			ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
 			break ;
 		}
-		// else
-		// {
-
-		// }
-		if (e->ur && S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
+		if (S_ISLNK(ltp.st_mode))
 		{
-			init_open(path, e, cwd, root);
-		}
-					if (S_ISLNK(ltp.st_mode))
-			{
 				lstat(path, &ltp);
 				new_entry(ltp, path, dp, e, &cwd);
-			}
-			else
-				new_entry(stp, path, dp, e, &cwd);
+		}
+		else
+			new_entry(stp, path, dp, e, &cwd);
+		// if (e->ur && S_ISDIR(stp.st_mode) && !ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
+		// {
+		// 	init_open(path, e, cwd, root);
+		// }
     }
-    move_cwd(e, &cwd, root);
+    tree_pr(cwd.entries, cwd, e);
+    //open_rec(cwd.entries, cwd, e);
+    //move_cwd(e, &cwd, root);
     //open_rec(s, e, cwd, root);
     closedir(dir);
+     open_rec(cwd.entries, cwd, e);
     return (1);
 }
 
 
 
-// static int	init_dir(t_dir *dir)
-// {
-// 	ft_bzero(dir->path, PATH_MAX);
-// 	dir->left = NULL;
-// 	dir->right = NULL;
-// 	return (1);
-// }
-
 int		eval_args(char **s, int ac)
 {
 	t_opt	e;
 	t_dir	cwd;
-
-	t_dir	*root = NULL;
-	cwd.entries = NULL;
-
-	zero_opt(&e);
+	t_dir	*root;
 	int		i;
 
+	root = NULL;
 	i = 0;
+	zero_opt(&e);
 	while (i < ac - 1 && s[i][0] == '-')
 	{
+
 		if (!(init_opts(s[i], &e)))
 			return (0);
 		i++;
 	}
-	if(!(init_open(s[i], &e, cwd, &root)))
+	if (!(dir_init(&cwd, s[i])))
 		ft_printf(ERR_FILE, s[i]);
-	meta_pr(root, &e);
+	if(!(init_open(s[i], &e, cwd)))
+		ft_printf(ERR_FILE, s[i]);
+	//meta_pr(root, &e);
 	return (0);
 }
 

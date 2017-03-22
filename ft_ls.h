@@ -111,11 +111,14 @@ size_t	ft_numlen(unsigned int nbr);
 int		get_mtime(struct stat stp, t_ls *new, t_opt *e);
 int		ft_abs(int a);
 
+int		init_open(char *s, t_opt *e, t_dir cwd);
 
 int		print_time(t_ls *entry, t_dir *cwd);
+void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
 void 	meta_pr(t_dir *tree, t_opt *e);
 int		sort_dirs_time(t_dir *new, t_dir **tree);
 int		sort_dirs_ascii(t_dir *new, t_dir **tree);
 int		move_cwd(t_opt *e, t_dir *cwd, t_dir **root);
+void	open_rec(t_ls *entry, t_dir cwd, t_opt *e);
 
 #endif
