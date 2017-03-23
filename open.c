@@ -17,22 +17,6 @@ void	open_rec(t_ls *entry, t_dir cwd, t_opt *e)
 		open_rec(entry->right, cwd, e);
 }
 
-char	*get_path(char *dir, char *name)
-{
-	char *path;
-	size_t dlen;
-	size_t nlen;
-
-	dlen = ft_strlen(dir);
-	nlen = ft_strlen(name);
-	path = malloc(sizeof(char) * (dlen + nlen + 2));
-	ft_bzero(path, dlen + nlen + 2);
-	ft_strcpy(path, dir);
-	ft_strcat(path, "/");
-	ft_strcat(path, name);
-	return(path);
-}
-
 static int	open_meta(t_opt *e, t_dir *cwd)
 {
 	if (!e || !cwd)
@@ -62,7 +46,7 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
 	dir_init(&cwd, s);
 	while ((dp = readdir(dir)) != NULL)
     {
-    	path = get_path(s, dp->d_name);
+    	path = ft_catpath(s, dp->d_name);
     	if (dp->d_name[0] != '.' || e->a)
     	{
 	    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
@@ -73,10 +57,10 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
 			if (S_ISLNK(ltp.st_mode))
 			{
 					lstat(path, &ltp);
-					new_entry(ltp, path, dp, e, &cwd);
+					new_entry(ltp, dp, e, &cwd);
 			}
 			else
-				new_entry(stp, path, dp, e, &cwd);
+				new_entry(stp, dp, e, &cwd);
 		}
 		ft_strdel(&path);
     }

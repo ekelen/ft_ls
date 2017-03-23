@@ -24,10 +24,8 @@
 
 typedef struct	s_ls
 {
-	//mode_t				mode;		//entry type ?
 	char				etype;
 	struct stat			*stp;
-	//int					data;		//test data
 	ino_t				d_ino;		// serial number ..?
 	//ino_t		st_ino;
 	//int					last_access; //time_t - time of last mod to file - STAT
@@ -96,13 +94,14 @@ typedef struct			s_dir
 int						ft_abs(int a);
 int						ft_ustrcmp(char *s1, char *s2);
 size_t					ft_numlen(unsigned int nbr);
+char					*ft_catpath(char *dir, char *name);
 
 /*
 ** Initialize objects
 */
 
 int						dir_init(t_dir *cwd, char *path);
-int						new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd);
+int						new_entry(struct stat stp, struct dirent *dp, t_opt *e, t_dir *cwd);
 
 /*
 ** Open
