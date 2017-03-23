@@ -52,23 +52,14 @@ int			get_size(struct stat stp, t_ls *new, t_opt *e)
 	return (1);
 }
 
-int			get_grp_name(struct stat stp, t_ls *new, t_opt *e)
+int			get_uidgrp(struct stat stp, t_ls *new)
 {
-	ft_bzero(new->grp_name, NAME_MAX);
-	if (!e->o)
-	{
-		struct group *grp;
-		grp = getgrgid(stp.st_gid);
-		ft_strcpy(new->grp_name, grp->gr_name);
-	}
-	return (1);
-
-}
-
-int			get_uid_name(struct stat stp, t_ls *new, t_opt *e)
-{
-	(void)e;
 	struct passwd *pwd;
+	struct group *grp;
+	ft_bzero(new->grp_name, NAME_MAX);
+	ft_bzero(new->uid_name, NAME_MAX);
+	grp = getgrgid(stp.st_gid);
+	ft_strcpy(new->grp_name, grp->gr_name);
 	pwd = getpwuid(stp.st_uid);
 	ft_strcpy(new->uid_name, pwd->pw_name);
 	return (1);
@@ -96,12 +87,12 @@ int			get_access(struct stat stp, t_ls *new, t_opt *e)
 	return (1);
 }
 
-int			get_dirname(t_ls *new, t_opt *e)
-{
-	(void)e;
-	new->dirpath = ft_strexclude(new->path, new->name);
-	return (0);
-}
+// int			get_dirname(t_ls *new, t_opt *e)
+// {
+// 	(void)e;
+// 	new->dirpath = ft_strexclude(new->path, new->name);
+// 	return (0);
+// }
 
 int			get_type(struct stat stp, t_opt *e, t_ls *new, t_dir *cwd)
 {
@@ -123,13 +114,12 @@ int			get_type(struct stat stp, t_opt *e, t_ls *new, t_dir *cwd)
 	{
 		ft_printf("No mode type found; aborting.\n");
 		return (0);
-	} 
-	get_dirname(new, e);
+	}
+	//get_dirname(new, e);
 	get_access(stp, new, e);
 	count_links(stp, new, e);
-	get_uid_name(stp, new, e);
 	get_blkct(stp, new, cwd);
-	get_grp_name(stp, new, e);
+	get_uidgrp(stp, new);
 	get_size(stp, new, e);
 	get_mtime(stp, new, e);
 	get_color(new, e);

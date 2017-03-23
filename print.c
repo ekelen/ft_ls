@@ -51,7 +51,7 @@ static int	print_id(t_ls *tree, t_dir *cwd)
 	return (1);
 }
 
-int		print_name(t_ls *entry, t_opt *e, t_dir *cwd)
+int		print_name(t_ls *entry, t_opt *e)
 {
 	int i;
 
@@ -60,15 +60,9 @@ int		print_name(t_ls *entry, t_opt *e, t_dir *cwd)
 		ft_printf("%s%s%s", entry->color.fg, entry->name, FG_RESET);
 	else
 		ft_printf("%s", entry->name);
-	while (ft_strlen(entry->name) + i < cwd->pad->name)
-	{
-		ft_putchar(' ');
-		i++;
-	}
 	if (entry->etype == 'l' && e->l)
 		ft_printf("%s", entry->linkname);
-	if (e->l)
-		ft_putchar('\n');
+	ft_putchar('\n');
 	return (1);
 }
 
@@ -95,7 +89,7 @@ void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e)
 		tree_pr(entry->left, cwd, e);
 	if (e->l)
 		tree_lpr(entry, &cwd, e);
-	print_name(entry, e, &cwd);
+	print_name(entry, e);
 	if (entry->right)
 		tree_pr(entry->right, cwd, e);
 }
@@ -108,7 +102,7 @@ void	tree_prrv(t_ls *entry, t_dir cwd, t_opt *e)
 		tree_prrv(entry->right, cwd, e);
 	if (e->l)
 		tree_lpr(entry, &cwd, e);
-	print_name(entry, e, &cwd);
+	print_name(entry, e);
 	if (entry->left)
 		tree_prrv(entry->left, cwd, e);
 }

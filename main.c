@@ -1,9 +1,8 @@
 #include "ft_ls.h"
 #include <stdio.h> // DELETE
 
-t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
+int		zero_entry(char *path, t_ls *new, struct dirent *dp)
 {
-	static int which = 0;
 	ft_bzero(new->name, NAME_MAX);
 	ft_bzero(new->path, PATH_MAX);
 	ft_strcpy(new->name, dp->d_name);
@@ -12,11 +11,10 @@ t_ls	zero_entry(char *path, t_ls *new, struct dirent *dp)
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->linkname, PATH_MAX);
 	new->d_ino = dp->d_ino;
+
 	new->right = NULL;
 	new->left = NULL;
-	new->which = which;
-	which++;
-	return (*new);
+	return (1);
 }
 
 int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *cwd)
@@ -27,7 +25,8 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 	char	tmp_link[PATH_MAX];
 
 	new = malloc(sizeof(t_ls));
-	*new = zero_entry(path, new, dp);
+	zero_entry(path, new, dp);
+	new->stp = &stp;
 	if (!(get_type(stp, e, new, cwd)))
 	{
 		ft_printf("stat_init failed.\n");
@@ -40,8 +39,6 @@ int		new_entry(struct stat stp, char *path, struct dirent *dp, t_opt *e, t_dir *
 		ft_strcpy(new->linkname, " -> ");
 		ft_strcat(new->linkname, tmp_link);
 	}
-	if (new->etype == 'd')
-		cwd->dir_meta = new;
 	sort_entries(new, &(cwd->entries), e);
 	return (1);
 }

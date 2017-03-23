@@ -25,7 +25,6 @@ char	*get_path(char *dir, char *name)
 
 	dlen = ft_strlen(dir);
 	nlen = ft_strlen(name);
-	//ft_printf("dir : %s\nname : %s\n", dir, name);
 	path = malloc(sizeof(char) * (dlen + nlen + 2));
 	ft_bzero(path, dlen + nlen + 2);
 	ft_strcpy(path, dir);
@@ -57,7 +56,6 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     struct stat			stp;
     struct stat			ltp;
     char				*path;
-    int					res = 0;
     
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
@@ -65,10 +63,9 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
 	while ((dp = readdir(dir)) != NULL)
     {
     	path = get_path(s, dp->d_name);
-    	//ft_printf("s : %s\n", s);
     	if (dp->d_name[0] != '.' || e->a)
     	{
-	    	if ((res = stat(path, &stp)) || (lstat(path, &ltp)))
+	    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
 			{
 				ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
 				break ;

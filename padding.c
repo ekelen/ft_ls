@@ -15,11 +15,6 @@ static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 		if (ft_numlen(ls->size) >= cwd->pad->size)
 			cwd->pad->size = ft_numlen(ls->size); // + 2
 	}
-	else
-	{
-		if (ft_strlen(ls->path) >= cwd->pad->name)
-			cwd->pad->name = ft_strlen(ls->path);
-	}
 	if (ls->right)
 		init_pad(cwd, ls->right, e);
 	return (1);
@@ -38,7 +33,6 @@ int				get_padding(t_dir *cwd, t_ls *ls, t_opt *e)
 	cwd->pad->mon = 4;
 	cwd->pad->dat = 3;
 	cwd->pad->timyr = 5;
-	cwd->pad->name = 0;
 	init_pad(cwd, ls, e);
 	return (1);
 }

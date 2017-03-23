@@ -1,6 +1,5 @@
 #include "ft_ls.h"
 
-
 static int	sort_size(t_ls *new, t_ls **tree)
 {
 	t_ls *tmpTree = *tree;
@@ -38,10 +37,8 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 {
 	t_ls *tmpTree;
 	t_ls *tmpNode;
-	int diff;
 
 	tmpTree = *tree;
-	diff = 0;
 	if (!tmpTree)
 	{
 		ft_printf("Some kind of tree error\n");
@@ -49,12 +46,12 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	}
 	while (tmpTree)
 	{
-		tmpNode = tmpTree;		//each time we move to next node in tree, set the ADDRESS of tmpNode equal to address of tmpTree. (now it's current with tmpTree).
-		if ((diff = ft_ustrcmp(new->path, tmpTree->path)) > 0)
+		tmpNode = tmpTree;
+		if ((ft_ustrcmp(new->path, tmpTree->path)) > 0)
 		{
-			tmpTree = tmpTree->right;	//tmpNode is now one node behind tmpTree.
+			tmpTree = tmpTree->right;
 			if (!tmpTree)
-				tmpNode->right = new;	//tmpNode->right (at same address of tmpTree) now holds data
+				tmpNode->right = new;
 		}
 		else
 		{

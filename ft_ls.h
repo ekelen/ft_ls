@@ -26,6 +26,7 @@ typedef struct	s_ls
 {
 	//mode_t				mode;		//entry type ?
 	char				etype;
+	struct stat			*stp;
 	//int					data;		//test data
 	ino_t				d_ino;		// serial number ..?
 	//ino_t		st_ino;
@@ -43,7 +44,6 @@ typedef struct	s_ls
 	char				name[NAME_MAX];
 	char				*dirpath;
 	char				linkname[PATH_MAX];
-	int					which;
 	int					parentchild;
 	t_color				color;
 	t_access			acc;
@@ -59,7 +59,6 @@ typedef struct			s_dir
 	size_t				n;
 	t_pad				*pad;
 	t_ls				*entries;
-	t_ls				*dir_meta;
 	struct s_dir		*right;
 	struct s_dir		*left;
 }						t_dir;
