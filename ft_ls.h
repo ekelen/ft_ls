@@ -116,7 +116,7 @@ void					open_rec(t_ls *entry, t_dir cwd, t_opt *e);
 */ 
 
 int						get_padding(t_dir *cwd, t_ls *ls, t_opt *e);
-int						eval_args(char **s, int ac);
+int						eval_args(t_opt *e, char **s, int ac);
 int						get_total(t_ls *entry, t_dir *cwd);
 
 /*

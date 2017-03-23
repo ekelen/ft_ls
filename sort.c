@@ -79,7 +79,7 @@ static int	sort_time(t_ls *new, t_ls **tree)
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;
-		if (new->time->mmod + new->time->mnsec < tmpTree->time->mmod + tmpTree->time->mnsec)
+		if (new->time->mmod < tmpTree->time->mmod)
 		{
 			tmpTree = tmpTree->right;
 			if (!tmpTree)
@@ -87,9 +87,43 @@ static int	sort_time(t_ls *new, t_ls **tree)
 		}
 		else
 		{
-			tmpTree = tmpTree->left;
-			if (!tmpTree)
-				tmpNode->left = new;
+			if (new->time->mmod == tmpTree->time->mmod)
+			{
+				if (new->time->mnsec < tmpTree->time->mnsec)
+				{		
+					tmpTree = tmpTree->right;
+					if (!tmpTree)
+						tmpNode->right = new;
+				}
+				else if (new->time->mnsec > tmpTree->time->mnsec)
+				{
+					tmpTree = tmpTree->left;
+					if (!tmpTree)
+						tmpNode->left = new;
+				}
+				else
+				{
+					if ((ft_ustrcmp(new->name, tmpTree->name)) > 0)
+					{
+
+						tmpTree = tmpTree->right;
+						if (!tmpTree)
+							tmpNode->right = new;
+					}
+					else
+					{
+						tmpTree = tmpTree->left;
+						if (!tmpTree)
+							tmpNode->left = new;
+					}
+				}
+			}
+			else
+			{
+				tmpTree = tmpTree->left;
+				if (!tmpTree)
+					tmpNode->left = new;
+			}
 		}
 	}
 	return (1);

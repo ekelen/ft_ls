@@ -64,26 +64,21 @@ int		zero_opt(t_opt *e)
 	return (1);
 }
 
-int		eval_args(char **s, int ac)
+int		eval_args(t_opt *e, char **s, int ac)
 {
-	t_opt	e;
+	
 	t_dir	cwd;
 	t_dir	*root;
 	int		i;
+	(void)ac;
 
 	root = NULL;
 	i = 0;
-	zero_opt(&e);
-	while (i < ac - 1 && s[i][0] == '-')
-	{
-
-		if (!(init_opts(s[i], &e)))
-			return (0);
+	while (s[i][0] == '-')
 		i++;
-	}
 	if (!(dir_init(&cwd, s[i])))
 		ft_printf(ERR_FILE, s[i]);
-	if(!(init_open(s[i], &e, cwd)))
+	if(!(init_open(s[i], e, cwd)))
 		ft_printf(ERR_FILE, s[i]);
-	return (0);
+	return (1);
 }

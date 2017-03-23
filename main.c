@@ -64,18 +64,39 @@ int	dir_init(t_dir *cwd, char *path)
 
 int		main(int ac, char **av)
 {
+	t_opt	e;
 	char **args;
 	int i;
 
+	zero_opt(&e);
 	i = 1;
-	args = (char **)malloc(sizeof(char *) * ac);
-	if (ac < 2)
-		args[0] = ft_strdup(".");
-	while (i < ac)
+	args = (char **)malloc(sizeof(char *) * ac + 1);
+	if (ac < 2) // 1. If no flags OR path.
 	{
-		args[i - 1] = ft_strdup(av[i]);
-		i++;
+		//ft_printf("ac < 2\n");
+		args[0] = ft_strdup(".");
+		args[1] = 0;
 	}
-	eval_args(args, ac);
+	else // 2. If flags and/or path - get all args
+	{
+		while (i < ac) // Get all args
+		{
+			args[i - 1] = ft_strdup(av[i]);
+			//ft_printf("Args to parse : %s\n", args[i - 1]);
+			i++;
+		}
+		i = 0;
+		while (i < ac - 1 && args[i][0] == '-') // 2a. Check to see how many flags.
+		{	
+			if (!(init_opts(args[i], &e)))
+				return (0);
+			i++;
+		}
+		if (i == ac - 1)
+		{
+			args[i] = ft_strdup(".");
+		}
+	}
+	eval_args(&e, args, ac);
 	return (0);
 }

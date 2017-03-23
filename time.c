@@ -12,7 +12,8 @@ int			print_time(t_ls *entry, t_dir *cwd)
 		ft_printf(" %s ", entry->time->mhr);
 	else
 		ft_printf("  %s ", entry->time->myr);
-	free(entry->time);
+	//ft_printf(" ms: %lld ", entry->time->mnsec);
+	//free(entry->time);
 	return (1);
 }
 
@@ -49,7 +50,7 @@ int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 	char *s_time;
 	s_time = ft_strdup(ctime(&stp.st_mtime));
 	new->time = (t_time *)malloc(sizeof(t_time));
-	new->time->mnsec = stp.st_atimespec.tv_nsec;
+	new->time->mnsec = stp.st_mtimespec.tv_nsec;
 	new->time->mmod = stp.st_mtime;
 	parse_time(s_time, new, e);
 	return (1);
