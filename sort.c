@@ -6,10 +6,7 @@ static int	sort_size(t_ls *new, t_ls **tree)
 	t_ls *tmpNode;
 
 	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
 		return (0);
-	}
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;
@@ -31,8 +28,6 @@ static int	sort_size(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-
-
 static int	sort_ascii(t_ls *new, t_ls **tree)
 {
 	t_ls *tmpTree;
@@ -40,10 +35,7 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 
 	tmpTree = *tree;
 	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
 		return (0);
-	}
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;
@@ -69,10 +61,7 @@ static int	sort_time(t_ls *new, t_ls **tree)
 	t_ls *tmpNode;
 
 	if (!tmpTree)
-	{
-		ft_printf("Some kind of tree error\n");
 		return (0);
-	}
 	while (tmpTree)
 	{
 		tmpNode = tmpTree;

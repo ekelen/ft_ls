@@ -107,7 +107,7 @@ int						new_entry(struct stat stp, struct dirent *dp, t_opt *e, t_dir *cwd);
 ** Open
 */
 int						init_open(char *s, t_opt *e, t_dir cwd);
-void					open_rec(t_ls *entry, t_dir cwd, t_opt *e);
+void					open_recursive(t_ls *entry, t_dir cwd, t_opt *e);
 
 /*
 ** Global/directory settings
@@ -121,7 +121,7 @@ int						get_total(t_ls *entry, t_dir *cwd);
 ** Entry metadata
 */
 
-int						get_type(struct stat stp, t_opt *e, t_ls *new, t_dir *cwd);
+int						get_type(t_opt *e, t_ls *new, t_dir *cwd);
 int						get_mtime(struct stat stp, t_ls *new, t_opt *e);
 
 /*

@@ -16,8 +16,8 @@ int	dir_init(t_dir *cwd, char *path)
 int		main(int ac, char **av)
 {
 	t_opt	e;
-	char **args;
-	int i;
+	char 	**args;
+	int 	i;
 
 	zero_opt(&e);
 	i = 1;

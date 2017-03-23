@@ -1,11 +1,11 @@
 #include "ft_ls.h"
 
-void	open_rec(t_ls *entry, t_dir cwd, t_opt *e)
+void	open_recursive(t_ls *entry, t_dir cwd, t_opt *e)
 {
 	if (!entry)
 		return ;
 	if (entry->left)
-		open_rec(entry->left, cwd, e);
+		open_recursive(entry->left, cwd, e);
 	if (e->ur && entry->etype == 'd' && !entry->parentchild)
 	{
 		if (!e->l)
@@ -14,10 +14,10 @@ void	open_rec(t_ls *entry, t_dir cwd, t_opt *e)
 		init_open(entry->path, e, cwd);
 	}
 	if (entry->right)
-		open_rec(entry->right, cwd, e);
+		open_recursive(entry->right, cwd, e);
 }
 
-static int	open_meta(t_opt *e, t_dir *cwd)
+static int	open_cont(t_opt *e, t_dir *cwd)
 {
 	if (!e || !cwd)
 		return (0);
@@ -29,7 +29,7 @@ static int	open_meta(t_opt *e, t_dir *cwd)
     else
     	tree_pr(cwd->entries, *cwd, e);
     free(cwd->pad);
-    open_rec(cwd->entries, *cwd, e);
+    open_recursive(cwd->entries, *cwd, e);
     return (1);
 }
 
@@ -50,14 +50,11 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     	if (dp->d_name[0] != '.' || e->a)
     	{
 	    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
-			{
-				ft_printf("Problem with path %s (%s) : %d\n", path, dp->d_name, errno);
-				break ;
-			}
+				break ; // error stuff here
 			if (S_ISLNK(ltp.st_mode))
 			{
-					lstat(path, &ltp);
-					new_entry(ltp, dp, e, &cwd);
+				lstat(path, &ltp);
+				new_entry(ltp, dp, e, &cwd);
 			}
 			else
 				new_entry(stp, dp, e, &cwd);
@@ -65,6 +62,6 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
 		ft_strdel(&path);
     }
     closedir(dir);
-    open_meta(e, &cwd);
+    open_cont(e, &cwd);
     return (1);
 }

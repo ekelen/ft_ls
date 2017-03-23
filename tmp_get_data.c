@@ -12,25 +12,6 @@ char		*ft_strexclude(char *orig, char *excl)
 	return (s);
 }
 
-int		get_blkct(struct stat stp, t_ls *new, t_dir *cwd)
-{
-	new->blkct = stp.st_blocks;
-	cwd->n += new->blkct;
-	return(1);
-}
-
-
-
-int			get_parentchild(t_ls *new, t_opt *e)
-{
-	(void)e;
-	if (ft_strequ(new->name, ".") || ft_strequ(new->name, ".."))
-		new->parentchild = 1;
-	else
-		new->parentchild = 0;
-	return (1);
-}
-
 int			get_color(t_ls *new, t_opt *e)
 {
 	if (e->ug)
@@ -45,85 +26,73 @@ int			get_color(t_ls *new, t_opt *e)
 	return (1);
 }
 
-int			get_size(struct stat stp, t_ls *new, t_opt *e)
+int			get_size(t_dir *cwd, t_ls *new)
 {
-	(void)e;
-	new->size = stp.st_size;
+	new->size = (new->stp)->st_size;
+	new->blkct = (new->stp)->st_blocks;
+	cwd->n += new->blkct;
+	new->hlinks = (new->stp)->st_nlink;
+	if (ft_strequ(new->name, ".") || ft_strequ(new->name, ".."))
+		new->parentchild = 1;
+	else
+		new->parentchild = 0;
 	return (1);
 }
 
-int			get_uidgrp(struct stat stp, t_ls *new)
+int			get_uidgrp(t_ls *new)
 {
 	struct passwd *pwd;
 	struct group *grp;
+
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->uid_name, NAME_MAX);
-	grp = getgrgid(stp.st_gid);
+	grp = getgrgid((new->stp)->st_gid);
 	ft_strcpy(new->grp_name, grp->gr_name);
-	pwd = getpwuid(stp.st_uid);
+	pwd = getpwuid((new->stp)->st_uid);
 	ft_strcpy(new->uid_name, pwd->pw_name);
 	return (1);
 }
 
-int			count_links(struct stat stp, t_ls *new, t_opt *e)
+int			get_access(t_ls *new)
 {
-	(void)e;
-	new->hlinks = stp.st_nlink;
+	new->acc.ruser = ((new->stp)->st_mode & S_IRUSR) ? 'r' : '-';
+	new->acc.wuser = ((new->stp)->st_mode & S_IWUSR) ? 'w' : '-';
+	new->acc.xuser = ((new->stp)->st_mode & S_IXUSR) ? 'x' : '-';
+	new->acc.rgrp = ((new->stp)->st_mode & S_IRGRP) ? 'r' : '-';
+	new->acc.wgrp = ((new->stp)->st_mode & S_IWGRP) ? 'w' : '-';
+	new->acc.xgrp = ((new->stp)->st_mode & S_IXGRP) ? 'x' : '-';
+	new->acc.roth = ((new->stp)->st_mode & S_IROTH) ? 'r' : '-';
+	new->acc.woth = ((new->stp)->st_mode & S_IWOTH) ? 'w' : '-';
+	new->acc.xoth = ((new->stp)->st_mode & S_IXOTH) ? 'x' : '-';
 	return (1);
 }
 
-int			get_access(struct stat stp, t_ls *new, t_opt *e)
+int			get_type(t_opt *e, t_ls *new, t_dir *cwd)
 {
-	(void)e;
-	new->acc.ruser = (stp.st_mode & S_IRUSR) ? 'r' : '-';
-	new->acc.wuser = (stp.st_mode & S_IWUSR) ? 'w' : '-';
-	new->acc.xuser = (stp.st_mode & S_IXUSR) ? 'x' : '-';
-	new->acc.rgrp = (stp.st_mode & S_IRGRP) ? 'r' : '-';
-	new->acc.wgrp = (stp.st_mode & S_IWGRP) ? 'w' : '-';
-	new->acc.xgrp = (stp.st_mode & S_IXGRP) ? 'x' : '-';
-	new->acc.roth = (stp.st_mode & S_IROTH) ? 'r' : '-';
-	new->acc.woth = (stp.st_mode & S_IWOTH) ? 'w' : '-';
-	new->acc.xoth = (stp.st_mode & S_IXOTH) ? 'x' : '-';
-	return (1);
-}
-
-// int			get_dirname(t_ls *new, t_opt *e)
-// {
-// 	(void)e;
-// 	new->dirpath = ft_strexclude(new->path, new->name);
-// 	return (0);
-// }
-
-int			get_type(struct stat stp, t_opt *e, t_ls *new, t_dir *cwd)
-{
-	if (S_ISREG(stp.st_mode))
+	if (S_ISREG((new->stp)->st_mode))
 		new->etype = '-';
-	else if (S_ISDIR(stp.st_mode))
+	else if (S_ISDIR((new->stp)->st_mode))
 		new->etype = 'd';
-	else if (S_ISCHR(stp.st_mode))
+	else if (S_ISCHR((new->stp)->st_mode))
 		new->etype = 'c';
-	else if (S_ISBLK(stp.st_mode))
+	else if (S_ISBLK((new->stp)->st_mode))
 		new->etype = 'b';
-	else if (S_ISFIFO(stp.st_mode))
+	else if (S_ISFIFO((new->stp)->st_mode))
 		new->etype = 'p';
-	else if (S_ISLNK(stp.st_mode))
+	else if (S_ISLNK((new->stp)->st_mode))
 		new->etype = 'l';
-	else if (S_ISSOCK(stp.st_mode))
+	else if (S_ISSOCK((new->stp)->st_mode))
 		new->etype = 's';
 	else
 	{
 		ft_printf("No mode type found; aborting.\n");
 		return (0);
 	}
-	//get_dirname(new, e);
-	get_access(stp, new, e);
-	count_links(stp, new, e);
-	get_blkct(stp, new, cwd);
-	get_uidgrp(stp, new);
-	get_size(stp, new, e);
-	get_mtime(stp, new, e);
+	get_access(new);
+	get_uidgrp(new);
+	get_size(cwd, new);
+	get_mtime(*(new->stp), new, e);
 	get_color(new, e);
-	get_parentchild(new, e);
 	return(1);
 }
 
