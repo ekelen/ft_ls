@@ -33,6 +33,8 @@ int				get_padding(t_dir *cwd, t_ls *ls, t_opt *e)
 	cwd->pad->mon = 4;
 	cwd->pad->dat = 3;
 	cwd->pad->timyr = 5;
+	cwd->pad->min = 0;
+	cwd->pad->maj = 0;
 	init_pad(cwd, ls, e);
 	return (1);
 }

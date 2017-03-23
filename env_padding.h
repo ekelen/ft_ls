@@ -13,6 +13,8 @@ typedef struct	s_pad
 	size_t			dat;
 	size_t			timyr;
 	size_t			name;
+	size_t			min;
+	size_t			maj;
 }				t_pad;
 
 #endif
