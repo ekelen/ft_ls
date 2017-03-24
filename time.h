@@ -1,9 +1,12 @@
 #ifndef TIME_H
 # define TIME_H
 
+# define MT time->mtime
+# define MS time->mnsec
+
 typedef struct	s_time
 {
-	time_t				mmod;
+	time_t				mtime;
 	char				mmon[4];
 	char				myr[5];
 	char				mdate[3];

@@ -8,10 +8,11 @@ int			print_time(t_ls *entry, t_dir *cwd)
     now = time(0);
 	ft_printf(" %s", entry->time->mmon);
 	ft_printf(" %s", entry->time->mdate);
-	if (ft_abs(now - entry->time->mmod) < (31540000 / 2))
+	if (ft_abs(now - entry->MT) < (31540000 / 2))
 		ft_printf(" %s ", entry->time->mhr);
 	else
 		ft_printf("  %s ", entry->time->myr);
+	//ft_printf(" time: %lld ", entry->MT);
 	//ft_printf(" ms: %lld ", entry->time->mnsec);
 	//free(entry->time);
 	return (1);
@@ -51,7 +52,7 @@ int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 	s_time = ft_strdup(ctime(&stp.st_mtime));
 	new->time = (t_time *)malloc(sizeof(t_time));
 	new->time->mnsec = stp.st_mtimespec.tv_nsec;
-	new->time->mmod = stp.st_mtime;
+	new->MT = stp.st_mtime;
 	parse_time(s_time, new, e);
 	return (1);
 }
