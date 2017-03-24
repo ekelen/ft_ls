@@ -5,4 +5,6 @@
 [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]"
 # define ERR_FILE "ls: %s: No such file or directory"
 
+void	error(int err);
+
 # endif

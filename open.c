@@ -1,11 +1,11 @@
 #include "ft_ls.h"
 
-void	open_recursive(t_ls *entry, t_dir cwd, t_opt *e)
+void	open_subdir(t_ls *entry, t_dir cwd, t_opt *e)
 {
 	if (!entry)
 		return ;
 	if (entry->left)
-		open_recursive(entry->left, cwd, e);
+		open_subdir(entry->left, cwd, e);
 	if (e->ur && entry->etype == 'd' && !entry->parentchild)
 	{
 		if (!e->l)
@@ -14,7 +14,7 @@ void	open_recursive(t_ls *entry, t_dir cwd, t_opt *e)
 		init_open(entry->path, e, cwd);
 	}
 	if (entry->right)
-		open_recursive(entry->right, cwd, e);
+		open_subdir(entry->right, cwd, e);
 }
 
 static int	open_cont(t_opt *e, t_dir *cwd)
@@ -29,7 +29,7 @@ static int	open_cont(t_opt *e, t_dir *cwd)
     else
     	tree_pr(cwd->entries, *cwd, e);
     free(cwd->pad);
-    open_recursive(cwd->entries, *cwd, e);
+    open_subdir(cwd->entries, *cwd, e);
     return (1);
 }
 
@@ -50,7 +50,9 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     	if (dp->d_name[0] != '.' || e->a)
     	{
 	    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
-				break ; // error stuff here
+	    	{
+				error(-1);
+	    	}
 			if (S_ISLNK(ltp.st_mode))
 			{
 				lstat(path, &ltp);

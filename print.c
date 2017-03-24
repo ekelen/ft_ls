@@ -76,7 +76,14 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
     ft_putchar(' ');
 	print_id(entry, cwd);
-	ipad_pr(entry->size, cwd->pad->size, 0);
+	if (ft_strchr("bc", entry->etype))
+	{
+		ipad_pr(entry->maj, cwd->pad->maj, 0);
+		ft_putchar(',');
+		ipad_pr(entry->min, cwd->pad->min, 0);
+	}
+	else
+		ipad_pr(entry->size, cwd->pad->size, 0);
 	print_time(entry, cwd);
 	return (1);
 }

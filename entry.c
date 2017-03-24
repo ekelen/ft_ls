@@ -12,6 +12,11 @@ int		zero_entry(char *path, t_ls *new, struct dirent *dp)
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->linkname, PATH_MAX);
 	new->d_ino = dp->d_ino;
+
+	new->parentchild = 0;
+	new->maj = 0;
+	new->min = 0;
+	new->blkct = 0;
 	new->right = NULL;
 	new->left = NULL;
 	return (1);
@@ -27,11 +32,6 @@ int		new_entry(struct stat stp, struct dirent *dp, t_opt *e, t_dir *cwd)
 	path = ft_catpath(cwd->path, dp->d_name);
 	zero_entry(path, new, dp);
 	new->stp = &stp;
-	// if (!(get_type(stp, e, new, cwd)))
-	// {
-	// 	ft_printf("stat_init failed.\n");
-	// 	return (0);
-	// }
 	if (!(get_type(e, new, cwd)))
 	{
 		ft_printf("stat_init failed.\n");

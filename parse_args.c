@@ -49,7 +49,7 @@ int		zero_opt(t_opt *e)
 {
 	if (!e)
 	{
-		return ((ft_printf("ERROR!\n")));
+		error(-1);
 	}
 	e->a = 0;
 	e->g = 0;

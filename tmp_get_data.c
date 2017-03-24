@@ -28,7 +28,6 @@ int			get_color(t_ls *new, t_opt *e)
 
 int			get_size(t_dir *cwd, t_ls *new)
 {
-	new->size = (new->stp)->st_size;
 	new->blkct = (new->stp)->st_blocks;
 	cwd->n += new->blkct;
 	new->hlinks = (new->stp)->st_nlink;
@@ -36,6 +35,13 @@ int			get_size(t_dir *cwd, t_ls *new)
 		new->parentchild = 1;
 	else
 		new->parentchild = 0;
+	if (new->etype == 'c' || new->etype == 'b')
+	{
+		new->maj = major((new->stp)->st_rdev);
+		new->min = minor((new->stp)->st_rdev);
+	}
+	else
+		new->size = (new->stp)->st_size;
 	return (1);
 }
 
@@ -47,8 +53,8 @@ int			get_uidgrp(t_ls *new)
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->uid_name, NAME_MAX);
 	grp = getgrgid((new->stp)->st_gid);
-	ft_strcpy(new->grp_name, grp->gr_name);
 	pwd = getpwuid((new->stp)->st_uid);
+	ft_strcpy(new->grp_name, grp->gr_name);
 	ft_strcpy(new->uid_name, pwd->pw_name);
 	return (1);
 }

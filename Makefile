@@ -2,7 +2,8 @@ NAME	= ft_ls
 
 SRC		+= main.c
 SRC		+= entry.c
-SRC		+=  ft_catpath.c
+SRC		+= error.c
+SRC		+= ft_catpath.c
 SRC		+= ft_ustrcmp.c
 SRC		+= padding.c
 SRC		+= parse_args.c

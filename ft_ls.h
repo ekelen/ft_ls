@@ -14,6 +14,7 @@
 # include <stdio.h> //DELETE
 # include <errno.h>
 # include <limits.h>
+# include <sys/xattr.h>
 # include "./printf/includes/ft_printf.h"
 # include "./libft/libft.h"
 # include "color.h"
@@ -27,14 +28,8 @@ typedef struct	s_ls
 	char				etype;
 	struct stat			*stp;
 	ino_t				d_ino;		// serial number ..?
-	//ino_t		st_ino;
-	//int					last_access; //time_t - time of last mod to file - STAT
 	long 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
 	off_t				size;			// signed int type - how big file is
-	//unsigned int		filemode;		//also file mode?
-	int					group_id;		//sys/types.h gid_t
-	int					device_t;		//sys/types.h device ID
-	int					user_id;		//sys/types.h userid
 	char				uid_name[NAME_MAX];
 	char				grp_name[NAME_MAX];
 
@@ -43,10 +38,12 @@ typedef struct	s_ls
 	char				*dirpath;
 	char				linkname[PATH_MAX];
 	int					parentchild;
+	int					maj;
+	int					min;
+	unsigned int		blkct;
 	t_color				color;
 	t_access			acc;
 	t_time				*time;
-	unsigned int		blkct;
 	struct s_ls			*right;
 	struct s_ls 		*left;
 }				t_ls;
