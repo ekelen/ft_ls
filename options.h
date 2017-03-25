@@ -3,6 +3,7 @@
 
 typedef struct	s_opt
 {
+	int			one;
 	int			a;
 	int			g;
 	int			l;

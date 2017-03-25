@@ -21,9 +21,9 @@ OBJ		= $(SRC:.c=.o)
 CFLAGS	= -g -Wall -Wextra -Werror
 
 $(NAME): $(OBJ)
-	make -C libft/
-	make -C printf/
-	gcc $(OBJ) -o $(NAME) -L libft -lft -L printf -lftprintf
+	@make -C libft/
+	@make -C printf/
+	@gcc $(OBJ) -o $(NAME) -L libft -lft -L printf -lftprintf
 
 all: $(NAME)
 

@@ -12,7 +12,6 @@ int		zero_entry(char *path, t_ls *new, struct dirent *dp)
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->linkname, PATH_MAX);
 	new->d_ino = dp->d_ino;
-
 	new->parentchild = 0;
 	new->maj = 0;
 	new->min = 0;

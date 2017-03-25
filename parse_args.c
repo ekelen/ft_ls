@@ -12,6 +12,8 @@ static int		parse_bonus(char s, t_opt *e)
 		e->us = 1;
 	else if (s == 'o')
 		e->o = 1;
+	else if (s == '1')
+		e->one = 1;
 	else
 		return (0);
 	return (1);
@@ -51,6 +53,7 @@ int		zero_opt(t_opt *e)
 	{
 		error(-1);
 	}
+	e->one = 0;
 	e->a = 0;
 	e->g = 0;
 	e->l = 0;

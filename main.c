@@ -47,6 +47,5 @@ int		main(int ac, char **av)
 		}
 	}
 	eval_args(&e, args, ac);
-	//TODO: Free.
 	return (0);
 }
