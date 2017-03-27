@@ -32,9 +32,9 @@ int			get_size(t_dir *cwd, t_ls *new)
 	cwd->n += new->blkct;
 	new->hlinks = (new->stp)->st_nlink;
 	if (ft_strequ(new->name, ".") || ft_strequ(new->name, ".."))
-		new->parentchild = 1;
+		new->is_rel = 1;
 	else
-		new->parentchild = 0;
+		new->is_rel = 0;
 	if (new->etype == 'c' || new->etype == 'b')
 	{
 		new->maj = major((new->stp)->st_rdev);

@@ -12,9 +12,6 @@ int			print_time(t_ls *entry, t_dir *cwd)
 		ft_printf(" %s ", entry->time->mhr);
 	else
 		ft_printf("  %s ", entry->time->myr);
-	//ft_printf(" time: %lld ", entry->MT);
-	//ft_printf(" ms: %lld ", entry->time->mnsec);
-	//free(entry->time);
 	return (1);
 }
 

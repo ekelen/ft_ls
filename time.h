@@ -1,6 +1,8 @@
 #ifndef TIME_H
 # define TIME_H
 
+# include <time.h>
+
 # define MT time->mtime
 # define MS time->mnsec
 

@@ -6,7 +6,7 @@ void	open_subdir(t_ls *entry, t_dir cwd, t_opt *e)
 		return ;
 	if (entry->left)
 		open_subdir(entry->left, cwd, e);
-	if (e->ur && entry->etype == 'd' && !entry->parentchild)
+	if (e->ur && entry->etype == 'd' && !entry->is_rel)
 	{
 		if (!e->l)
 			ft_putchar('\n');

@@ -10,7 +10,6 @@
 # include <grp.h>
 # include <sys/types.h>
 # include <sys/xattr.h>
-# include <time.h>
 # include <stdio.h> //DELETE
 # include <errno.h>
 # include <limits.h>
@@ -32,12 +31,10 @@ typedef struct	s_ls
 	off_t				size;			// signed int type - how big file is
 	char				uid_name[NAME_MAX];
 	char				grp_name[NAME_MAX];
-
 	char				path[PATH_MAX];
 	char				name[NAME_MAX];
-	char				*dirpath;
 	char				linkname[PATH_MAX];
-	int					parentchild;
+	int					is_rel;
 	int					maj;
 	int					min;
 	unsigned int		blkct;
