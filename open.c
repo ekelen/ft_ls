@@ -43,23 +43,21 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     
 	if ((dir = opendir(s)) == NULL || !s)
 		return (0);
-	dir_init(&cwd, s);
+	dir_init(&cwd, s, 0);
 	while ((dp = readdir(dir)) != NULL)
     {
     	path = ft_catpath(s, dp->d_name);
     	if (dp->d_name[0] != '.' || e->a)
     	{
 	    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
-	    	{
-				error(-1);
-	    	}
+	    		error(1, "ls");
 			if (S_ISLNK(ltp.st_mode))
 			{
 				lstat(path, &ltp);
-				new_entry(ltp, dp, e, &cwd);
+				new_entry(ltp, dp->d_name, e, &cwd);
 			}
 			else
-				new_entry(stp, dp, e, &cwd);
+				new_entry(stp, dp->d_name, e, &cwd);
 		}
 		ft_strdel(&path);
     }
@@ -67,3 +65,4 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     open_cont(e, &cwd);
     return (1);
 }
+

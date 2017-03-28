@@ -66,8 +66,6 @@ int		print_name(t_ls *entry, t_opt *e)
 	return (1);
 }
 
-
-
 static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
 	(void)e;
@@ -88,15 +86,21 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 	return (1);
 }
 
+int		entry_pr(t_ls *entry, t_dir *cwd, t_opt *e)
+{
+	if (e->l)
+		tree_lpr(entry, cwd, e);
+	print_name(entry, e);
+	return(1);
+}
+
 void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e)
 {
 	if (!entry)
 		return ;
 	if (entry->left)
 		tree_pr(entry->left, cwd, e);
-	if (e->l)
-		tree_lpr(entry, &cwd, e);
-	print_name(entry, e);
+	entry_pr(entry, &cwd, e);
 	if (entry->right)
 		tree_pr(entry->right, cwd, e);
 }
@@ -107,9 +111,7 @@ void	tree_prrv(t_ls *entry, t_dir cwd, t_opt *e)
 		return ;
 	if (entry->right)
 		tree_prrv(entry->right, cwd, e);
-	if (e->l)
-		tree_lpr(entry, &cwd, e);
-	print_name(entry, e);
+	entry_pr(entry, &cwd, e);
 	if (entry->left)
 		tree_prrv(entry->left, cwd, e);
 }

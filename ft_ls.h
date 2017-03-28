@@ -49,6 +49,8 @@ typedef struct			s_dir
 {
 	char				path[PATH_MAX];
 	size_t				n;
+	int					is_file;
+	int					error;
 	t_pad				*pad;
 	t_ls				*entries;
 	struct s_dir		*right;
@@ -94,8 +96,8 @@ char					*ft_catpath(char *dir, char *name);
 ** Initialize objects
 */
 
-int						dir_init(t_dir *cwd, char *path);
-int						new_entry(struct stat stp, struct dirent *dp, t_opt *e, t_dir *cwd);
+int						dir_init(t_dir *cwd, char *path, int is_file);
+int						new_entry(struct stat stp, char *name, t_opt *e, t_dir *cwd);
 
 /*
 ** Open
@@ -108,7 +110,7 @@ void					open_recursive(t_ls *entry, t_dir cwd, t_opt *e);
 */ 
 
 int						get_padding(t_dir *cwd, t_ls *ls, t_opt *e);
-int						eval_args(t_opt *e, char **s, int ac);
+int						eval_args(t_opt *e, char **s);
 int						get_total(t_ls *entry, t_dir *cwd);
 
 /*
@@ -126,6 +128,7 @@ int						sort_entries(t_ls *new, t_ls **tree, t_opt *e);
 int						print_time(t_ls *entry, t_dir *cwd);
 void					tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
 void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
+int						entry_pr(t_ls *entry, t_dir *cwd, t_opt *e);
 
 //void 	meta_pr(t_dir *tree, t_opt *e);
 //int		sort_dirs_time(t_dir *new, t_dir **tree);
