@@ -4,6 +4,7 @@ int	dir_init(t_dir *cwd, char *path, int is_file)
 {
 	if (!cwd || !path || cwd->is_file)
 		return(0);
+	//ft_printf("dir path : %s\n", path);
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
 	cwd->is_file = is_file ? 1 : 0;

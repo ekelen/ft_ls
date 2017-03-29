@@ -17,12 +17,20 @@ char	*ft_catpath(char *dir, char *name)
 	char *path;
 	size_t dlen;
 	size_t nlen;
+	int i;
 
 	dlen = ft_strlen(dir);
 	nlen = ft_strlen(name);
+	i = dlen;
+	while (!ft_isalpha(dir[i]))
+	{
+		if (dir[i] == '/')
+			dlen--;
+		i--;
+	}
 	path = malloc(sizeof(char) * (dlen + nlen + 2));
 	ft_bzero(path, dlen + nlen + 2);
-	ft_strcpy(path, dir);
+	ft_strncpy(path, dir, dlen);
 	ft_strcat(path, "/");
 	ft_strcat(path, name);
 	return(path);

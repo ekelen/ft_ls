@@ -47,7 +47,10 @@ int		init_opts(char *s, t_opt *e)
 int		zero_opt(t_opt *e)
 {
 	if (!e)
+	{
+
 		error(1, "ls");
+	}
 	e->one = 0;
 	e->a = 0;
 	e->g = 0;
@@ -59,6 +62,7 @@ int		zero_opt(t_opt *e)
 	e->ur = 0;
 	e->us = 0;
 	e->t = 0;
+	
 	return (1);
 }
 

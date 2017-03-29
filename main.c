@@ -36,28 +36,33 @@
 int		eval_args(t_opt *e, char **s)
 {
 	
-	t_dir		cwd;
+	t_dir		*cwd;
 	t_dir		*root;
 	int			i;
 	struct stat 	stp;
 	int			err;
 
+	cwd = malloc(sizeof(t_dir));
 	root = NULL;
 	i = 0;
 	while (s[i][0] == '-')
 		i++;
 	if ((err = stat(s[i], &stp)) != 0)
-		error(err, "CHAINE");
+		error(err, "EVAL STAT ERROR");
 	if (!(S_ISDIR(stp.st_mode)))
 	{
-		dir_init(&cwd, ".", 1);
-		new_entry(stp, s[i], e, &cwd);
+		dir_init(cwd, ".", 1);
+		new_entry(stp, s[i], e, cwd);
 	}
 	else
 	{
-		if (!(dir_init(&cwd, s[i], 0)))
+		//ft_printf("s : %s\n", s[i]);
+		if (!(dir_init(cwd, s[i], 0)))
+		{
+			//ft_printf("dir init failed.\n");
 			ft_printf(ERR_FILE, s[i]);
-		if(!(init_open(s[i], e, cwd)))
+		}
+		if(!(init_open(s[i], e, *cwd)))
 			ft_printf(ERR_FILE, s[i]);
 	}
 	return (1);

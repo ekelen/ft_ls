@@ -61,6 +61,7 @@ int			get_uidgrp(t_ls *new)
 
 int			get_access(t_ls *new)
 {
+
 	new->acc.ruser = ((new->stp)->st_mode & S_IRUSR) ? 'r' : '-';
 	new->acc.wuser = ((new->stp)->st_mode & S_IWUSR) ? 'w' : '-';
 	new->acc.xuser = ((new->stp)->st_mode & S_IXUSR) ? 'x' : '-';
@@ -70,6 +71,10 @@ int			get_access(t_ls *new)
 	new->acc.roth = ((new->stp)->st_mode & S_IROTH) ? 'r' : '-';
 	new->acc.woth = ((new->stp)->st_mode & S_IWOTH) ? 'w' : '-';
 	new->acc.xoth = ((new->stp)->st_mode & S_IXOTH) ? 'x' : '-';
+	if ((new->stp)->st_mode & S_ISUID)
+		new->acc.xuser = new->acc.xuser == '-' ? 'S' : 's';
+	if ((new->stp)->st_mode & S_ISGID)
+		new->acc.xgrp = new->acc.xgrp == '-' ? 'S' : 's';
 	return (1);
 }
 
