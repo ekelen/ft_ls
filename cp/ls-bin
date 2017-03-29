@@ -43,10 +43,10 @@ lrwxr-xr-x   1 root   wheel        73 Jul  3  2016 apt -> /System/Library/Framew
 -rwxr-xr-x   1 root   wheel     18176 Jul  8  2016 asa
 -rwxr-xr-x   1 root   wheel    126688 May  4  2016 asctl
 -rwxr-xr-x   1 root   wheel    762032 May  4  2016 assetutil
--r-sr-xr-x   1 root   wheel     83520 Jul  8  2016 at
+-r-xr-xr-x   1 root   wheel     83520 Jul  8  2016 at
 -rwxr-xr-x   1 root   wheel    138016 Sep 26  2016 atos
--r-sr-xr-x   1 root   wheel     83520 Jul  8  2016 atq
--r-sr-xr-x   1 root   wheel     83520 Jul  8  2016 atrm
+-r-xr-xr-x   1 root   wheel     83520 Jul  8  2016 atq
+-r-xr-xr-x   1 root   wheel     83520 Jul  8  2016 atrm
 -rwxr-xr-x   1 root   wheel     28800 Jul  8  2016 atsutil
 -rwxr-xr-x   1 root   wheel     38624 May  4  2016 automator
 -r-xr-xr-x   1 root   wheel       200 Sep 30  2015 auval
@@ -60,7 +60,7 @@ lrwxr-xr-x   1 root   wheel        73 Jul  3  2016 apt -> /System/Library/Framew
 -rwxr-xr-x   1 root   wheel     23136 May  4  2016 base64
 -rwxr-xr-x   1 root   wheel     18208 May  4  2016 basename
 -r-xr-xr-x   1 root   wheel      6574 Aug  1  2015 bashbug
--r-sr-xr-x   1 root   wheel     83520 Jul  8  2016 batch
+-r-xr-xr-x   1 root   wheel     83520 Jul  8  2016 batch
 -rwxr-xr-x   1 root   wheel     85008 May  4  2016 bc
 -rwxr-xr-x  15 root   wheel       190 Aug  1  2015 bg
 -rwxr-xr-x   1 root   wheel     18128 May  4  2016 biff
@@ -150,7 +150,7 @@ lrwxr-xr-x   1 root   wheel         5 Jul  3  2016 cc -> clang
 -r-xr-xr-x   1 root   wheel       871 Aug  2  2015 crc325.18
 -rwxr-xr-x   1 root   wheel       342 Apr 19  2016 creatbyproc.d
 -rwxr-xr-x   1 root   wheel     34752 Jul  8  2016 crlrefresh
--rwsr-xr-x   1 root   wheel     39024 May  4  2016 crontab
+-rwxr-xr-x   1 root   wheel     39024 May  4  2016 crontab
 -rwxr-xr-x   1 root   wheel     14990 Apr  2  2016 csdiagnose
 -rwxr-xr-x   1 root   wheel    562064 Jul  8  2016 csgather
 -rwxr-xr-x   1 root   wheel     23888 May  4  2016 csplit
@@ -474,7 +474,7 @@ lrwxr-xr-x   1 root   wheel         5 Jul  3  2016 llvm-gcc -> clang
 -rwxr-xr-x   1 root   wheel     23296 May  4  2016 locate
 -rwxr-xr-x   1 root   wheel     57536 Jul  8  2016 lockstat
 -r-xr-xr-x   1 root   wheel     18720 May  4  2016 logger
--r-sr-xr-x   1 root   wheel     76336 Jul  8  2016 login
+-r-xr-xr-x   1 root   wheel     76336 Jul  8  2016 login
 -rwxr-xr-x   1 root   wheel     18080 May  4  2016 logname
 -rwxr-xr-x   1 root   wheel     18720 May  4  2016 look
 -rwxr-xr-x   1 root   wheel     50592 May  4  2016 lookbib
@@ -566,7 +566,7 @@ lrwxr-xr-x   1 root   wheel        82 Jul  3  2016 native2ascii -> /System/Libra
 -rwxr-xr-x   1 root   wheel      3656 Mar 13  2016 net-snmp-create-v3-user
 -rwxr-xr-x   1 root   wheel     61424 May  4  2016 nettop
 lrwxr-xr-x   1 root   wheel        16 Jul  3  2016 newaliases -> ../sbin/sendmail
--r-sr-xr-x   1 root   wheel     52560 Jul  8  2016 newgrp
+-r-xr-xr-x   1 root   wheel     52560 Jul  8  2016 newgrp
 -rwxr-xr-x   1 root   wheel      4376 Apr 19  2016 newproc.d
 -r-xr-xr-x   1 root   wheel     45008 May  4  2016 nfsstat
 -rwxr-xr-x   1 root   wheel     18320 May  4  2016 nice
@@ -744,7 +744,7 @@ lrwxr-xr-x   1 root   wheel        76 Jul  3  2016 pythonw2.7 -> ../../System/Li
 lrwxr-xr-x   1 root   wheel       100 Jul  3  2016 qlmanage -> ../../System/Library/Frameworks/QuickLook.framework/Resources/quicklookd.app/Contents/MacOS/qlmanage
 -rwxr-xr-x   1 root   wheel     54976 Sep 26  2016 qtdefaults
 -rwxr-xr-x   1 root   wheel     85920 Sep 26  2016 qtmodernizer
--r-sr-xr-x   1 root   wheel     23488 May  4  2016 quota
+-r-xr-xr-x   1 root   wheel     23488 May  4  2016 quota
 -r-xr-xr-x   1 root   wheel       549 Jan 31  2016 rails
 -r-xr-xr-x   1 root   wheel      1370 Jan 31  2016 rake
 -rwxr-xr-x   1 root   wheel     18176 Jul  8  2016 ranlib
@@ -871,8 +871,8 @@ lrwxr-xr-x   1 root   wheel        59 Jul  3  2016 snfsdefrag -> /System/Library
 -rwxr-xr-x  35 root   wheel       811 Aug  2  2015 stty.pl
 -r-xr-xr-x   1 root   wheel       277 Aug  2  2015 stty5.16.pl
 -r-xr-xr-x   1 root   wheel       277 Aug  2  2015 stty5.18.pl
--rwsr-xr-x   1 root   wheel     25312 May  4  2016 su
--r-s--x--x   1 root   wheel    168448 May  4  2016 sudo
+-rwxr-xr-x   1 root   wheel     25312 May  4  2016 su
+-r-x--x--x   1 root   wheel    168448 May  4  2016 sudo
 -rwxr-xr-x   1 root   wheel     22576 Jul  8  2016 sum
 -rwxr-xr-x   1 root   wheel     18176 Jul  8  2016 svn
 -rwxr-xr-x   1 root   wheel     18176 Jul  8  2016 svnadmin
@@ -928,7 +928,7 @@ lrwxr-xr-x   1 root   wheel        43 Jul  3  2016 tkcon -> ../../System/Library
 -rwxr-xr-x   1 root   wheel    279680 May  4  2016 tmutil
 lrwxr-xr-x   1 root   wheel        79 Jul  3  2016 tnameserv -> /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/tnameserv
 -rwxr-xr-x   1 root   wheel     24560 May  4  2016 toe
--r-sr-xr-x   1 root   wheel     87952 May  4  2016 top
+-r-xr-xr-x   1 root   wheel     87952 May  4  2016 top
 -rwxr-xr-x   1 root   wheel    103040 May  4  2016 tops
 -rwxr-xr-x   1 root   wheel      4619 Apr 19  2016 topsyscall
 -rwxr-xr-x   1 root   wheel      2950 Apr 19  2016 topsysproc
@@ -986,7 +986,7 @@ lrwxr-xr-x   1 root   wheel         3 Jul  3  2016 vimdiff -> vim
 -rwxr-xr-x   1 root   wheel     72416 Sep 26  2016 vmmap32
 -rwxr-xr-x   1 root   wheel     24080 May  4  2016 w
 -rwxr-xr-x  15 root   wheel       190 Aug  1  2015 wait
--r-xr-sr-x   1 root   tty       24704 May  4  2016 wall
+-r-xr-xr-x   1 root   tty       24704 May  4  2016 wall
 -rwxr-xr-x   1 root   wheel     22976 May  4  2016 wc
 -rwxr-xr-x   1 root   wheel     28672 May  4  2016 wdutil
 -rwxr-xr-x   1 root   wheel      4013 Apr 19  2016 weblatency.d
@@ -1000,7 +1000,7 @@ lrwxr-xr-x   1 root   wheel         3 Jul  3  2016 vimdiff -> vim
 lrwxr-xr-x   1 root   wheel         7 Jul  3  2016 wish -> wish8.5
 -r-xr-xr-x   1 root   wheel       127 Mar 13  2016 wish8.4
 -r-xr-xr-x   1 root   wheel       127 Mar 13  2016 wish8.5
--r-xr-sr-x   1 root   tty       23808 May  4  2016 write
+-r-xr-xr-x   1 root   tty       23808 May  4  2016 write
 lrwxr-xr-x   1 root   wheel        75 Jul  3  2016 wsgen -> /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/wsgen
 lrwxr-xr-x   1 root   wheel        78 Jul  3  2016 wsimport -> /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/wsimport
 -rwxr-xr-x   1 root   wheel     38032 May  4  2016 xar
