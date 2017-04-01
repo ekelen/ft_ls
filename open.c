@@ -8,8 +8,6 @@ void	open_subdir(t_ls *entry, t_dir cwd, t_opt *e)
 		open_subdir(entry->left, cwd, e);
 	if (e->ur && entry->etype == 'd' && !entry->is_rel)
 	{
-		if (!e->l)
-			ft_putchar('\n');
 		ft_printf("\n%s:\n", entry->path);
 		init_open(entry->path, e, cwd);
 	}
@@ -53,14 +51,14 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     	{
 	    	if ((stat(path, &stp)) || (lstat(path, &ltp)))
 	    		error(1, "STAT ERROR");
-			if (S_ISLNK(ltp.st_mode))
-			{
-				lstat(path, &ltp);
-				new_entry(ltp, dp->d_name, e, &cwd);
+				if (S_ISLNK(ltp.st_mode))
+				{
+					lstat(path, &ltp);
+					new_entry(ltp, dp->d_name, e, &cwd);
+				}
+				else
+					new_entry(stp, dp->d_name, e, &cwd);
 			}
-			else
-				new_entry(stp, dp->d_name, e, &cwd);
-		}
 		ft_strdel(&path);
     }
     closedir(dir);

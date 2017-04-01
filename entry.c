@@ -16,7 +16,6 @@ int	dir_init(t_dir *cwd, char *path, int is_file)
 	return (1);
 }
 
-
 int		zero_entry(char *path, t_ls *new, char *name)
 {
 	if (!path || !new)
