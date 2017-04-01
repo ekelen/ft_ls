@@ -5,14 +5,14 @@ int		eval_args(t_opt *e, char **s)
 {
 	int					i;
 	int					err;
-	t_dir				*cwd;
-	struct stat stp;
-
+	struct stat 		stp;
+	int					first;
+	int					parent;
 
 	i = 0;
+	parent = 1;
 	while (s[i])
 	{
-		cwd = malloc(sizeof(t_dir));
 		if ((err = stat(s[i], &stp)) != 0)
 			error(err, "EVAL STAT ERROR");
 		if (!(S_ISDIR(stp.st_mode)))
@@ -21,16 +21,9 @@ int		eval_args(t_opt *e, char **s)
 		}
 		else
 		{
-			//ft_printf("s : %s\n", s[i]);
-			if (!(dir_init(cwd, s[i], 0)))
-			{
-				//ft_printf("dir init failed.\n");
-				ft_printf(ERR_FILE, s[i]);
-			}
-			if(!(init_open(s[i], e, *cwd)))
+			if(!(init_dir_open(e, s[i], &first, &parent)))
 				ft_printf(ERR_FILE, s[i]);
 		}
-		free(cwd);
 		i++;
 	}
 	return (1);

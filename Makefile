@@ -5,12 +5,12 @@ SRC		+= entry.c
 SRC		+= error.c
 SRC		+= ft_catpath.c
 SRC		+= ft_ustrcmp.c
-SRC		+= padding.c
+# SRC		+= padding.c
 SRC		+= parse_args.c
 SRC		+= tmp_get_data.c
-SRC		+= print.c
-SRC		+= sort.c
-SRC		+= time.c
+# SRC		+= print.c
+# SRC		+= sort.c
+# SRC		+= time.c
 SRC		+= open.c
 
 SRC		+= ft_numlen.c
