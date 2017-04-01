@@ -37,12 +37,10 @@ int		init_open(char *s, t_opt *e, t_dir cwd)
     struct dirent		*dp;
     struct stat			stp;
     struct stat			ltp;
-    char				*path;
+    char						*path;
 
 	if ((dir = opendir(s)) == NULL || !s || !e)
-	{
 		error(1, "OPENDIR ERROR");
-	}
 	dir_init(&cwd, s, 0);
 	while ((dp = readdir(dir)) != NULL)
     {

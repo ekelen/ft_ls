@@ -14,6 +14,7 @@ typedef struct	s_opt
 	int			ug;	// color output
 	int			ur;	// recursive
 	int			us; // sort by size
+	int			files;
 }				t_opt;
 
 typedef struct s_access

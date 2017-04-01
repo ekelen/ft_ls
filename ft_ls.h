@@ -47,12 +47,12 @@ typedef struct	s_ls
 
 typedef struct			s_dir
 {
-	char				path[PATH_MAX];
-	size_t				n;
-	int					is_file;
-	int					error;
-	t_pad				*pad;
-	t_ls				*entries;
+	char						path[PATH_MAX];
+	size_t					n;
+	int							is_file;
+	int							error;
+	t_pad						*pad;
+	t_ls						*entries;
 	struct s_dir		*right;
 	struct s_dir		*left;
 }						t_dir;
@@ -107,7 +107,7 @@ void					open_recursive(t_ls *entry, t_dir cwd, t_opt *e);
 
 /*
 ** Global/directory settings
-*/ 
+*/
 
 int						get_padding(t_dir *cwd, t_ls *ls, t_opt *e);
 int						eval_args(t_opt *e, char **s);

@@ -17,10 +17,7 @@ int		eval_args(t_opt *e, char **s)
 			error(err, "EVAL STAT ERROR");
 		if (!(S_ISDIR(stp.st_mode)))
 		{
-			// files = 1;
-			;
-			//dir_init(cwd, "VOID", 1);
-			//new_entry(stp, s[i], e, cwd);
+			e->files = 1;
 		}
 		else
 		{
@@ -46,14 +43,13 @@ static int	get_num_files(int ac, char **av, int *num_flags)
 
 	i = 0;
 	num_files = 0;
-	i++; // skip program name
+	i++;
 	while (i < ac && av[i][0] == '-')
 	{
 		(*num_flags)++;
 		i++;
 	}
 	num_files = i == ac ? 1 : ac - *num_flags - 1;
-		// ft_printf("num_files : %d\n", num_files);
 	return(num_files);
 }
 
@@ -88,7 +84,6 @@ int		main(int ac, char **av)
 		while (i < num_files)
 		{
 			args[i] = ft_strdup(av[i + 1 + num_flags]);
-			//ft_printf("args[%d] : %s\n", i, args[i]);
 			i++;
 		}
 	}
