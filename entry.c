@@ -46,6 +46,7 @@ int		new_entry(struct stat stp, char *name, t_opt *e, t_dir *cwd)
 	if (!(new = malloc(sizeof(t_ls))))
 		return(0);
 	path = ft_catpath(cwd->path, name);
+	//ft_printf("cwd->path : %s\n", cwd->path);
 	zero_entry(path, new, name);
 	new->stp = &stp;
 	get_type(e, new, cwd);
@@ -56,12 +57,12 @@ int		new_entry(struct stat stp, char *name, t_opt *e, t_dir *cwd)
 		ft_strcpy(new->linkname, " -> ");
 		ft_strcat(new->linkname, tmp_link);
 	}
-	if (!cwd->is_file)
+//	if (!cwd->is_file)
 		sort_entries(new, &(cwd->entries), e);
-	else
-	{
-		get_padding(cwd, new, e);
-		entry_pr(new, cwd, e);
-	}
+	// else
+	// {
+	// 	get_padding(cwd, new, e);
+	// 	entry_pr(new, cwd, e);
+	// }
 	return (1);
 }
