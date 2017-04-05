@@ -57,7 +57,6 @@ static int sort_args_ascii(char **s, int num_files)
 		{
 			if (ft_ustrcmp(s[i], s[i + 1]) > 0)
 			{
-				//ft_printf("Need to switch %s and %s\n", s[i], s[i+1]);
 				str_switch(&s[i], &s[i+1]);
 			}
 			i++;

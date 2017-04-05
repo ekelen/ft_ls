@@ -13,7 +13,6 @@ void	usage_err(char *s)
 void	error(int err, char *s)
 {
 	(void)err;
-	//ft_putstr_fd(strerror(err), 2);
 	perror(s);
 	exit(1);
 }

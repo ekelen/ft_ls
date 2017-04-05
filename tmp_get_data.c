@@ -12,6 +12,21 @@ char		*ft_strexclude(char *orig, char *excl)
 	return (s);
 }
 
+int			get_lnk(t_ls *new)
+{
+	char tmp[PATH_MAX];
+
+	if (new->etype == 'l')
+	{
+		ft_bzero(tmp, PATH_MAX);
+		readlink(new->path, tmp, PATH_MAX);
+		//ft_strcpy(new->linkname, " -> ");
+		ft_strcpy(new->linkname, tmp);
+		return (1);
+	}
+	return(0);
+}
+
 int			get_color(t_ls *new, t_opt *e)
 {
 	if (e->ug)
@@ -114,5 +129,6 @@ int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 		get_dir_size(cwd, new);
 	get_mtime(*stp, new, e);
 	get_color(new, e);
+	get_lnk(new);
 	return(1);
 }

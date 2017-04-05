@@ -86,7 +86,7 @@ int		print_name(t_ls *entry, t_opt *e)
 		ft_strdel(&entry->name);
 	}
 	if (entry->etype == 'l' && e->l)
-		ft_printf("%s", entry->linkname);
+		ft_printf(" -> %s", entry->linkname);
 	ft_putchar('\n');
 	return (1);
 }
