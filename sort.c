@@ -4,14 +4,18 @@ static void	place_left(t_ls *new, t_ls **tt, t_ls *tn)
 {
 	(*tt) = (*tt)->left;
 	if (!(*tt))
+	{
 		tn->left = new;
+	}
 }
 
 static void	place_right(t_ls *new, t_ls **tt, t_ls *tn)
 {
 	(*tt) = (*tt)->right;
 	if (!(*tt))
+	{
 		tn->right = new;
+	}
 }
 
 static int	sort_size(t_ls *new, t_ls **tree)
@@ -27,7 +31,7 @@ static int	sort_size(t_ls *new, t_ls **tree)
 		if (new->size > tt->size)
 			place_right(new, &tt, tn);
 		else if (new->size == tt->size \
-			&& (ft_ustrcmp(new->name, tt->name)) > 0)
+			&& (ft_ustrcmp(new->name, tt->name)) > 0) // make this work properly
 			place_right(new, &tt, tn);
 		else
 			place_left(new, &tt, tn);
@@ -46,15 +50,18 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	while (tt)
 	{
 		tn = tt;
+		//if ((ft_ustrcmp(ft_strtolower(new->path), ft_strtolower(tt->path))) > 0)
 		if ((ft_ustrcmp(new->path, tt->path)) > 0)
+		{
 			place_right(new, &tt, tn);
+		}
 		else
+		{
 			place_left(new, &tt, tn);
+		}
 	}
 	return (1);
 }
-
-
 
 static int	sort_time(t_ls *new, t_ls **tree)
 {
@@ -79,9 +86,9 @@ static int	sort_time(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-
-int	sort_entries(t_ls *new, t_ls **tree, t_opt *e)
+int	sort_entries(t_opt *e, t_dir *cwd, t_ls **tree, t_ls *new)
 {
+	(void)cwd;
 	if (!*tree)
 	{
 		*tree = new;

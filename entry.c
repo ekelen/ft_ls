@@ -17,7 +17,7 @@ int		zero_entry(t_ls *new)
 	return (1);
 }
 
-int		new_entry(t_opt *e, struct stat stp, t_dir *cwd, struct dirent *dp) // make new dir
+int		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp) // make new dir
 {
 	t_ls *new;
 
@@ -25,31 +25,45 @@ int		new_entry(t_opt *e, struct stat stp, t_dir *cwd, struct dirent *dp) // make
 	zero_entry(new);
 	new->path = ft_catpath(cwd->path, dp->d_name);
 	new->name = ft_strdup(dp->d_name);
-	(void)stp;
-	(void)e;
-
-
-
+	get_type(e, new, &stp);
+	sort_entries(e, cwd, &(cwd->tree), new);
 	return (1);
 }
 
 
-int		new_file_entry(t_opt *e, struct stat stp, struct dirent *dp) // make new dir
+int		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 {
 	t_ls *new;
 
 	new = (t_ls *)ft_memalloc(sizeof(t_ls));
 	zero_entry(new);
-	new->path = ft_catpath(cwd->path, dp->d_name);
-	new->name = ft_strdup(dp->d_name);
+	new->path = ft_strdup(s);
+	new->name = ft_strdup(s);
 	new->no_dir = 1;
-	(void)stp;
-	(void)e;
-
-
-
+	get_type(e, new, &stp);
+	sort_entries(e, cwd, &(cwd->tree), new);
 	return (1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

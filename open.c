@@ -1,21 +1,48 @@
 #include "ft_ls.h"
 
-// TODO: Get recursion working again. Get seperate thing going for files. Get parent directories sorted before printing. Get printing working and time and sorting and all of that.
+void	open_subdir(t_opt *e, t_dir cwd, t_ls *entry, int first) // after printing one dir, call recursion
+{
+	int parent = 0;
+	if (!entry)
+		return ;
+	if (entry->left)
+		open_subdir(e, cwd, entry->left, first);
+	if (e->ur && entry->etype == 'd' && !entry->is_rel)
+	{
+		init_dir_open(e, entry->path, &first, &parent);
+	}
+	if (entry->right)
+		open_subdir(e, cwd, entry->right, first);
+}
 
-int	zero_dir(t_dir *cwd, char *path, int *first, int *parent)
+static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
+{
+	if (!e || !cwd)
+		return (0);
+    // if (e->l)
+    // 	ft_printf("total %ld\n", cwd->n);
+    //get_padding(cwd, cwd->entries, e);
+    if (e->r)
+    	tree_prrv(cwd->tree, *cwd, e);
+    else
+    	tree_pr(cwd->tree, *cwd, e);
+    // free(cwd->pad);
+    open_subdir(e, *cwd, cwd->tree, 0);
+
+    return (1);
+}
+
+int	zero_dir(t_dir *cwd, char *path, int *parent)
 {
 	if (!cwd || !path)
 		return(0);
-	//ft_printf("dir path : %s\n", path);
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
-	cwd->first = first ? 1 : 0;
+	//cwd->first = first ? 1 : 0;
 	cwd->parent = parent ? 1 : 0;
 	cwd->n = 0;
-	cwd->left = NULL;
-	cwd->right = NULL;
 	*parent = 0;
-	*first = 0;
+	//*first = 0;
 	return (1);
 }
 
@@ -25,14 +52,13 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 	char					*path;
 	struct stat				stp;
 	struct stat				ltp;
-	(void)cwd;
 
 	while ((dp = readdir(dir)) != NULL)
 	{
 		if (dp->d_name[0] != '.' || e->a)
 		{
 			path = ft_catpath(cwd->path, dp->d_name);
-			ft_printf("path : %s\n", path);
+			//ft_printf("path : %s\n", path);
 			if ((stat(path, &stp) || (lstat(path, &ltp))))
 				error(1, "dir_open ERROR");
 			else
@@ -40,17 +66,18 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 				if (S_ISLNK(ltp.st_mode))
 				{
 					lstat(path, &ltp);
-					ft_printf("path : %s\n", path);
-					//new_entry(e, cwd, ltp, dp);
+					//ft_printf("path : %s\n", path);
+					new_entry(e, cwd, ltp, dp);
 				}
 				else
-					ft_printf("path : %s\n", path);
-					//new_entry(e, cwd, stp, dp);
+					//ft_printf("path : %s\n", path);
+					new_entry(e, cwd, stp, dp);
 			}
 			ft_strdel(&path);
 		}
 	}
 	closedir(dir);
+	open_helper(e, cwd);
 	return(1);
 }
 
@@ -60,18 +87,43 @@ int		init_dir_open(t_opt *e, char *d_path, int *first, int *parent)
 {
 	DIR						*dir;
 	t_dir					*cwd;
+	//ft_printf("first: %d\n", *first);
 
 	if ((dir = opendir(d_path)) == NULL || !d_path || !e)
 		error(1, "INIT_OPEN ERROR");
 	else
 	{
-		e->dirs = 1;
 		cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
-		zero_dir(cwd, d_path, first, parent);
+		zero_dir(cwd, d_path, parent);
+		if (!*first || (*first && e->files))
+		{
+			ft_printf("\n");
+		}
+		if (e->dirs || !*first || e->files)
+		{
+			//ft_printf("Multiples dirs or not first dir.");
+			ft_printf("%s:\n", cwd->path);
+		}
 		dir_open(e, cwd, dir);
 	}
 	return(1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // void	open_subdir(t_ls *entry, t_dir cwd, t_opt *e)

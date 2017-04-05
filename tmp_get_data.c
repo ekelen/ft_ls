@@ -26,10 +26,9 @@ int			get_color(t_ls *new, t_opt *e)
 	return (1);
 }
 
-int			get_size(t_dir *cwd, t_ls *new, struct stat *stp)
+int			get_size(t_ls *new, struct stat *stp)
 {
 	new->blkct = stp->st_blocks;
-	cwd->n += new->blkct;
 	new->hlinks = stp->st_nlink;
 	if (ft_strequ(new->name, ".") || ft_strequ(new->name, ".."))
 		new->is_rel = 1;
@@ -78,10 +77,14 @@ int			get_access(t_ls *new, struct stat *stp)
 	return (1);
 }
 
-int			get_dir_size(t_dir *cwd, t_ls *new, struct stat *stp)
-{
+// int			get_dir_size(t_dir *cwd, t_ls *new)
+// {
+// 	cwd->n += new->blkct;
+// 	return(1);
+// }
 
-}
+// 	if ()
+// 	get_dir_size(cwd, new);
 
 int			get_type(t_opt *e, t_ls *new, struct stat *stp)
 {
@@ -107,12 +110,8 @@ int			get_type(t_opt *e, t_ls *new, struct stat *stp)
 	get_access(new, stp);
 	get_uidgrp(new, stp);
 	get_size(new, stp);
-	//get_mtime(stp, new, e);
+
+	get_mtime(*stp, new, e);
 	get_color(new, e);
 	return(1);
 }
-
-
-
-
-

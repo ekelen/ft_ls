@@ -90,5 +90,7 @@ int				ft_countchar(char *s, char c);
 int				ft_isstn(int c);
 void			ft_putstrmap(char **strmap);
 void			ft_putendlcolor_fd(char const *s, int fd, char *color, int nl);
+char	*ft_strtoupper(char *s);
+char	*ft_strtolower(char *s);
 
 #endif

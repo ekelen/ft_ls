@@ -105,6 +105,8 @@ SRC += ft_countchar.c
 SRC += ft_isstn.c
 SRC += ft_putstrmap.c
 SRC += ft_putendlcolor_fd.c
+SRC += ft_strtoupper.c
+SRC += ft_strtolower.c
 
 OBJ = $(SRC:.c=.o)
 

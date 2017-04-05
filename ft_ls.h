@@ -52,8 +52,9 @@ typedef struct			s_dir
 	size_t					n;
 	// int							is_file;
 	// int							error;
-	// t_pad						*pad;
-	// t_ls						*entries;
+	//t_pad				*pad;
+	t_ls				*tree;
+	int					file_dir;
 	int					parent;
 	int					first;
 	struct s_dir		*right;
@@ -84,8 +85,6 @@ typedef struct			s_dir
 	//invent your own (ask if want to list ? search directory ?)
 	//-A list all entries except . and ..
 
-// char					*ft_catpath(char const *directory, char const *name);
-
 /*
 ** Utilities
 */
@@ -99,8 +98,8 @@ char					*ft_catpath(char *dir, char *name);
 ** Initialize objects
 */
 
-
-//int						new_entry(t_opt *e, t_dir *cwd, struct stat stp, char *name);
+int		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
+int		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
 
 /*
 ** Open
@@ -112,24 +111,24 @@ int						init_dir_open(t_opt *e, char *d_path, int *first, int *parent);
 */
 
 //int						get_padding(t_dir *cwd, t_ls *ls, t_opt *e);
-int						eval_args(t_opt *e, char **s);
+//int						eval_args(t_opt *e, char **s);
 int						get_total(t_ls *entry, t_dir *cwd);
 
 /*
 ** Entry metadata
 */
 
-int						get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp);
-//int						get_mtime(struct stat stp, t_ls *new, t_opt *e);
+int						get_type(t_opt *e, t_ls *new, struct stat *stp);
+int						get_mtime(struct stat stp, t_ls *new, t_opt *e);
 
 /*
 ** Sort and print
 */
 
-// int						sort_entries(t_ls *new, t_ls **tree, t_opt *e);
-// int						print_time(t_ls *entry, t_dir *cwd);
-// void					tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
-// void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
+int	sort_entries(t_opt *e, t_dir *cwd, t_ls **tree, t_ls *new);
+int						print_time(t_ls *entry, t_dir *cwd);
+void					tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
+void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
 // int						entry_pr(t_ls *entry, t_dir *cwd, t_opt *e);
 
 
