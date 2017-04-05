@@ -25,7 +25,7 @@ int		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp) // make
 	zero_entry(new);
 	new->path = ft_catpath(cwd->path, dp->d_name);
 	new->name = ft_strdup(dp->d_name);
-	get_type(e, new, &stp);
+	get_type(e, cwd, new, &stp);
 	sort_entries(e, cwd, &(cwd->tree), new);
 	return (1);
 }
@@ -40,7 +40,7 @@ int		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 	new->path = ft_strdup(s);
 	new->name = ft_strdup(s);
 	new->no_dir = 1;
-	get_type(e, new, &stp);
+	get_type(e, cwd, new, &stp);
 	sort_entries(e, cwd, &(cwd->tree), new);
 	return (1);
 }

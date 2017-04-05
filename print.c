@@ -1,77 +1,77 @@
 #include "ft_ls.h"
 
-// static int	ipad_pr(int print, size_t width, int align)
-// {
-// 	size_t i;
+static int	ipad_pr(int print, size_t width, int align)
+{
+	size_t i;
 
-// 	i = 0;
-// 	if (align)
-// 		ft_printf("%d", (int)print);
-// 	if (ft_numlen(print) < width)
-// 	{
-// 		while (ft_numlen(print) + i < width)
-// 		{
-// 			ft_putchar(' ');
-// 			i++;
-// 		}
-// 	}
-// 	if (!align)
-// 		ft_printf("%d", (int)print);
+	i = 0;
+	if (align)
+		ft_printf("%d", (int)print);
+	if (ft_numlen(print) < width)
+	{
+		while (ft_numlen(print) + i < width)
+		{
+			ft_putchar(' ');
+			i++;
+		}
+	}
+	if (!align)
+		ft_printf("%d", (int)print);
 	
-// 	return (0);
-// }
+	return (0);
+}
 
-// static int	cpad_pr(char *print, size_t width, int align)
-// {
-// 	size_t i;
+static int	cpad_pr(char *print, size_t width, int align)
+{
+	size_t i;
 
-// 	i = 0;
-// 	if (align)
-// 		ft_printf("%s", print);
-// 	if (ft_strlen(print) < width)
-// 	{
-// 		while (ft_strlen(print) + i < width)
-// 		{
-// 			ft_putchar(' ');
-// 			i++;
-// 		}
-// 	}
-// 	if (!align)
-// 		ft_printf("%s", print);
-// 	ft_putchar(' ');
-// 	return (0);
-// }
+	i = 0;
+	if (align)
+		ft_printf("%s", print);
+	if (ft_strlen(print) < width)
+	{
+		while (ft_strlen(print) + i < width)
+		{
+			ft_putchar(' ');
+			i++;
+		}
+	}
+	if (!align)
+		ft_printf("%s", print);
+	ft_putchar(' ');
+	return (0);
+}
 
-// static int	print_id(t_ls *tree, t_dir *cwd)
-// {
-// 	cpad_pr(tree->uid_name, cwd->pad->own, 1);
-// 	ft_putchar(' ');
-// 	cpad_pr(tree->grp_name, cwd->pad->grp, 1);
-// 	ft_putchar(' ');
-// 	return (1);
-// }
+static int	print_id(t_ls *tree, t_dir *cwd)
+{
+	cpad_pr(tree->uid_name, cwd->pad->own, 1);
+	ft_putchar(' ');
+	cpad_pr(tree->grp_name, cwd->pad->grp, 1);
+	ft_putchar(' ');
+	return (1);
+}
 
 
 
-// static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
-// {
-// 	(void)e;
-// 	ft_printf("%c%c%c%c%c%c%c%c%c%c", entry->etype, entry->acc.ruser, entry->acc.wuser, entry->acc.xuser, entry->acc.rgrp, entry->acc.wgrp, entry->acc.xgrp, entry->acc.roth, entry->acc.woth, entry->acc.xoth);
-// 	ft_printf("  ");
-// 	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
-//     ft_putchar(' ');
-// 	print_id(entry, cwd);
-// 	if (ft_strchr("bc", entry->etype))
-// 	{
-// 		ipad_pr(entry->maj, cwd->pad->maj, 0);
-// 		ft_putchar(',');
-// 		ipad_pr(entry->min, cwd->pad->min, 0);
-// 	}
-// 	else
-// 		ipad_pr(entry->size, cwd->pad->size, 0);
-// 	print_time(entry, cwd);
-// 	return (1);
-// }
+static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
+{
+	(void)e;
+	ft_printf("%c%c%c%c%c%c%c%c%c%c", entry->etype, entry->acc.ruser, entry->acc.wuser, entry->acc.xuser, entry->acc.rgrp, entry->acc.wgrp, entry->acc.xgrp, entry->acc.roth, entry->acc.woth, entry->acc.xoth);
+	ft_printf("  ");
+	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
+    ft_putchar(' ');
+	print_id(entry, cwd);
+	if (ft_strchr("bc", entry->etype))
+	{
+		ipad_pr(entry->maj, cwd->pad->maj, 0);
+		ft_putchar(',');
+		ipad_pr(entry->min, cwd->pad->min, 0);
+	}
+	else
+		ipad_pr(entry->size, cwd->pad->size, 0);
+	print_time(entry, cwd);
+	return (1);
+}
 
 int		print_name(t_ls *entry, t_opt *e)
 {
@@ -81,7 +81,10 @@ int		print_name(t_ls *entry, t_opt *e)
 	if (e->ug)
 		ft_printf("%s%s%s", entry->color.fg, entry->name, FG_RESET);
 	else
+	{
 		ft_printf("%s", entry->name);
+		ft_strdel(&entry->name);
+	}
 	if (entry->etype == 'l' && e->l)
 		ft_printf("%s", entry->linkname);
 	ft_putchar('\n');
@@ -91,9 +94,9 @@ int		print_name(t_ls *entry, t_opt *e)
 static int		entry_pr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
 	(void)cwd;
-	// if (e->l)
-	// 	tree_lpr(entry, cwd, e);
-	print_time(entry, cwd);
+	if (e->l)
+		tree_lpr(entry, cwd, e);
+	//print_time(entry, cwd);
 	print_name(entry, e);
 
 	return(1);

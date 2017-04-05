@@ -1,5 +1,5 @@
-#ifndef ENV_PADDING_H
-# define ENV_PADDING_H
+#ifndef PADDING_H
+# define PADDING_H
 
 typedef struct	s_pad
 {

@@ -3,13 +3,9 @@
 static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 {
 	if (!ls)
-	{
-		//ft_printf("No ls, returning.\n");
 		return(0);
-	}	
 	if (ls->left)
 		init_pad(cwd, ls->left, e);
-
 	if (e->l)
 	{
 
@@ -19,7 +15,6 @@ static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 			cwd->pad->own = ft_strlen(ls->uid_name); // + 1
 		if (ft_strlen(ls->grp_name) >= cwd->pad->grp)
 			cwd->pad->grp = ft_strlen(ls->grp_name); // + 2
-		
 		if (ls->etype == 'b' || ls->etype == 'c')
 		{
 			if (ft_numlen(ls->size) >= cwd->pad->size)
@@ -38,14 +33,8 @@ static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 		}
 		
 	}
-	// ft_printf("SEGFAULT ---------->\n");
-
 	if (ls->right)
-	{
-		//ft_printf("ls name: %s\n", ls->name);
 		init_pad(cwd, ls->right, e);
-	}
-
 	return (1);
 }	
 
@@ -53,9 +42,8 @@ int				get_padding(t_dir *cwd, t_ls *ls, t_opt *e)
 {
 	if (!(cwd->pad = malloc(sizeof(t_pad))))
 	{
-		error(1, "./ft_ls");
+		error(1, "get_padding error");
 	}
-	cwd->pad->acc = 10;
 	cwd->pad->ext = 1;
 	cwd->pad->lnk = 0;
 	cwd->pad->own = 0;

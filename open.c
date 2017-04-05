@@ -19,15 +19,16 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
 {
 	if (!e || !cwd)
 		return (0);
-    // if (e->l)
-    // 	ft_printf("total %ld\n", cwd->n);
-    //get_padding(cwd, cwd->entries, e);
+    if (e->l)
+    	ft_printf("total %ld\n", cwd->n);
+    get_padding(cwd, cwd->tree, e);
     if (e->r)
     	tree_prrv(cwd->tree, *cwd, e);
     else
     	tree_pr(cwd->tree, *cwd, e);
-    // free(cwd->pad);
+    free(cwd->pad);
     open_subdir(e, *cwd, cwd->tree, 0);
+
 
     return (1);
 }
@@ -38,11 +39,9 @@ int	zero_dir(t_dir *cwd, char *path, int *parent)
 		return(0);
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
-	//cwd->first = first ? 1 : 0;
 	cwd->parent = parent ? 1 : 0;
 	cwd->n = 0;
 	*parent = 0;
-	//*first = 0;
 	return (1);
 }
 
@@ -57,7 +56,7 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 	{
 		if (dp->d_name[0] != '.' || e->a)
 		{
-			path = ft_catpath(cwd->path, dp->d_name);
+			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
 			//ft_printf("path : %s\n", path);
 			if ((stat(path, &stp) || (lstat(path, &ltp))))
 				error(1, "dir_open ERROR");
@@ -87,25 +86,22 @@ int		init_dir_open(t_opt *e, char *d_path, int *first, int *parent)
 {
 	DIR						*dir;
 	t_dir					*cwd;
-	//ft_printf("first: %d\n", *first);
 
 	if ((dir = opendir(d_path)) == NULL || !d_path || !e)
 		error(1, "INIT_OPEN ERROR");
 	else
 	{
-		cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
+		cwd = (t_dir *)ft_memalloc(sizeof(t_dir)); //not freed
 		zero_dir(cwd, d_path, parent);
 		if (!*first || (*first && e->files))
 		{
 			ft_printf("\n");
 		}
 		if (e->dirs || !*first || e->files)
-		{
-			//ft_printf("Multiples dirs or not first dir.");
 			ft_printf("%s:\n", cwd->path);
-		}
 		dir_open(e, cwd, dir);
 	}
+
 	return(1);
 }
 

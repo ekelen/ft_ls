@@ -77,16 +77,16 @@ int			get_access(t_ls *new, struct stat *stp)
 	return (1);
 }
 
-// int			get_dir_size(t_dir *cwd, t_ls *new)
-// {
-// 	cwd->n += new->blkct;
-// 	return(1);
-// }
+int			get_dir_size(t_dir *cwd, t_ls *new)
+{
+	cwd->n += new->blkct;
+	return(1);
+}
 
 // 	if ()
 // 	get_dir_size(cwd, new);
 
-int			get_type(t_opt *e, t_ls *new, struct stat *stp)
+int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 {
 	if (S_ISREG(stp->st_mode))
 		new->etype = '-';
@@ -110,7 +110,8 @@ int			get_type(t_opt *e, t_ls *new, struct stat *stp)
 	get_access(new, stp);
 	get_uidgrp(new, stp);
 	get_size(new, stp);
-
+	if (!new->no_dir)
+		get_dir_size(cwd, new);
 	get_mtime(*stp, new, e);
 	get_color(new, e);
 	return(1);

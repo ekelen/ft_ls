@@ -1,14 +1,14 @@
 #include "ft_ls.h"
 
-static int str_switch(char *s1, char *s2)
+static int str_switch(char **s1, char **s2)
 {
 	char *tmp;
 
-	tmp = ft_strdup(s1);
-	ft_strdel(&s1);
-	s1 = ft_strdup(s2);
-	ft_strdel(&s2);
-	s2 = ft_strdup(tmp);
+	tmp = ft_strdup(*s1);
+	ft_strdel(s1);
+	*s1 = ft_strdup(*s2);
+	ft_strdel(s2);
+	*s2 = ft_strdup(tmp);
 	ft_strdel(&tmp);
 	return(1);
 }
@@ -32,9 +32,9 @@ static int sort_args_time(char **s, int num_files)
 			if ((stat(s[i + 1], &stp2)) != 0)
 			error(1, "sort arg time error");
 			if (stp.st_mtime < stp2.st_mtime)
-				str_switch(s[i], s[i+1]);
+				str_switch(&s[i], &s[i+1]);
 			else if (stp.SMT == stp2.SMT && stp.SMS < stp2.SMS)
-				str_switch(s[i], s[i+1]);	
+				str_switch(&s[i], &s[i+1]);	
 			i++;
 		}
 		j++;
@@ -56,7 +56,10 @@ static int sort_args_ascii(char **s, int num_files)
 		while (i + 1 < num_files - j)
 		{
 			if (ft_ustrcmp(s[i], s[i + 1]) > 0)
-				str_switch(s[i], s[i+1]);
+			{
+				//ft_printf("Need to switch %s and %s\n", s[i], s[i+1]);
+				str_switch(&s[i], &s[i+1]);
+			}
 			i++;
 		}
 		j++;
@@ -124,6 +127,7 @@ static int	handle_files(t_opt *e, char **s)
 	{
 		tree_pr(file_cwd->tree, *file_cwd, e);
 	}
+	//tree_del(file_cwd->tree);
 	return (1);
 }
 
@@ -176,6 +180,16 @@ static int	get_num_files(int ac, char **av, int *num_flags)
 	return(num_files);
 }
 
+void	free_args(char **args, int i)
+{
+	while (i >= 0)
+	{
+		free(args[i]);
+		i--;
+	}
+	free(args);
+}
+
 int		main(int ac, char **av)
 {
 	t_opt	e;
@@ -188,7 +202,7 @@ int		main(int ac, char **av)
 	zero_opt(&e);
 	i = 1;
 	num_files = get_num_files(ac, av, &num_flags);
-	args = (char **)malloc(sizeof(char *) * (num_files + 1));
+	args = (char **)malloc(sizeof(char *) * (num_files + 1)); //FREED
 	i = 1;
 	while (i <= num_flags)
 	{
@@ -198,7 +212,7 @@ int		main(int ac, char **av)
 	}
 	if (i == ac)
 	{
-		args[0] = ft_strdup(".");
+		args[0] = ft_strdup("."); // FREED
 		i = 1;
 	}
 	else
@@ -206,11 +220,12 @@ int		main(int ac, char **av)
 		i = 0;
 		while (i < num_files)
 		{
-			args[i] = ft_strdup(av[i + 1 + num_flags]);
+			args[i] = ft_strdup(av[i + 1 + num_flags]); // FREED
 			i++;
 		}
 	}
-	args[i] = 0;
+	args[i] = 0; // FREED
 	eval_args(&e, args, num_files);
+	free_args(args, i);
 	return (0);
 }
