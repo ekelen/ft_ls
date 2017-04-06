@@ -38,7 +38,6 @@ static int sort_args_time(char **s, int num_files)
 			i++;
 		}
 		j++;
-
 	}
 	return(1);
 }
@@ -70,15 +69,18 @@ int	sort_args(t_opt *e, char **s, int num_files)
 {
 	int i;
 	struct stat stp;
-	int err;
 	int num_dirs;
 
 	i = 0;
 	num_dirs = num_files;
 	while (s[i])
 	{
-		if ((err = stat(s[i], &stp)) != 0)
-			error(err, "sort arg ascii error");
+		//ft_printf(">>>>>>>>>>>>>>> s[i] : \n%s\n", s[i]);
+		if ((stat(s[i], &stp)) || (lstat(s[i], &stp)))
+		{
+			//ft_printf(">>>>>>>>s[i]:%s]n");
+			error(1, "sort arg ascii error");
+		}
 		if (!(S_ISDIR(stp.st_mode)))
 		{
 			e->files = 1;
@@ -170,7 +172,8 @@ static int	get_num_files(int ac, char **av, int *num_flags)
 	i = 0;
 	num_files = 0;
 	i++;
-	while (i < ac && av[i][0] == '-')
+	while (i < ac && av[i][0] == '-' \
+		&& ft_strlen(av[i]) > 1)
 	{
 		(*num_flags)++;
 		i++;

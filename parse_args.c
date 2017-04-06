@@ -26,6 +26,8 @@ int		init_opts(char *s, t_opt *e)
 	{
 		if (*s == 'a')
 			e->a = 1;
+		else if (*s == '-')
+			;
 		else if (*s == 't')
 			e->t = 1;
 		else if (*s == 'R')

@@ -37,8 +37,10 @@ int	zero_dir(t_dir *cwd, char *path, int *parent)
 {
 	if (!cwd || !path)
 		return(0);
+	//ft_printf("path: %s\n", path);
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
+	//ft_printf("cwd->path: %s\n", cwd->path);
 	cwd->parent = parent ? 1 : 0;
 	cwd->n = 0;
 	*parent = 0;
@@ -56,8 +58,9 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 	{
 		if (dp->d_name[0] != '.' || e->a)
 		{
+			//ft_printf("cwd->path : %s, dp->d_name: %s\n", cwd->path, dp->d_name);
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
-			//ft_printf("path : %s\n", path);
+			ft_printf("path : %s\n", path);
 			if ((stat(path, &stp) || (lstat(path, &ltp))))
 				error(1, "dir_open ERROR");
 			else
@@ -69,7 +72,6 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 					new_entry(e, cwd, ltp, dp);
 				}
 				else
-					//ft_printf("path : %s\n", path);
 					new_entry(e, cwd, stp, dp);
 			}
 			ft_strdel(&path);
