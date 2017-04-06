@@ -20,7 +20,6 @@ int			get_lnk(t_ls *new)
 	{
 		ft_bzero(tmp, PATH_MAX);
 		readlink(new->path, tmp, PATH_MAX);
-		//ft_strcpy(new->linkname, " -> ");
 		ft_strcpy(new->linkname, tmp);
 		return (1);
 	}

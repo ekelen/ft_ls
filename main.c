@@ -1,5 +1,6 @@
 #include "ft_ls.h"
 
+
 static int str_switch(char **s1, char **s2)
 {
 	char *tmp;
@@ -13,35 +14,35 @@ static int str_switch(char **s1, char **s2)
 	return(1);
 }
 
-void		rev_args(char **s, int num_files)
-{
-	int i;
-	int j;
+// int		rev_args(char **s, int num_files)
+// {
+// 	int i;
+// 	int j;
 
-	if (!(s) || !num_files)
-		error(1, "rev_args");
-	i = 0;
-	j = num_files - 1;
-	while (s[i])
-	{
-		//ft_printf("s[i] : %s\n", s[i]);
-		//ft_printf("s[j] : %s\n", s[j]);
-		if (i != j)
-			str_switch(&s[j], &s[i]);
-		//ft_printf("AFTER: s[i] : %s\n", s[i]);
-		//ft_printf("AFTER: s[j] : %s\n", s[j]);
-		i++;
-		j--;
+// 	if (!(s) || !num_files)
+// 		error(1, "rev_args");
+// 	i = 0;
+// 	j = num_files - 1;
+// 	while (s[i])
+// 	{
+// 		//ft_printf("s[i] : %s\n", s[i]);
+// 		//ft_printf("s[j] : %s\n", s[j]);
+// 		if (i != j)
+// 			str_switch(&s[j], &s[i]);
+// 		//ft_printf("AFTER: s[i] : %s\n", s[i]);
+// 		//ft_printf("AFTER: s[j] : %s\n", s[j]);
+// 		i++;
+// 		j--;
 		
-	}
-	// i = 0;
-	// while (s[i])
-	// {
-	// 	ft_printf("reversed: s[%d] : %s\n", i, s[i]);
-	// 	i++;
-	// }
-	return ;
-}
+// 	}
+// 	// i = 0;
+// 	// while (s[i])
+// 	// {
+// 	// 	ft_printf("reversed: s[%d] : %s\n", i, s[i]);
+// 	// 	i++;
+// 	// }
+// 	return (1);
+// }
 
 static int sort_args_size(char **s, int num_files)
 {
@@ -129,13 +130,13 @@ int	sort_args(t_opt *e, char **s, int num_files)
 
 	i = 0;
 	num_dirs = num_files;
-	while (s[i])
+	while (i < num_files)
 	{
-		//ft_printf(">>>>>>>>>>>>>>> s[i] : \n%s\n", s[i]);
-		if ((stat(s[i], &stp)) || (lstat(s[i], &stp)))
+		// ft_printf(">>>>>>>>>>>>>>> s[i] : \n%s\n", s[i]);
+		if ((stat(s[i], &stp)) && (lstat(s[i], &stp)))
 		{
-			//ft_printf(">>>>>>>>s[i]:%s]n");
-			error(1, "sort arg ascii error");
+			// ft_printf(">>>>>>>>s[i]:%s\n", s[i]);
+			error(1, "sort_arg error");
 		}
 		if (!(S_ISDIR(stp.st_mode)))
 		{
@@ -150,8 +151,8 @@ int	sort_args(t_opt *e, char **s, int num_files)
 		sort_args_time(s, num_files);
 	else if (e->us)
 		sort_args_size(s, num_files);
-	if (e->r)
-		rev_args(s, num_files);
+	// if (e->r)
+	// 	rev_args(s, num_files);
 	return (1);
 }
 
@@ -160,7 +161,6 @@ static int	handle_files(t_opt *e, char **s)
 	t_dir *file_cwd;
 	struct stat stp;
 	int i;
-	int err;
 
 	i = 0;
 	file_cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
@@ -169,16 +169,18 @@ static int	handle_files(t_opt *e, char **s)
 	file_cwd->parent = 1;
 	file_cwd->n = 0;
 	file_cwd->tree = NULL;
+
 	while (s[i])
 	{
-		if ((err = stat(s[i], &stp)) != 0)
-			error(err, "handle files error");
+		if ((stat(s[i], &stp)) && ((lstat(s[i], &stp))))
+			error(1, "handle files error");
 		if (!(S_ISDIR(stp.st_mode)))
 		{
 			new_file_entry(e, stp, file_cwd, s[i]);
 		}
 		i++;
 	}
+	get_padding(file_cwd, file_cwd->tree, e);
 	if (e->r)
 		tree_prrv(file_cwd->tree, *file_cwd, e);
 	else
@@ -193,7 +195,6 @@ static int	handle_files(t_opt *e, char **s)
 int		eval_args(t_opt *e, char **s, int num_files)
 {
 	int					i;
-	int					err;
 	struct stat 		stp;
 	int					first;
 	int					parent;
@@ -203,13 +204,11 @@ int		eval_args(t_opt *e, char **s, int num_files)
 	first = 1;
 	sort_args(e, s, num_files);
 	if (e->files)
-	{
 		handle_files(e, s);
-	}
 	while (s[i])
 	{
-		if ((err = stat(s[i], &stp)) != 0)
-			error(err, "EVAL STAT ERROR");
+		if ((stat(s[i], &stp)) && ((lstat(s[i], &stp))))
+			error(1, "eval_args ERROR");
 		if ((S_ISDIR(stp.st_mode)))
 		{
 			if(!(init_dir_open(e, s[i], &first, &parent)))

@@ -22,6 +22,7 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     if (e->l)
     	ft_printf("total %ld\n", cwd->n);
     get_padding(cwd, cwd->tree, e);
+    //ft_printf("cwd->pad->lnk %d\n", cwd->pad->lnk);
     if (e->r)
     	tree_prrv(cwd->tree, *cwd, e);
     else
@@ -61,14 +62,14 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 			//ft_printf("cwd->path : %s, dp->d_name: %s\n", cwd->path, dp->d_name);
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
 			//ft_printf("path : %s\n", path);
-			if ((stat(path, &stp) || (lstat(path, &ltp))))
+			if ((stat(path, &stp) && (lstat(path, &ltp))))
 				error(1, "dir_open ERROR");
 			else
 			{
 				if (S_ISLNK(ltp.st_mode))
 				{
 					lstat(path, &ltp);
-					//ft_printf("path : %s\n", path);
+					ft_printf("path : %s\n", path);
 					new_entry(e, cwd, ltp, dp);
 				}
 				else

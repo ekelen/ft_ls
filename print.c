@@ -58,6 +58,7 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 	(void)e;
 	ft_printf("%c%c%c%c%c%c%c%c%c%c", entry->etype, entry->acc.ruser, entry->acc.wuser, entry->acc.xuser, entry->acc.rgrp, entry->acc.wgrp, entry->acc.xgrp, entry->acc.roth, entry->acc.woth, entry->acc.xoth);
 	ft_printf("  ");
+	// ft_printf("->>>>>> SEGFAULT: %d\n", cwd->pad->lnk);
 	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
     ft_putchar(' ');
 	print_id(entry, cwd);
@@ -82,6 +83,7 @@ int		print_name(t_ls *entry, t_opt *e)
 		ft_printf("%s%s%s", entry->color.fg, entry->name, FG_RESET);
 	else
 	{
+
 		ft_printf("%s", entry->name);
 		ft_strdel(&entry->name);
 	}
