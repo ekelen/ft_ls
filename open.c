@@ -60,7 +60,7 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 		{
 			//ft_printf("cwd->path : %s, dp->d_name: %s\n", cwd->path, dp->d_name);
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
-			ft_printf("path : %s\n", path);
+			//ft_printf("path : %s\n", path);
 			if ((stat(path, &stp) || (lstat(path, &ltp))))
 				error(1, "dir_open ERROR");
 			else

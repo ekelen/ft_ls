@@ -13,6 +13,64 @@ static int str_switch(char **s1, char **s2)
 	return(1);
 }
 
+void		rev_args(char **s, int num_files)
+{
+	int i;
+	int j;
+
+	if (!(s) || !num_files)
+		error(1, "rev_args");
+	i = 0;
+	j = num_files - 1;
+	while (s[i])
+	{
+		//ft_printf("s[i] : %s\n", s[i]);
+		//ft_printf("s[j] : %s\n", s[j]);
+		if (i != j)
+			str_switch(&s[j], &s[i]);
+		//ft_printf("AFTER: s[i] : %s\n", s[i]);
+		//ft_printf("AFTER: s[j] : %s\n", s[j]);
+		i++;
+		j--;
+		
+	}
+	// i = 0;
+	// while (s[i])
+	// {
+	// 	ft_printf("reversed: s[%d] : %s\n", i, s[i]);
+	// 	i++;
+	// }
+	return ;
+}
+
+static int sort_args_size(char **s, int num_files)
+{
+	struct stat		stp;
+	struct stat		stp2;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (j < num_files)
+	{
+		i = 0;
+		while (i + 1 < num_files - j)
+		{
+			if ((stat(s[i], &stp)) != 0)
+			error(1, "sort arg time error");
+			if ((stat(s[i + 1], &stp2)) != 0)
+			error(1, "sort arg time error");
+			if (stp.st_size > stp2.st_size)
+				str_switch(&s[i], &s[i+1]);
+			i++;
+		}
+		j++;
+	}
+	return (1);
+}
+
+
 static int sort_args_time(char **s, int num_files)
 {
 	struct stat		stp;
@@ -31,7 +89,7 @@ static int sort_args_time(char **s, int num_files)
 			error(1, "sort arg time error");
 			if ((stat(s[i + 1], &stp2)) != 0)
 			error(1, "sort arg time error");
-			if (stp.st_mtime < stp2.st_mtime)
+			if (stp.SMT < stp2.SMT)
 				str_switch(&s[i], &s[i+1]);
 			else if (stp.SMT == stp2.SMT && stp.SMS < stp2.SMS)
 				str_switch(&s[i], &s[i+1]);	
@@ -55,9 +113,7 @@ static int sort_args_ascii(char **s, int num_files)
 		while (i + 1 < num_files - j)
 		{
 			if (ft_ustrcmp(s[i], s[i + 1]) > 0)
-			{
 				str_switch(&s[i], &s[i+1]);
-			}
 			i++;
 		}
 		j++;
@@ -92,8 +148,10 @@ int	sort_args(t_opt *e, char **s, int num_files)
 	sort_args_ascii(s, num_files);
 	if (e->t)
 		sort_args_time(s, num_files);
-	// else if (e->us)
-	// 	sort_args_size(s, num_files);
+	else if (e->us)
+		sort_args_size(s, num_files);
+	if (e->r)
+		rev_args(s, num_files);
 	return (1);
 }
 
@@ -108,7 +166,6 @@ static int	handle_files(t_opt *e, char **s)
 	file_cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
 	ft_bzero(file_cwd->path, PATH_MAX);
 	ft_strcpy(file_cwd->path, "");
-	//file_cwd->first = 1;
 	file_cwd->parent = 1;
 	file_cwd->n = 0;
 	file_cwd->tree = NULL;

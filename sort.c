@@ -31,7 +31,7 @@ static int	sort_size(t_ls *new, t_ls **tree)
 		if (new->size > tt->size)
 			place_right(new, &tt, tn);
 		else if (new->size == tt->size \
-			&& (ft_ustrcmp(new->name, tt->name)) > 0) // make this work properly
+			&& (ft_ustrcmp(new->name, tt->name)) > 0)
 			place_right(new, &tt, tn);
 		else
 			place_left(new, &tt, tn);
@@ -50,7 +50,6 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	while (tt)
 	{
 		tn = tt;
-		//if ((ft_ustrcmp(ft_strtolower(new->path), ft_strtolower(tt->path))) > 0)
 		if ((ft_ustrcmp(new->path, tt->path)) > 0)
 		{
 			place_right(new, &tt, tn);
