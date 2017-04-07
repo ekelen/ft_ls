@@ -16,6 +16,7 @@ typedef struct	s_opt
 	int			us; // sort by size
 	int			files;
 	int			dirs;
+	int			errs;
 }				t_opt;
 
 typedef struct s_access

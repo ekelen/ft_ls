@@ -41,7 +41,6 @@ int		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 	new->name = ft_strdup(s);
 	new->no_dir = 1;
 	get_type(e, cwd, new, &stp);
-
 	sort_entries(e, cwd, &(cwd->tree), new);
 	return (1);
 }

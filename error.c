@@ -12,7 +12,7 @@ void	usage_err(char *s)
 
 void	error(int err, char *s)
 {
-	(void)err;
 	perror(s);
-	exit(1);
+	if (err == 2)
+		exit(1);
 }

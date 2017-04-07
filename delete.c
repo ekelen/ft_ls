@@ -14,3 +14,13 @@ void	tree_del(t_ls *tree)
 	}
 	free(tree);
 }
+
+void	free_args(char **args, int i)
+{
+	while (i >= 0)
+	{
+		free(args[i]);
+		i--;
+	}
+	free(args);
+}

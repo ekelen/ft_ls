@@ -55,8 +55,7 @@ typedef struct			s_dir
 	t_pad				*pad;
 	t_ls				*tree;
 	int					file_dir;
-	int					parent;
-	int					first;
+	// int					first;
 	struct s_dir		*right;
 	struct s_dir		*left;
 }						t_dir;
@@ -104,7 +103,7 @@ int						new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
 /*
 ** Open
 */
-int						init_dir_open(t_opt *e, char *d_path, int *first, int *parent);
+int						init_dir_open(t_opt *e, char *d_path, int *first);
 
 /*
 ** Global/directory settings
@@ -134,6 +133,7 @@ void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
 */
 
 void					tree_del(t_ls *tree);
+void	free_args(char **args, int i);
 
 
 #endif

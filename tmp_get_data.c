@@ -97,9 +97,6 @@ int			get_dir_size(t_dir *cwd, t_ls *new)
 	return(1);
 }
 
-// 	if ()
-// 	get_dir_size(cwd, new);
-
 int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 {
 	if (S_ISREG(stp->st_mode))

@@ -63,6 +63,7 @@ int		zero_opt(t_opt *e)
 	e->t = 0;
 	e->files = 0;
 	e->dirs = 0;
+	e->errs = 0;
 	return (1);
 }
 
