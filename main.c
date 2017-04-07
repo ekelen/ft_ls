@@ -58,6 +58,11 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 				e->files++;
 				new_file_entry(e, stp, file_cwd, s[i]);
 			}
+			else
+			{
+				
+				e->dirs++;
+			}
 		}
 		i++;
 	}
@@ -177,7 +182,6 @@ int		eval_args(t_opt *e, char **s, int num_paths)
 		res = stat(s[i], &stp);
 		if (!res && (S_ISDIR(stp.st_mode)))
 		{
-			e->dirs++;
 			if(!(init_dir_open(e, s[i], &first)))
 				ft_printf(ERR_FILE, s[i]);
 			first = 0;
@@ -245,112 +249,3 @@ int		main(int ac, char **av)
 	free_args(args, i);
 	return (0);
 }
-
-// static char	**extract_files(t_opt *e, char **s, int num_paths)
-// {
-// 	// also print errors
-// 	t_dir *file_cwd;
-// 	struct stat stp;
-// }
-
-// int	sort_args(t_opt *e, char **s, int num_paths) // just put everything in order
-// {
-// 	int					i;
-// 	int 				j;
-// 	struct stat 		stp1;
-// 	struct stat 		stp2;
-
-// 	i = 0;
-
-// 	while (j < num_paths)
-// 	{
-// 		i = 0;
-// 		while (i + 1 < num_paths - j)
-// 		{
-// 			if ((stat(s[i], &stp)) || ((stat(s[i + 1], &stp2))))
-// 				error(1, "delete me");
-// 			if (e->us && stp.st_size > stp2.st_size)
-// 			{
-// 				str_switch(&s[i], &s[i+1]);
-// 			}
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// 	return(1);
-// }
-	// int i;
-	// struct stat stp;
-	// int num_dirs;
-
-	// i = 0;
-	// num_dirs = num_paths;
-	// while (i < num_paths)
-	// {
-	// 	// ft_printf(">>>>>>>>>>>>>>> s[i] : \n%s\n", s[i]);
-	// 	if ((stat(s[i], &stp)) && (lstat(s[i], &stp)))
-	// 	{
-	// 		// ft_printf(">>>>>>>>s[i]:%s\n", s[i]);
-	// 		e->files = 1;
-	// 		num_dirs--;
-	// 		error(1, "error will disappear");
-	// 		//num_dirs--;
-	// 	}
-	// 	if (!(S_ISDIR(stp.st_mode)))
-	// 	{
-	// 		e->files = 1;
-	// 		num_dirs--;
-	// 	}
-	// 	i++;
-	// }
-
-
-	// e->dirs = num_dirs > 1 ? 1 : 0;
-	// sort_args_ascii(s, num_paths);
-	// if (e->t)
-	// 	sort_args_time(s, num_paths);
-	// else if (e->us)
-	// 	sort_args_size(s, num_paths);
-	// // if (e->r)
-	// // 	rev_args(s, num_paths);
-	// if (e->files)
-	// 	extract_files(e, s, num_paths);
-
-
-
-// static int sort_args_size(char **s, int num_paths)
-// {
-// 	struct stat		stp;
-// 	struct stat		stp2;
-// 	int i;
-// 	int j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (j < num_paths)
-// 	{
-// 		i = 0;
-// 		while (i + 1 < num_paths - j)
-// 		{
-// 			if ((stat(s[i], &stp)) != 0)
-// 			error(1, "sort arg time error");
-// 			if ((stat(s[i + 1], &stp2)) != 0)
-// 			error(1, "sort arg time error");
-// 			if (stp.st_size > stp2.st_size)
-// 				str_switch(&s[i], &s[i+1]);
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// 	return (1);
-// }
-
-
-// static int sort_args_time(char *s1, char *s2, struct stat stp, struct stat stp2)
-// {
-// 	if (stp.SMT < stp2.SMT)
-// 		str_switch(&s1, &s2);
-// 	else if (stp.SMT == stp2.SMT && stp.SMS < stp2.SMS)
-// 		str_switch(&s1, &s2);
-// 	return(1);
-// }
