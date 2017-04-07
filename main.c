@@ -60,7 +60,7 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 			}
 			else
 			{
-				
+
 				e->dirs++;
 			}
 		}
@@ -135,9 +135,8 @@ static int print_errors(t_opt *e, char **s, int num_paths)
 	{
 		if ((stat(s[i], &stp)) && ((lstat(s[i], &stp))))
 		{
-			ft_printf("ft_ls: %s: ", s[i]);
 			e->errs++;
-			error(1, "");
+			error(1, s[i]);
 		}
 		i++;
 	}

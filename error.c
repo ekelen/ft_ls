@@ -12,6 +12,7 @@ void	usage_err(char *s)
 
 void	error(int err, char *s)
 {
+	ft_printf("ft_ls: ");
 	perror(s);
 	if (err == 2)
 		exit(1);

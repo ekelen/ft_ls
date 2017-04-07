@@ -102,7 +102,6 @@ int		init_dir_open(t_opt *e, char *d_path, int *first)
 {
 	DIR						*dir;
 	t_dir					*cwd;
-	//ft_printf("d_path : %s\n");
 
 	if (!*first || (*first && e->files))
 	{
