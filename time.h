@@ -15,6 +15,7 @@ typedef struct	s_time
 	char				myr[5];
 	char				mdate[3];
 	char				mhr[6];
+	char				msec[3];
 	unsigned long int 	mnsec;
 }				t_time;
 

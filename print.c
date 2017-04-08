@@ -73,7 +73,7 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 	}
 	else
 			ipad_pr(entry->size, cwd->pad->size, 0);
-	print_time(entry, cwd);
+	print_time(e, entry, cwd);
 	return (1);
 }
 

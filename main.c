@@ -49,7 +49,7 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 	{
 		if (!(stat(s[i], &stp)) || !((lstat(s[i], &stp))))
 		{
-			if (!(S_ISDIR(stp.st_mode)))
+			if (!(S_ISDIR(stp.st_mode)) || e->d)
 			{
 				e->files++;
 				new_file_entry(e, stp, file_cwd, s[i]);
@@ -167,20 +167,24 @@ int		eval_args(t_opt *e, char **s, int num_paths)
 	int					res;
 
 	i = 0;
+	res = 0;
 	first = 1;
 	sort_args_ascii(s, num_paths);
 	print_errors(e, s, num_paths);
 	sort_args(e, s, num_paths);
-	while (s[i]) //directories (not files) are sent off for printing!
+	if (!e->d)
 	{
-		res = stat(s[i], &stp);
-		if (!res && (S_ISDIR(stp.st_mode)))
+		while (s[i]) //directories (not files) are sent off for printing!
 		{
-			if(!(init_dir_open(e, s[i], &first)))
-				ft_printf(ERR_FILE, s[i]);
-			first = 0;
+			res = stat(s[i], &stp);
+			if (!res && (S_ISDIR(stp.st_mode)))
+			{
+				if(!(init_dir_open(e, s[i], &first)))
+					ft_printf(ERR_FILE, s[i]);
+				first = 0;
+			}
+			i++;
 		}
-		i++;
 	}
 	return (1);
 }

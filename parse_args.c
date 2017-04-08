@@ -11,10 +11,14 @@ static int		parse_bonus(char s, t_opt *e)
 		e->l = 1;
 		e->g = 1;
 	}
+	else if (s == 'd')
+		e->d = 1;
 	else if (s == 'p')
 		e->p = 1;
 	else if (s == 'S')
 		e->us = 1;
+	else if (s == 'T')
+		e->ut = 1;
 	else if (s == 'o')
 	{
 		e->l = 1;
@@ -67,6 +71,7 @@ int		zero_opt(t_opt *e)
 		error(1, "./ft_ls");
 	e->one = 0;
 	e->a = 0;
+	e->d = 0;
 	e->g = 0;
 	e->l = 0;
 	e->o = 0;
@@ -75,6 +80,7 @@ int		zero_opt(t_opt *e)
 	e->ug = 0;
 	e->ur = 0;
 	e->us = 0;
+	e->ut = 0;
 	e->t = 0;
 	e->files = 0;
 	e->dirs = 0;

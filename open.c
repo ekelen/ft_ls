@@ -67,6 +67,8 @@ int	zero_dir(t_dir *cwd, char *path)
 int		should_open(t_opt *e, t_dir *cwd, struct dirent *dp)
 {
 	(void)cwd;
+	// if (e->d)
+	// 	return(0);
 	if (dp->d_name[0] == '.')
 	{
 		if (e->a)

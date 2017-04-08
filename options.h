@@ -5,6 +5,7 @@ typedef struct	s_opt
 {
 	int			one;
 	int			a;
+	int			d;  // directories treated as files, not directories to be searched
 	int			g;
 	int			l;
 	int			o;
@@ -15,6 +16,7 @@ typedef struct	s_opt
 	int			ug;	// color output
 	int			ur;	// recursive
 	int			us; // sort by size
+	int			ut; // show full time in -l format
 	int			files;
 	int			dirs;
 	int			errs;
