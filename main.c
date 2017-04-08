@@ -78,11 +78,9 @@ static int	sort_args(t_opt *e, char **s, int num_paths) // additional sort
 	struct stat		stp2;
 	int				i;
 	int				j;
-	//int				res;
 
 	i = 0;
 	j = 0;
-	//res = 0;
 	while (j < num_paths)
 	{
 		i = 0;
@@ -91,21 +89,19 @@ static int	sort_args(t_opt *e, char **s, int num_paths) // additional sort
 			if ((!(stat(s[i], &stp)) && !(stat(s[i + 1], &stp2))) \
 				|| (!(lstat(s[i], &stp) && !(lstat(s[i + 1], &stp2)))))
 			{
-				if (e->t)
+				if (e->us)
+				{
+					if (stp.st_size < stp2.st_size)
+						str_switch(&s[i], &s[i+1]);
+				}
+				else if (e->t)
 				{
 					if (stp.SMT < stp2.SMT)
 						str_switch(&s[i], &s[i + 1]);
 					else if (stp.SMT == stp2.SMT && stp.SMS < stp2.SMS)
 						str_switch(&s[i], &s[i + 1]);
 				}	
-				else if (e->us)
-				{
-					if (stp.st_size > stp2.st_size)
-						str_switch(&s[i], &s[i+1]);
-				}
 			}
-			// else
-			// 	ft_printf("problem with : %s\n", s[i]);
 			i++;
 		}
 		j++;
@@ -122,8 +118,6 @@ static int print_errors(t_opt *e, char **s, int num_paths)
 {
 	int i;
 	struct stat stp;
-	//struct stat ltp;
-	//int res;
 
 	i = 0;
 	while (i < num_paths)

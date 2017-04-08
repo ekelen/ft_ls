@@ -59,38 +59,20 @@ static int	parse_time(char *s_time, t_ls *new, t_opt *e)
 int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 {
 	char *s_time;
-	s_time = ft_strdup(ctime(&stp.st_mtime));
 	new->time = (t_time *)malloc(sizeof(t_time));
-	new->time->mnsec = stp.st_mtimespec.tv_nsec;
-	new->MT = stp.st_mtime;
+	if (e->u)
+	{
+		s_time = ft_strdup(ctime(&stp.st_atime));
+		new->time->mnsec = stp.st_atimespec.tv_nsec;
+		new->MT = stp.st_atime;
+	}
+	else
+	{
+		s_time = ft_strdup(ctime(&stp.st_mtime));
+		new->time->mnsec = stp.st_mtimespec.tv_nsec;
+		new->MT = stp.st_mtime;
+	}
 	parse_time(s_time, new, e);
 	return (1);
 }
 
-// printtime(time_t ftime)
-// {
-// 	char longstring[80];
-// 	static time_t now;
-// 	const char *format;
-// 	static int d_first = -1;
-
-// #ifndef __APPLE__
-// 	if (d_first < 0)
-// 		d_first = (*nl_langinfo(D_MD_ORDER) == 'd');
-// #endif /* __APPLE__ */
-// 	if (now == 0)
-// 		now = time(NULL);
-
-// #define	SIXMONTHS	((365 / 2) * 86400)
-// 	if (f_sectime)
-// 		/* mmm dd hh:mm:ss yyyy || dd mmm hh:mm:ss yyyy */
-// 		format = d_first ? "%e %b %T %Y " : "%b %e %T %Y ";
-// 	else if (ftime + SIXMONTHS > now && ftime < now + SIXMONTHS)
-// 		/* mmm dd hh:mm || dd mmm hh:mm */
-// 		format = d_first ? "%e %b %R " : "%b %e %R ";
-// 	else
-// 		/* mmm dd  yyyy || dd mmm  yyyy */
-// 		format = d_first ? "%e %b  %Y " : "%b %e  %Y ";
-// 	strftime(longstring, sizeof(longstring), format, localtime(&ftime));
-// 	fputs(longstring, stdout);
-// }

@@ -6,7 +6,9 @@
 # define MT time->mtime
 # define MS time->mnsec
 # define SMT st_mtime
+# define AMT st_atime
 # define SMS st_mtimespec.tv_nsec
+# define AMS st_atimespec.tv_nsec
 
 typedef struct	s_time
 {

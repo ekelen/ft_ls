@@ -78,7 +78,6 @@ typedef struct			s_dir
 	//-m (stream output across the page, separated by commas)
 	//-p (add a slash after each directory found
 	//-S sort files by size
-	//-o same as -l but without group id
 	//-G colorized output
 	//invent your own (ask if want to list ? search directory ?)
 	//-A list all entries except . and ..
@@ -98,7 +97,7 @@ char					*ft_catpath(char *dir, char *name);
 
 int						new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
 int						new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
-int	zero_dir(t_dir *cwd, char *path);
+int						zero_dir(t_dir *cwd, char *path);
 
 /*
 ** Open

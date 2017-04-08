@@ -28,7 +28,7 @@ static int	sort_size(t_ls *new, t_ls **tree)
 	while (tt)
 	{
 		tn = tt;
-		if (new->size > tt->size)
+		if (new->size < tt->size)
 			place_right(new, &tt, tn);
 		else if (new->size == tt->size \
 			&& (ft_ustrcmp(new->name, tt->name)) > 0)
@@ -93,12 +93,11 @@ int	sort_entries(t_opt *e, t_dir *cwd, t_ls **tree, t_ls *new)
 		*tree = new;
 		return (1);
 	}
-	if (e->t)
-	{
-		sort_time(new,tree);
-	}
-	else if (e->us)
+	
+	if (e->us)
 		sort_size(new, tree);
+	else if (e->t)
+		sort_time(new,tree);
 	else
 		sort_ascii(new, tree);
 	return (1);

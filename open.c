@@ -35,7 +35,6 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     if (e->l && cwd->contents)
     	ft_printf("total %ld\n", cwd->n);
     get_padding(cwd, cwd->tree, e);
-    //ft_printf("cwd->pad->lnk %d\n", cwd->pad->lnk);
     if (e->r)
     	tree_prrv(cwd->tree, *cwd, e);
     else
@@ -45,8 +44,6 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     	open_subdir_rev(e, *cwd, cwd->tree, 0);
     else
     	open_subdir(e, *cwd, cwd->tree, 0);
-
-
     return (1);
 }
 
@@ -67,8 +64,6 @@ int	zero_dir(t_dir *cwd, char *path)
 int		should_open(t_opt *e, t_dir *cwd, struct dirent *dp)
 {
 	(void)cwd;
-	// if (e->d)
-	// 	return(0);
 	if (dp->d_name[0] == '.')
 	{
 		if (e->a)
@@ -100,7 +95,6 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
 			if (!(stat(path, &stp)))
 			{
-				//ft_printf("failed stat: %s\n", path);
 				if (!(lstat(path, &ltp)))
 				{
 					if (S_ISLNK(ltp.st_mode))

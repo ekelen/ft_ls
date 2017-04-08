@@ -26,6 +26,8 @@ static int		parse_bonus(char s, t_opt *e)
 	}
 	else if (s == '1')
 		e->one = 1;
+	else if (s == 'u')
+		e->u = 1;
 	else
 		return (0);
 	return (1);
@@ -82,6 +84,7 @@ int		zero_opt(t_opt *e)
 	e->us = 0;
 	e->ut = 0;
 	e->t = 0;
+	e->u = 0;
 	e->files = 0;
 	e->dirs = 0;
 	e->errs = 0;
