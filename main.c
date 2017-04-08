@@ -190,19 +190,17 @@ int		eval_args(t_opt *e, char **s, int num_paths)
 	return (1);
 }
 
-static int	get_num_paths(int ac, char **av, int *num_flags)
+static int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags)
 {
 	int i;
 	int num_paths;
-
-	i = 0;
 	num_paths = 0;
-	i++;
-	while (i < ac && av[i][0] == '-' \
+	i = 1;
+	while (i < ac && av[i][0] == '-' && (init_opts(av[i], e)) \
 		&& ft_strlen(av[i]) > 1)
 	{
-		(*num_flags)++;
 		i++;
+		(*num_flags)++;
 	}
 	num_paths = i == ac ? 1 : ac - *num_flags - 1;
 	return(num_paths);
@@ -220,19 +218,12 @@ int		main(int ac, char **av)
 	num_flags = 0;
 	zero_opt(&e);
 	i = 1;
-	num_paths = get_num_paths(ac, av, &num_flags);
+	num_paths = get_num_paths(&e, ac, av, &num_flags);
 	args = (char **)malloc(sizeof(char *) * (num_paths + 1)); //FREED
-	i = 1;
-	while (i <= num_flags)
+	if (num_paths == 1 && num_flags == ac - 1)
 	{
-		if (!(init_opts(av[i], &e)))
-			return (1);
-		i++;
-	}
-	if (i == ac)
-	{
+		//ft_printf("No path provided.");
 		args[0] = ft_strdup("."); // FREED
-		i = 1;
 	}
 	else
 	{

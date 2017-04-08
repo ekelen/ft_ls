@@ -97,6 +97,21 @@ int			get_dir_size(t_dir *cwd, t_ls *new)
 	return(1);
 }
 
+int			get_acl(t_opt *e, t_dir *cwd, t_ls *new)
+{
+	(void)e;
+	(void)cwd;
+	if (listxattr(new->path, NULL, 0, XATTR_NOFOLLOW) > 0)
+		new->acl = '@';
+	// else if (listxattr(str2, NULL, 0, XATTR_NOFOLLOW) > 0)
+	// 	new->acl = '@';
+	else if (acl_get_file(new->path, ACL_TYPE_EXTENDED))
+		new->acl = '+';
+	else
+		new->acl = ' ';
+	return(1);
+}
+
 int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 {
 	if (S_ISREG(stp->st_mode))
@@ -126,5 +141,6 @@ int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 	get_mtime(*stp, new, e);
 	get_color(new, e);
 	get_lnk(new);
+	get_acl(e, cwd, new);
 	return(1);
 }

@@ -5,7 +5,7 @@
 # define VALID_OPT "[-atRrl]"
 
 void	error(int err, char *s);
-void	usage_err(char *s);
+void	usage_err(char c);
 
 // segfault for -o
 

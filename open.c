@@ -75,20 +75,32 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 		{
 			//ft_printf("cwd->path : %s, dp->d_name: %s\n", cwd->path, dp->d_name);
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
-			//ft_printf("path : %s\n", path);
-			if ((stat(path, &stp) || (lstat(path, &ltp))))
-				error(1, "dir_open ERROR");
+			if (!(stat(path, &stp)))
+			{
+				//ft_printf("failed stat: %s\n", path);
+				if (!(lstat(path, &ltp)))
+				{
+					if (S_ISLNK(ltp.st_mode))
+					{
+						lstat(path, &ltp);
+						new_entry(e, cwd, ltp, dp);
+					}
+					else
+						new_entry(e, cwd, stp, dp);
+				}
+			}
 			else
 			{
-				if (S_ISLNK(ltp.st_mode))
+				if (!(lstat(path, &ltp)))
 				{
-					//ft_printf("Found symlink.\n", dp->d_name);
-					lstat(path, &ltp);
-					//ft_printf("path : %s\n", path);
-					new_entry(e, cwd, ltp, dp);
+					// if (S_ISLNK(ltp.st_mode))
+					// {
+						lstat(path, &ltp);
+						new_entry(e, cwd, ltp, dp);
+					// }
+					// else
+					// 	new_entry(e, cwd, stp, dp);
 				}
-				else
-					new_entry(e, cwd, stp, dp);
 			}
 			ft_strdel(&path);
 		}

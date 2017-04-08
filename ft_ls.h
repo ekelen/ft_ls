@@ -13,7 +13,7 @@
 # include <stdio.h> //DELETE
 # include <errno.h>
 # include <limits.h>
-# include <sys/xattr.h>
+#include <sys/acl.h> //MAYBE DELETE
 # include "./printf/includes/ft_printf.h"
 # include "./libft/libft.h"
 # include "color.h"
@@ -28,7 +28,7 @@ typedef struct	s_ls
 	struct stat			*stp;
 	ino_t				d_ino;		// serial number ..?
 	long 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
-	off_t				size;			// signed int type - how big file is
+	size_t				size;			// signed int type - how big file is
 	char				uid_name[NAME_MAX];
 	char				grp_name[NAME_MAX];
 	char				*path;
@@ -41,6 +41,7 @@ typedef struct	s_ls
 	unsigned int		blkct;
 	t_color				color;
 	t_access			acc;
+	char				acl;
 	t_time				*time;
 	struct s_ls			*right;
 	struct s_ls 		*left;
@@ -49,13 +50,11 @@ typedef struct	s_ls
 typedef struct			s_dir
 {
 	char				path[PATH_MAX];
-	size_t					n;
-	// int							is_file;
-	// int							error;
+	size_t				n;
 	t_pad				*pad;
 	t_ls				*tree;
 	int					file_dir;
-	// int					first;
+	int					contents;
 	struct s_dir		*right;
 	struct s_dir		*left;
 }						t_dir;

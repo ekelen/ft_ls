@@ -21,13 +21,20 @@ static int		parse_bonus(char s, t_opt *e)
 
 int		init_opts(char *s, t_opt *e)
 {
+	static int hyphen_as_arg = 1;
 	s++;
 	while (*s)
 	{
 		if (*s == 'a')
 			e->a = 1;
 		else if (*s == '-')
-			;
+		{
+			if (hyphen_as_arg && *(s + 1))
+				usage_err(*s);
+			if (!hyphen_as_arg)
+				return(0);
+			hyphen_as_arg = 0;
+		}
 		else if (*s == 't')
 			e->t = 1;
 		else if (*s == 'R')
@@ -39,7 +46,7 @@ int		init_opts(char *s, t_opt *e)
 		else
 		{
 			if (!(parse_bonus(*s, e)))
-				usage_err(s);
+				usage_err(*s);
 		}
 		s++;
 	}
@@ -67,21 +74,3 @@ int		zero_opt(t_opt *e)
 	return (1);
 }
 
-// int		eval_args(t_opt *e, char **s, int ac)
-// {
-
-// 	t_dir	cwd;
-// 	t_dir	*root;
-// 	int		i;
-// 	(void)ac;
-
-// 	root = NULL;
-// 	i = 0;
-// 	while (s[i][0] == '-')
-// 		i++;
-// 	if (!(dir_init(&cwd, s[i])))
-// 		ft_printf(ERR_FILE, s[i]);
-// 	if(!(init_open(s[i], e, cwd)))
-// 		ft_printf(ERR_FILE, s[i]);
-// 	return (1);
-// }

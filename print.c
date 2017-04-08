@@ -1,12 +1,12 @@
 #include "ft_ls.h"
 
-static int	ipad_pr(int print, size_t width, int align)
+static int	ipad_pr(size_t print, size_t width, size_t align)
 {
 	size_t i;
 
 	i = 0;
 	if (align)
-		ft_printf("%d", (int)print);
+		ft_printf("%zd", print);
 	if (ft_numlen(print) < width)
 	{
 		while (ft_numlen(print) + i < width)
@@ -16,7 +16,7 @@ static int	ipad_pr(int print, size_t width, int align)
 		}
 	}
 	if (!align)
-		ft_printf("%d", (int)print);
+		ft_printf("%zd", print);
 	
 	return (0);
 }
@@ -57,8 +57,9 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
 	(void)e;
 	ft_printf("%c%c%c%c%c%c%c%c%c%c", entry->etype, entry->acc.ruser, entry->acc.wuser, entry->acc.xuser, entry->acc.rgrp, entry->acc.wgrp, entry->acc.xgrp, entry->acc.roth, entry->acc.woth, entry->acc.xoth);
-	ft_printf("  ");
-	// ft_printf("->>>>>> SEGFAULT: %d\n", cwd->pad->lnk);
+	if (entry->acl)
+		ft_putchar(entry->acl);
+	ft_putchar(' ');
 	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
     ft_putchar(' ');
 	print_id(entry, cwd);
@@ -92,6 +93,7 @@ int		print_name(t_ls *entry, t_opt *e)
 	ft_putchar('\n');
 	return (1);
 }
+//diff <(~/ls/ft_ls -lR ~) <(ls -lR ~)
 
 static int		entry_pr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
