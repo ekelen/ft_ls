@@ -83,15 +83,21 @@ int		print_name(t_ls *entry, t_opt *e)
 
 	i = 0;
 	if (e->ug)
-		ft_printf("%s%s%s", entry->color.fg, entry->name, FG_RESET);
+	{
+		ft_printf("%s%s%s", entry->color.fg, entry->name);
+		if (e->p && entry->etype == 'd')
+			ft_putchar('/');
+		ft_printf("%s", FG_RESET);
+	}
 	else
 	{
-
 		ft_printf("%s", entry->name);
 		ft_strdel(&entry->name);
 	}
 	if (entry->etype == 'l' && e->l)
 		ft_printf(" -> %s", entry->linkname);
+	if (e->p && entry->etype == 'd')
+			ft_putchar('/');
 	ft_putchar('\n');
 	return (1);
 }
