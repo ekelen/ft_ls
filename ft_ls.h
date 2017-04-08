@@ -26,9 +26,9 @@ typedef struct	s_ls
 {
 	char				etype;
 	struct stat			*stp;
-	ino_t				d_ino;		// serial number ..?
-	long 				hlinks; 		// (int) number of HARD links to file. how many directories have entries. (?)
-	size_t				size;			// signed int type - how big file is
+	ino_t				d_ino;
+	long 				hlinks;
+	size_t				size;
 	char				uid_name[NAME_MAX];
 	char				grp_name[NAME_MAX];
 	char				*path;
@@ -98,6 +98,7 @@ char					*ft_catpath(char *dir, char *name);
 
 int						new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
 int						new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
+int	zero_dir(t_dir *cwd, char *path);
 
 /*
 ** Open

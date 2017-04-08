@@ -2,16 +2,24 @@
 
 static int		parse_bonus(char s, t_opt *e)
 {
-	if (s == 'G')
+	if (s == 'A')
+		e->ua = 1;
+	else if (s == 'G')
 		e->ug = 1;
 	else if (s == 'g')
+	{
+		e->l = 1;
 		e->g = 1;
+	}
 	else if (s == 'p')
 		e->p = 1;
 	else if (s == 'S')
 		e->us = 1;
 	else if (s == 'o')
+	{
+		e->l = 1;
 		e->o = 1;
+	}
 	else if (s == '1')
 		e->one = 1;
 	else

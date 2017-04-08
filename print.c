@@ -17,8 +17,7 @@ static int	ipad_pr(size_t print, size_t width, size_t align)
 	}
 	if (!align)
 		ft_printf("%zd", print);
-	
-	return (0);
+	return (1);
 }
 
 static int	cpad_pr(char *print, size_t width, int align)
@@ -42,27 +41,30 @@ static int	cpad_pr(char *print, size_t width, int align)
 	return (0);
 }
 
-static int	print_id(t_ls *tree, t_dir *cwd)
+static int	print_id(t_opt *e, t_ls *tree, t_dir *cwd)
 {
-	cpad_pr(tree->uid_name, cwd->pad->own, 1);
-	ft_putchar(' ');
-	cpad_pr(tree->grp_name, cwd->pad->grp, 1);
-	ft_putchar(' ');
+	if (!e->g)
+	{
+		cpad_pr(tree->uid_name, cwd->pad->own, 1);
+		ft_putchar(' ');
+	}
+	if (!e->o)
+	{
+		cpad_pr(tree->grp_name, cwd->pad->grp, 1);
+		ft_putchar(' ');
+	}
 	return (1);
 }
 
-
-
 static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
-	(void)e;
 	ft_printf("%c%c%c%c%c%c%c%c%c%c", entry->etype, entry->acc.ruser, entry->acc.wuser, entry->acc.xuser, entry->acc.rgrp, entry->acc.wgrp, entry->acc.xgrp, entry->acc.roth, entry->acc.woth, entry->acc.xoth);
 	if (entry->acl)
 		ft_putchar(entry->acl);
 	ft_putchar(' ');
 	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
     ft_putchar(' ');
-	print_id(entry, cwd);
+	print_id(e, entry, cwd);
 	if (ft_strchr("bc", entry->etype))
 	{
 		ipad_pr(entry->maj, cwd->pad->maj, 0);
@@ -70,7 +72,7 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 		ipad_pr(entry->min, cwd->pad->min, 0);
 	}
 	else
-		ipad_pr(entry->size, cwd->pad->size, 0);
+			ipad_pr(entry->size, cwd->pad->size, 0);
 	print_time(entry, cwd);
 	return (1);
 }
@@ -93,14 +95,12 @@ int		print_name(t_ls *entry, t_opt *e)
 	ft_putchar('\n');
 	return (1);
 }
-//diff <(~/ls/ft_ls -lR ~) <(ls -lR ~)
 
 static int		entry_pr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
 	(void)cwd;
 	if (e->l)
 		tree_lpr(entry, cwd, e);
-	//print_time(entry, cwd);
 	print_name(entry, e);
 
 	return(1);
@@ -113,7 +113,6 @@ void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e)
 	if (entry->left)
 		tree_pr(entry->left, cwd, e);
 	entry_pr(entry, &cwd, e);
-	//ft_printf("entry->path : %s, parent : %d, long: %d\n", entry->path, cwd.parent, e->l);
 	if (entry->right)
 		tree_pr(entry->right, cwd, e);
 }
@@ -125,7 +124,6 @@ void	tree_prrv(t_ls *entry, t_dir cwd, t_opt *e)
 	if (entry->right)
 		tree_prrv(entry->right, cwd, e);
 	entry_pr(entry, &cwd, e);
-	//ft_printf("entry->path : %s, parent : %d, long: %d\n", entry->path, cwd.parent, e->l);
 	if (entry->left)
 		tree_prrv(entry->left, cwd, e);
 }

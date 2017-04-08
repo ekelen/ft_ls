@@ -8,10 +8,12 @@ int			print_time(t_ls *entry, t_dir *cwd)
     now = time(0);
 	ft_printf(" %s", entry->time->mmon);
 	ft_printf(" %s", entry->time->mdate);
-	if (ft_abs(now - entry->MT) < (31540000 / 2))
+	//if (ft_abs(now - entry->MT) < (31540000 / 2))
+	if (!(now - entry->MT > 15778800) && !(now - entry->MT < -15778800))
 		ft_printf(" %s ", entry->time->mhr);
 	else
 		ft_printf("  %s ", entry->time->myr);
+	//if -ctime +190
 	return (1);
 }
 

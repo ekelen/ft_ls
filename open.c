@@ -32,7 +32,7 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
 {
 	if (!e || !cwd)
 		return (0);
-    if (e->l)
+    if (e->l && cwd->contents)
     	ft_printf("total %ld\n", cwd->n);
     get_padding(cwd, cwd->tree, e);
     //ft_printf("cwd->pad->lnk %d\n", cwd->pad->lnk);
@@ -56,10 +56,31 @@ int	zero_dir(t_dir *cwd, char *path)
 		return(0);
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
-	cwd->pad = NULL;
 	cwd->file_dir = 0;
 	cwd->n = 0;
+	cwd->contents = 0;
+	cwd->pad = NULL;
+	cwd->tree = NULL;
 	return (1);
+}
+
+int		should_open(t_opt *e, t_dir *cwd, struct dirent *dp)
+{
+	(void)cwd;
+	if (dp->d_name[0] == '.')
+	{
+		if (e->a)
+			return(1);
+		if (e->ua)
+		{
+			if (ft_strequ(dp->d_name, ".") || ft_strequ(dp->d_name, ".."))
+				return(0);
+			return (1);
+		}
+		return(0);
+	}
+	else
+		return(1);
 }
 
 int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
@@ -71,9 +92,9 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 
 	while ((dp = readdir(dir)) != NULL)
 	{
-		if (dp->d_name[0] != '.' || e->a)
+		if (should_open(e, cwd, dp))
 		{
-			//ft_printf("cwd->path : %s, dp->d_name: %s\n", cwd->path, dp->d_name);
+			cwd->contents++;
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
 			if (!(stat(path, &stp)))
 			{
@@ -93,13 +114,8 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 			{
 				if (!(lstat(path, &ltp)))
 				{
-					// if (S_ISLNK(ltp.st_mode))
-					// {
-						lstat(path, &ltp);
-						new_entry(e, cwd, ltp, dp);
-					// }
-					// else
-					// 	new_entry(e, cwd, stp, dp);
+					lstat(path, &ltp);
+					new_entry(e, cwd, ltp, dp);
 				}
 			}
 			ft_strdel(&path);

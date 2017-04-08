@@ -43,12 +43,8 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 
 	i = 0;
 	file_cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
-	ft_bzero(file_cwd->path, PATH_MAX);
-	ft_strcpy(file_cwd->path, "");
+	zero_dir(file_cwd, "");
 	file_cwd->file_dir = 1;
-	file_cwd->n = 0;
-	file_cwd->tree = NULL;
-
 	while (i < num_files)
 	{
 		if (!(stat(s[i], &stp)) || !((lstat(s[i], &stp))))
@@ -60,7 +56,6 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 			}
 			else
 			{
-
 				e->dirs++;
 			}
 		}

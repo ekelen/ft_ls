@@ -7,10 +7,11 @@ typedef struct	s_opt
 	int			a;
 	int			g;
 	int			l;
-	int			o;  // same as l but no group
+	int			o;
 	int			p;	// add trailing slash to directories
 	int			r;	// reverse
 	int			t;	// time
+	int			ua; // hide . ..
 	int			ug;	// color output
 	int			ur;	// recursive
 	int			us; // sort by size
