@@ -88,6 +88,10 @@ int			get_access(t_ls *new, struct stat *stp)
 		new->acc.xuser = new->acc.xuser == '-' ? 'S' : 's';
 	if (stp->st_mode & S_ISGID)
 		new->acc.xgrp = new->acc.xgrp == '-' ? 'S' : 's';
+	if (stp->st_mode & S_IXOTH)
+		new->acc.xoth = (stp->st_mode & S_ISVTX) ? 't' : 'x';
+	else if (stp->st_mode & S_ISVTX)
+		new->acc.xoth = 'T';
 	return (1);
 }
 
