@@ -1,32 +1,36 @@
 #include "ft_ls.h"
 
-static int		parse_bonus(char s, t_opt *e)
+static int		parse_bonus(t_opt *e, char *s)
 {
-	if (s == 'A')
+	if (*s == 'A')
 		e->ua = 1;
-	else if (s == 'G')
+	else if (*s == 'G')
 		e->ug = 1;
-	else if (s == 'g')
+	else if (*s == 'g')
 	{
 		e->l = 1;
 		e->g = 1;
 	}
-	else if (s == 'd')
+	else if (*s == 'd')
 		e->d = 1;
-	else if (s == 'p')
+	else if (*s == 'p')
 		e->p = 1;
-	else if (s == 'S')
+	else if (*s == 'S')
 		e->us = 1;
-	else if (s == 'T')
+	else if (*s == 'T')
 		e->ut = 1;
-	else if (s == 'o')
+	else if (*s == 'o')
 	{
 		e->l = 1;
 		e->o = 1;
 	}
-	else if (s == '1')
+	else if (*s == '1')
+	{
+		if (!ft_strchr("gl", *s))
+			e->l = 0;
 		e->one = 1;
-	else if (s == 'u')
+	}
+	else if (*s == 'u')
 		e->u = 1;
 	else
 		return (0);
@@ -36,6 +40,7 @@ static int		parse_bonus(char s, t_opt *e)
 int		init_opts(char *s, t_opt *e)
 {
 	static int hyphen_as_arg = 1;
+	// static 
 	s++;
 	while (*s)
 	{
@@ -59,7 +64,7 @@ int		init_opts(char *s, t_opt *e)
 			e->l = 1;
 		else
 		{
-			if (!(parse_bonus(*s, e)))
+			if (!(parse_bonus(e, s)))
 				usage_err(*s);
 		}
 		s++;

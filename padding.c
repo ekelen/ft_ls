@@ -31,7 +31,6 @@ static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 			if (ft_numlen(ls->size) >= cwd->pad->size)
 			cwd->pad->size = ft_numlen(ls->size); // + 2
 		}
-		
 	}
 	if (ls->right)
 		init_pad(cwd, ls->right, e);
