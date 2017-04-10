@@ -37,7 +37,7 @@ void	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     	tree_prrv(cwd->tree, *cwd, e);
     else
     	tree_pr(cwd->tree, *cwd, e);
-    free(PAD);
+    //free(PAD);
     if (e->r)
     	open_subdir_rev(e, *cwd, cwd->tree, 0);
     else
@@ -52,7 +52,6 @@ void	zero_dir(t_dir *cwd, char *path)
 	cwd->file_dir = 0;
 	cwd->n = 0;
 	cwd->contents = 0;
-	PAD = NULL;
 	cwd->tree = NULL;
 	cwd->left = NULL;
 	cwd->right = NULL;

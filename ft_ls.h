@@ -49,7 +49,7 @@ typedef struct			s_dir
 {
 	char				path[PATH_MAX];
 	size_t				n;
-	t_pad				*pad;
+	t_pad				pad;
 	t_ls				*tree;
 	int					file_dir;
 	int					contents;
