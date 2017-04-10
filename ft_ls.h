@@ -13,7 +13,7 @@
 # include <stdio.h> //DELETE
 # include <errno.h>
 # include <limits.h>
-#include <sys/acl.h> //MAYBE DELETE
+# include <sys/acl.h> //MAYBE DELETE
 # include "./printf/includes/ft_printf.h"
 # include "./libft/libft.h"
 # include "color.h"
@@ -25,8 +25,6 @@
 typedef struct	s_ls
 {
 	char				etype;
-	//struct stat			*stp;
-	//ino_t				d_ino;
 	long 				hlinks;
 	size_t				size;
 	char				uid_name[NAME_MAX];
@@ -97,7 +95,7 @@ int						get_mtime(struct stat stp, t_ls *new, t_opt *e);
 ** Sort and print
 */
 
-int						sort_entries(t_opt *e, t_dir *cwd, t_ls **tree, t_ls *new);
+void					sort_entries(t_opt *e, t_ls **tree, t_ls *new);
 int						print_time(t_opt *e, t_ls *entry, t_dir *cwd);
 void					tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
 void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);

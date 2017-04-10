@@ -1,6 +1,8 @@
 #ifndef PADDING_H
 # define PADDING_H
 
+# define PAD cwd->pad
+
 typedef struct	s_pad
 {
 	size_t			acc;

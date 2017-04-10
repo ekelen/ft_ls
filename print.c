@@ -45,12 +45,12 @@ static int	print_id(t_opt *e, t_ls *tree, t_dir *cwd)
 {
 	if (!e->g)
 	{
-		cpad_pr(tree->uid_name, cwd->pad->own, 1);
+		cpad_pr(tree->uid_name, PAD->own, 1);
 		ft_putchar(' ');
 	}
 	if (!e->o)
 	{
-		cpad_pr(tree->grp_name, cwd->pad->grp, 1);
+		cpad_pr(tree->grp_name, PAD->grp, 1);
 		ft_putchar(' ');
 	}
 	return (1);
@@ -62,17 +62,17 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 	if (entry->acl)
 		ft_putchar(entry->acl);
 	ft_putchar(' ');
-	ipad_pr(entry->hlinks, cwd->pad->lnk, 0);
+	ipad_pr(entry->hlinks, PAD->lnk, 0);
     ft_putchar(' ');
 	print_id(e, entry, cwd);
 	if (ft_strchr("bc", entry->etype))
 	{
-		ipad_pr(entry->maj, cwd->pad->maj, 0);
+		ipad_pr(entry->maj, PAD->maj, 0);
 		ft_putchar(',');
-		ipad_pr(entry->min, cwd->pad->min, 0);
+		ipad_pr(entry->min, PAD->min, 0);
 	}
 	else
-			ipad_pr(entry->size, cwd->pad->size, 0);
+			ipad_pr(entry->size, PAD->size, 0);
 	print_time(e, entry, cwd);
 	return (1);
 }
@@ -92,8 +92,8 @@ int		print_name(t_ls *entry, t_opt *e)
 	else
 	{
 		ft_printf("%s", entry->name);
-		ft_strdel(&entry->name);
 	}
+	ft_strdel(&entry->name);
 	if (entry->etype == 'l' && e->l)
 		ft_printf(" -> %s", entry->linkname);
 	if (e->p && entry->etype == 'd')
@@ -104,11 +104,9 @@ int		print_name(t_ls *entry, t_opt *e)
 
 static int		entry_pr(t_ls *entry, t_dir *cwd, t_opt *e)
 {
-	(void)cwd;
 	if (e->l)
 		tree_lpr(entry, cwd, e);
 	print_name(entry, e);
-
 	return(1);
 }
 

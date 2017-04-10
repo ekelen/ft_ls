@@ -28,10 +28,8 @@ void	open_subdir_rev(t_opt *e, t_dir cwd, t_ls *entry, int first) // after print
 		open_subdir_rev(e, cwd, entry->left, first);
 }
 
-static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
+void	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
 {
-	if (!e || !cwd)
-		return (0);
     if (e->l && cwd->contents)
     	ft_printf("total %ld\n", cwd->n);
     get_padding(cwd, cwd->tree, e);
@@ -39,12 +37,12 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     	tree_prrv(cwd->tree, *cwd, e);
     else
     	tree_pr(cwd->tree, *cwd, e);
-    free(cwd->pad);
+    free(PAD);
     if (e->r)
     	open_subdir_rev(e, *cwd, cwd->tree, 0);
     else
     	open_subdir(e, *cwd, cwd->tree, 0);
-    return (1);
+    return ;
 }
 
 void	zero_dir(t_dir *cwd, char *path)
@@ -54,14 +52,15 @@ void	zero_dir(t_dir *cwd, char *path)
 	cwd->file_dir = 0;
 	cwd->n = 0;
 	cwd->contents = 0;
-	cwd->pad = NULL;
+	PAD = NULL;
 	cwd->tree = NULL;
+	cwd->left = NULL;
+	cwd->right = NULL;
 	return ;
 }
 
-int		should_open(t_opt *e, t_dir *cwd, struct dirent *dp)
+int		should_open(t_opt *e, struct dirent *dp)
 {
-	(void)cwd;
 	if (dp->d_name[0] == '.')
 	{
 		if (e->a)
@@ -87,7 +86,7 @@ int		dir_open(t_opt *e, t_dir *cwd, DIR *dir)
 
 	while ((dp = readdir(dir)) != NULL)
 	{
-		if (should_open(e, cwd, dp))
+		if (should_open(e, dp))
 		{
 			cwd->contents++;
 			path = ft_catpath(cwd->path, dp->d_name); // freed (check function)
@@ -125,6 +124,7 @@ int		init_dir_open(t_opt *e, char *d_path, int *first)
 	DIR						*dir;
 	t_dir					*cwd;
 
+	cwd = NULL;
 	if (!*first || (*first && e->files))
 	{
 		ft_printf("\n");
@@ -139,6 +139,6 @@ int		init_dir_open(t_opt *e, char *d_path, int *first)
 		zero_dir(cwd, d_path);
 		dir_open(e, cwd, dir);
 	}
-
+	free(cwd);
 	return(1);
 }
