@@ -92,5 +92,8 @@ void			ft_putstrmap(char **strmap);
 void			ft_putendlcolor_fd(char const *s, int fd, char *color, int nl);
 char	*ft_strtoupper(char *s);
 char	*ft_strtolower(char *s);
+int		ft_ustrcmp(char *s1, char *s2);
+int		ft_abs(int a);
+size_t	ft_numlen(unsigned int nbr);
 
 #endif

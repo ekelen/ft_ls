@@ -41,7 +41,8 @@ int				get_padding(t_dir *cwd, t_ls *ls, t_opt *e)
 {
 	if (!(cwd->pad = malloc(sizeof(t_pad))))
 	{
-		error(1, "get_padding error");
+		error("malloc error");
+		exit(-1);
 	}
 	cwd->pad->ext = 1;
 	cwd->pad->lnk = 0;

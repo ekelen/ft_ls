@@ -25,8 +25,8 @@
 typedef struct	s_ls
 {
 	char				etype;
-	struct stat			*stp;
-	ino_t				d_ino;
+	//struct stat			*stp;
+	//ino_t				d_ino;
 	long 				hlinks;
 	size_t				size;
 	char				uid_name[NAME_MAX];
@@ -59,49 +59,24 @@ typedef struct			s_dir
 	struct s_dir		*left;
 }						t_dir;
 
-
-
-
-
-	//ft_printf("Test\n");
-
-
-	//-l, -R, -a, -r and -t
-	//l = "long"
-	//-a = include things with a dot
-	//-t == sort by time
-	//-r == reverse order
-	//-R == recursively list subdirectories encountered
-
-	//BONUS TODO:
-	//-h (uses unit instead of size)
-	//-m (stream output across the page, separated by commas)
-	//-p (add a slash after each directory found
-	//-S sort files by size
-	//-G colorized output
-	//invent your own (ask if want to list ? search directory ?)
-	//-A list all entries except . and ..
-
 /*
 ** Utilities
 */
 
-int						ft_abs(int a);
-int						ft_ustrcmp(char *s1, char *s2);
-size_t					ft_numlen(unsigned int nbr);
 char					*ft_catpath(char *dir, char *name);
 
 /*
 ** Initialize objects
 */
 
-int						new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
-int						new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
-int						zero_dir(t_dir *cwd, char *path);
+void					new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
+void					new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
+void					zero_dir(t_dir *cwd, char *path);
 
 /*
 ** Open
 */
+
 int						init_dir_open(t_opt *e, char *d_path, int *first);
 
 /*
@@ -132,7 +107,7 @@ void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
 */
 
 void					tree_del(t_ls *tree);
-void	free_args(char **args, int i);
+void					free_args(char **args, int i);
 
 
 #endif

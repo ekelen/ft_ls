@@ -10,10 +10,8 @@ void	usage_err(char c)
 	exit(1);
 }
 
-void	error(int err, char *s)
+void	error(char *s)
 {
 	ft_printf("ft_ls: ");
 	perror(s);
-	if (err == 2)
-		exit(1);
 }

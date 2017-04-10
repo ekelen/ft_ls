@@ -1,5 +1,7 @@
 #include "ft_ls.h"
 
+
+
 static int		parse_bonus(t_opt *e, char *s)
 {
 	if (*s == 'A')
@@ -40,7 +42,6 @@ static int		parse_bonus(t_opt *e, char *s)
 int		init_opts(char *s, t_opt *e)
 {
 	static int hyphen_as_arg = 1;
-	// static 
 	s++;
 	while (*s)
 	{
@@ -72,10 +73,8 @@ int		init_opts(char *s, t_opt *e)
 	return (1);
 }
 
-int		zero_opt(t_opt *e)
+void		zero_opt(t_opt *e)
 {
-	if (!e)
-		error(1, "./ft_ls");
 	e->one = 0;
 	e->a = 0;
 	e->d = 0;
@@ -93,6 +92,6 @@ int		zero_opt(t_opt *e)
 	e->files = 0;
 	e->dirs = 0;
 	e->errs = 0;
-	return (1);
+	return ;
 }
 

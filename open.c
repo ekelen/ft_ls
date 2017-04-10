@@ -47,10 +47,8 @@ static int	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     return (1);
 }
 
-int	zero_dir(t_dir *cwd, char *path)
+void	zero_dir(t_dir *cwd, char *path)
 {
-	if (!cwd || !path)
-		return(0);
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);
 	cwd->file_dir = 0;
@@ -58,7 +56,7 @@ int	zero_dir(t_dir *cwd, char *path)
 	cwd->contents = 0;
 	cwd->pad = NULL;
 	cwd->tree = NULL;
-	return (1);
+	return ;
 }
 
 int		should_open(t_opt *e, t_dir *cwd, struct dirent *dp)
@@ -134,7 +132,7 @@ int		init_dir_open(t_opt *e, char *d_path, int *first)
 	if (e->dirs > 1 || !*first || e->files || e->errs)
 			ft_printf("%s:\n", d_path);
 	if ((dir = opendir(d_path)) == NULL || !d_path || !e)
-		error(1, "INIT_OPEN ERROR");
+		error("directory error:");
 	else
 	{
 		cwd = (t_dir *)ft_memalloc(sizeof(t_dir)); //not freed

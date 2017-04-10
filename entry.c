@@ -1,9 +1,7 @@
 #include "ft_ls.h"
 
-int		zero_entry(t_ls *new)
+void		zero_entry(t_ls *new)
 {
-	if (!new)
-		error(1, "zero_entry");
 	ft_bzero(new->uid_name, NAME_MAX);
 	ft_bzero(new->grp_name, NAME_MAX);
 	ft_bzero(new->linkname, PATH_MAX);
@@ -14,10 +12,10 @@ int		zero_entry(t_ls *new)
 	new->blkct = 0;
 	new->left = NULL;
 	new->right = NULL;
-	return (1);
+	return ;
 }
 
-int		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp) // make new dir
+void		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp)
 {
 	t_ls *new;
 
@@ -27,11 +25,11 @@ int		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp) // make
 	new->name = ft_strdup(dp->d_name);
 	get_type(e, cwd, new, &stp);
 	sort_entries(e, cwd, &(cwd->tree), new);
-	return (1);
+	return ;
 }
 
 
-int		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
+void		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 {
 	t_ls *new;
 
@@ -42,5 +40,5 @@ int		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 	new->no_dir = 1;
 	get_type(e, cwd, new, &stp);
 	sort_entries(e, cwd, &(cwd->tree), new);
-	return (1);
+	return ;
 }

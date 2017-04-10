@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   toupper.c                                          :+:      :+:    :+:   */
+/*   ft_ustrcmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/29 19:50:35 by ekelen            #+#    #+#             */
-/*   Updated: 2016/11/29 19:51:42 by ekelen           ###   ########.fr       */
+/*   Created: 2016/11/28 21:32:45 by ekelen            #+#    #+#             */
+/*   Updated: 2016/12/08 16:25:25 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_strtoupper(char **s)
+int		ft_ustrcmp(char *s1, char *s2)
 {
-	if (!s)
-		return (void);
-	while (**s)
+	int difference;
+	while (*s1 && *s2 && *s1 == *s2)
 	{
-		if ((**s >= 97) && (**s <= 122))
-			**s -= 32;
-		(*s)++;
+		s1++;
+		s2++;
 	}
-	return (void);
+	difference = (*(unsigned char *)s1 - *(unsigned char *)s2);
+	return (difference);
 }

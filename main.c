@@ -20,7 +20,7 @@ int		rev_args(char **s, int num_files)
 	int j;
 
 	if (!(s) || !num_files)
-		error(1, "rev_args");
+		error("rev_args");
 	i = 0;
 	j = num_files - 1;
 	while (s[i])
@@ -33,7 +33,6 @@ int		rev_args(char **s, int num_files)
 	}
 	return (1);
 }
-
 
 static int	extract_files(t_opt *e, char **s, int num_files)
 {
@@ -125,7 +124,7 @@ static int print_errors(t_opt *e, char **s, int num_paths)
 		if ((stat(s[i], &stp)) && ((lstat(s[i], &stp))))
 		{
 			e->errs++;
-			error(1, s[i]);
+			error(s[i]);
 		}
 		i++;
 	}
@@ -214,10 +213,7 @@ int		main(int ac, char **av)
 	num_paths = get_num_paths(&e, ac, av, &num_flags);
 	args = (char **)malloc(sizeof(char *) * (num_paths + 1)); //FREED
 	if (num_paths == 1 && num_flags == ac - 1)
-	{
-		//ft_printf("No path provided.");
 		args[0] = ft_strdup("."); // FREED
-	}
 	else
 	{
 		i = 0;
