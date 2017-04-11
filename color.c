@@ -1,21 +1,21 @@
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 static void			get_color_exec(t_ls *new)
 {
 	if (new->etype == '-')
 	{
 		if (ft_strchr("sS", new->acc.xuser))
-		 {
-		 	ft_strcpy(new->color.fg, FG_BLK);
-		 	ft_strcpy(new->color.bg, FG_RED);
-		 }
-		 else if (ft_strchr("sS", new->acc.xgrp))
-		 {
-		 	ft_strcpy(new->color.fg, FG_BLK);
-		 	ft_strcpy(new->color.bg, FG_CYN);
-		 }
-		 else if (new->acc.xuser == 'x')
-		 	ft_strcpy(new->color.fg, FG_RED);
+		{
+			ft_strcpy(new->color.fg, FG_BLK);
+			ft_strcpy(new->color.bg, FG_RED);
+		}
+		else if (ft_strchr("sS", new->acc.xgrp))
+		{
+			ft_strcpy(new->color.fg, FG_BLK);
+			ft_strcpy(new->color.bg, FG_CYN);
+		}
+		else if (new->acc.xuser == 'x')
+			ft_strcpy(new->color.fg, FG_RED);
 	}
 	return ;
 }
@@ -27,7 +27,7 @@ static void			get_color_dir(t_ls *new)
 		if (new->acc.xoth == 't')
 		{
 			ft_strcpy(new->color.fg, FG_BLK);
-	 		ft_strcpy(new->color.bg, FG_GRN);
+			ft_strcpy(new->color.bg, FG_GRN);
 		}
 		else if (new->acc.xoth == 'T')
 		{
@@ -40,7 +40,7 @@ static void			get_color_dir(t_ls *new)
 	return ;
 }
 
-static void		get_color_dev(t_ls *new)
+static void			get_color_dev(t_ls *new)
 {
 	if (new->etype == 'b')
 	{
@@ -55,7 +55,7 @@ static void		get_color_dev(t_ls *new)
 	return ;
 }
 
-int			get_color(t_ls *new, t_opt *e)
+int					get_color(t_ls *new, t_opt *e)
 {
 	if (e->ug)
 	{
@@ -72,5 +72,5 @@ int			get_color(t_ls *new, t_opt *e)
 		get_color_exec(new);
 		return (1);
 	}
-	return(0);
+	return (0);
 }

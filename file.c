@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 20:42:32 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 20:43:01 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-static void	make_file_dir(t_opt *e, char **s, t_dir *file_cwd)
+static void		make_file_dir(t_opt *e, char **s, t_dir *file_cwd)
 {
 	struct stat stp;
-	int i;
+	int			i;
 
 	i = 0;
 	zero_dir(file_cwd, "");
@@ -26,10 +38,10 @@ static void	make_file_dir(t_opt *e, char **s, t_dir *file_cwd)
 	return ;
 }
 
-int	extract_files(t_opt *e, char **s)
+int				extract_files(t_opt *e, char **s)
 {
 	t_dir *file_cwd;
-	
+
 	file_cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
 	make_file_dir(e, s, file_cwd);
 	if (e->r)

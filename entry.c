@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   entry.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 20:38:23 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 20:38:25 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void		zero_entry(t_ls *new)
@@ -48,7 +60,7 @@ void		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 	return ;
 }
 
-void	zero_dir(t_dir *cwd, char *path)
+void		zero_dir(t_dir *cwd, char *path)
 {
 	ft_bzero(cwd->path, PATH_MAX);
 	ft_strcpy(cwd->path, path);

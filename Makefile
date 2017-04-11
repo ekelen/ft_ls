@@ -44,7 +44,7 @@ OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC:.c=.o)
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
-CFLAGS	= -g -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror
 
 $(OBJ_PATH)%.o: %.c
 	@mkdir -p $(OBJ_PATH)
