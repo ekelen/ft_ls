@@ -1,28 +1,14 @@
 #include "ft_ls.h"
 
-
-// static int str_switch(char **s1, char **s2)
-// {
-// 	char *tmp;
-
-// 	tmp = ft_strdup(*s1);
-// 	ft_strdel(s1);
-// 	*s1 = ft_strdup(*s2);
-// 	ft_strdel(s2);
-// 	*s2 = ft_strdup(tmp);
-// 	ft_strdel(&tmp);
-// 	return(1);
-// }
-
-int		rev_args(char **s, int num_files)
+int		rev_args(t_opt *e, char **s)
 {
 	int i;
 	int j;
 
-	if (!(s) || !num_files)
+	if (!(s) || !e->paths)
 		error("rev_args");
 	i = 0;
-	j = num_files - 1;
+	j = e->paths - 1;
 	while (s[i])
 	{
 		if (i != j)
@@ -34,17 +20,16 @@ int		rev_args(char **s, int num_files)
 	return (1);
 }
 
-static int	extract_files(t_opt *e, char **s, int num_files)
+
+static void	make_file_dir(t_opt *e, char **s, t_dir *file_cwd)
 {
-	t_dir *file_cwd;
 	struct stat stp;
 	int i;
 
 	i = 0;
-	file_cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
 	zero_dir(file_cwd, "");
 	file_cwd->file_dir = 1;
-	while (i < num_files)
+	while (i < e->paths)
 	{
 		if (!(stat(s[i], &stp)) || !((lstat(s[i], &stp))))
 		{
@@ -54,13 +39,20 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 				new_file_entry(e, stp, file_cwd, s[i]);
 			}
 			else
-			{
 				e->dirs++;
-			}
 		}
 		i++;
 	}
 	get_padding(file_cwd, file_cwd->tree, e);
+	return ;
+}
+
+static int	extract_files(t_opt *e, char **s)
+{
+	t_dir *file_cwd;
+	
+	file_cwd = (t_dir *)ft_memalloc(sizeof(t_dir));
+	make_file_dir(e, s, file_cwd);
 	if (e->r)
 		tree_prrv(file_cwd->tree, *file_cwd, e);
 	else
@@ -70,79 +62,65 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 	return (1);
 }
 
-
-
-static int	sort_args(t_opt *e, char **s, int num_paths) // additional sort
+static void	sort_args_stp(t_opt *e, char **s, int i)
 {
 	struct stat		stp;
 	struct stat		stp2;
+
+	if ((!(stat(s[i], &stp)) && !(stat(s[i + 1], &stp2))) \
+				|| (!(lstat(s[i], &stp) && !(lstat(s[i + 1], &stp2)))))
+	{			
+		if (e->us)
+		{
+			if (stp.st_size < stp2.st_size)
+				str_switch(&s[i], &s[i+1]);
+		}
+		else if (e->t)
+		{
+			if (stp.SMT < stp2.SMT)
+				str_switch(&s[i], &s[i + 1]);
+			else if (stp.SMT == stp2.SMT && stp.SMS < stp2.SMS)
+				str_switch(&s[i], &s[i + 1]);
+		}
+	}
+	return ;
+}
+
+
+static int	sort_args(t_opt *e, char **s)
+{
 	int				i;
 	int				j;
 
 	i = 0;
 	j = 0;
-	while (j < num_paths)
+	while (j < e->paths)
 	{
 		i = 0;
-		while (i + 1 < num_paths - j)
+		while (i + 1 < e->paths - j)
 		{
-			if ((!(stat(s[i], &stp)) && !(stat(s[i + 1], &stp2))) \
-				|| (!(lstat(s[i], &stp) && !(lstat(s[i + 1], &stp2)))))
-			{
-				if (e->us)
-				{
-					if (stp.st_size < stp2.st_size)
-						str_switch(&s[i], &s[i+1]);
-				}
-				else if (e->t)
-				{
-					if (stp.SMT < stp2.SMT)
-						str_switch(&s[i], &s[i + 1]);
-					else if (stp.SMT == stp2.SMT && stp.SMS < stp2.SMS)
-						str_switch(&s[i], &s[i + 1]);
-				}	
-			}
+			sort_args_stp(e, s, i);
 			i++;
 		}
 		j++;
 	}
 	if (e->r)
-	{
-		rev_args(s, num_paths);
-	}
-	extract_files(e, s, num_paths);
+		rev_args(e, s);
+	extract_files(e, s);
 	return (1);
 }
 
-static int print_errors(t_opt *e, char **s, int num_paths)
-{
-	int i;
-	struct stat stp;
-
-	i = 0;
-	while (i < num_paths)
-	{
-		if ((stat(s[i], &stp)) && ((lstat(s[i], &stp))))
-		{
-			e->errs++;
-			error(s[i]);
-		}
-		i++;
-	}
-	return (1);
-}
-
-static int sort_args_ascii(char **s, int num_paths)
+static int sort_args_ascii(t_opt *e, char **s)
 {
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
-	while (j < num_paths)
+	while (j < e->paths)
 	{
 		i = 0;
-		while (i + 1 < num_paths - j)
+		while (i + 1 < e->paths - j)
 		{
 			if (ft_ustrcmp(s[i], s[i + 1]) > 0)
 				str_switch(&s[i], &s[i+1]);
@@ -150,25 +128,23 @@ static int sort_args_ascii(char **s, int num_paths)
 		}
 		j++;
 	}
+	print_errors(e, s);
+	sort_args(e, s);
 	return (1);
 }
 
-int		eval_args(t_opt *e, char **s, int num_paths)
+int		eval_args(t_opt *e, char **s, int first)
 {
 	int					i;
 	struct stat 		stp;
-	int					first;
 	int					res;
 
 	i = 0;
 	res = 0;
-	first = 1;
-	sort_args_ascii(s, num_paths);
-	print_errors(e, s, num_paths);
-	sort_args(e, s, num_paths);
+	sort_args_ascii(e, s);
 	if (!e->d)
 	{
-		while (s[i]) //directories (not files) are sent off for printing!
+		while (s[i])
 		{
 			res = stat(s[i], &stp);
 			if (!res && (S_ISDIR(stp.st_mode)))
@@ -189,6 +165,7 @@ static int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags)
 	int num_paths;
 	num_paths = 0;
 	i = 1;
+	
 	while (i < ac && av[i][0] == '-' && (init_opts(av[i], e)) \
 		&& ft_strlen(av[i]) > 1)
 	{
@@ -199,14 +176,12 @@ static int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags)
 	return(num_paths);
 }
 
-char	**get_args(char **args, char **av, int num_flags, int num_paths)
+char	**get_args(t_opt e, char **args, char **av, int num_flags)
 {
 	int i;
 
 	i = 0;
-	
-	i = 0;
-	while (i < num_paths)
+	while (i < e.paths)
 	{
 		args[i] = ft_strdup(av[i + 1 + num_flags]);
 		i++;
@@ -220,22 +195,23 @@ int		main(int ac, char **av)
 	t_opt	e;
 	char 	**args;
 	int 	i;
-	int		num_paths;
 	int		num_flags;
+	int		first;
 
+	first = 1;
 	num_flags = 0;
 	zero_opt(&e);
 	i = 1;
-	num_paths = get_num_paths(&e, ac, av, &num_flags);
-	args = (char **)malloc(sizeof(char *) * (num_paths + 1));
-	if (num_paths == 1 && num_flags == ac - 1)
+	e.paths = get_num_paths(&e, ac, av, &num_flags);
+	args = (char **)malloc(sizeof(char *) * (e.paths + 1));
+	if (e.paths == 1 && num_flags == ac - 1)
 	{
 		args[0] = ft_strdup(".");
 		args[1] = 0;
 	}
 	else
-		args = get_args(args, av, num_flags, num_paths);
-	eval_args(&e, args, num_paths);
+		args = get_args(e, args, av, num_flags);
+	eval_args(&e, args, first);
 	free_args(args, i);
 	return (0);
 }

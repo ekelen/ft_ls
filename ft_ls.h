@@ -71,6 +71,7 @@ void					new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
 void					new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
 void					zero_dir(t_dir *cwd, char *path);
 
+
 /*
 ** Eval args
 */
@@ -79,6 +80,7 @@ void					zero_dir(t_dir *cwd, char *path);
 //int						get_num_paths(t_opt *e, int ac, char **av, int *num_flags);
 //int						eval_args(t_opt *e, char **s, int num_paths);
 //int						extract_files(t_opt *e, char **s, int num_files);
+// int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags);
 
 
 /*
@@ -86,7 +88,7 @@ void					zero_dir(t_dir *cwd, char *path);
 */
 
 int						init_dir_open(t_opt *e, char *d_path, int *first);
-//int 					print_errors(t_opt *e, char **s, int num_paths);
+void	 print_errors(t_opt *e, char **s);
 
 /*
 ** Global/directory settings
