@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/10 21:20:49 by ekelen            #+#    #+#             */
-/*   Updated: 2017/04/10 21:23:15 by ekelen           ###   ########.fr       */
+/*   Updated: 2017/04/11 10:39:18 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ static void		dir_open_st(t_opt *e, t_dir *cwd, char *path, struct dirent *dp)
 				get_type(e, cwd, new_entry(cwd, dp), &ltp);
 			else
 				get_type(e, cwd, new_entry(cwd, dp), &stp);
+		}
+	}
+	else
+	{
+		if (!(lstat(path, &ltp)))
+		{
+			get_type(e, cwd, new_entry(cwd, dp), &ltp);
 		}
 	}
 	return ;
