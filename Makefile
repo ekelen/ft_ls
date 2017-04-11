@@ -52,7 +52,7 @@ $(OBJ_PATH)%.o: %.c
 	@echo -n .
 
 $(NAME): $(OBJ)
-	@echo "[${GREEN}$(NAME) done${RESET}]"
+	@echo "\n[${GREEN}$(NAME) done${RESET}.]"
 	@make -C libft/
 	@make -C printf/
 	@gcc $(OBJ) -o $(NAME) -L libft -lft -L printf -lftprintf
