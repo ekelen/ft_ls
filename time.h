@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/10 22:54:45 by ekelen            #+#    #+#             */
-/*   Updated: 2017/04/10 22:56:28 by ekelen           ###   ########.fr       */
+/*   Updated: 2017/04/10 22:58:04 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct	s_time
 	char				mdate[3];
 	char				mhr[6];
 	char				msec[3];
-	unsigned long int 	mnsec;
+	unsigned long int	mnsec;
 }				t_time;
 
 #endif

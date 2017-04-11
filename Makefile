@@ -65,6 +65,7 @@ clean:
 	@make -C printf/ clean
 
 fclean: clean
+	@make -C printf/ fclean
 	@rm -rf $(NAME)
 
 re: fclean $(NAME)
