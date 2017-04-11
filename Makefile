@@ -22,23 +22,23 @@
 
 NAME	= ft_ls
 
-SRC		+= main.c
 SRC		+= color.c
+SRC		+= delete.c
 SRC		+= entry.c
 SRC		+= error.c
 SRC		+= file.c
-SRC		+= tools.c
+SRC		+= main.c
+SRC		+= open.c
+SRC		+= open_2.c
 SRC		+= padding.c
 SRC		+= parse_args.c
-SRC		+= sort_args.c
-SRC		+= tmp_get_data.c
 SRC		+= print.c
 SRC		+= print_2.c
 SRC		+= sort.c 
+SRC		+= sort_args.c
+SRC		+= stat.c
 SRC		+= time.c
-SRC		+= open.c
-SRC		+= open_2.c
-SRC		+= delete.c
+SRC		+= tools.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC:.c=.o)
@@ -61,8 +61,12 @@ all: $(NAME)
 
 clean:
 	@rm -rf $(OBJ_PATH)
+	@make -C libft/ clean
+	@make -C printf/ clean
 
 fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean $(NAME)
+	@make -C libft/ re
+	@make -C printf/ re

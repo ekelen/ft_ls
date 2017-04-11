@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_args.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 22:13:21 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 22:13:22 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-
-int		rev_args(t_opt *e, char **s)
+int				rev_args(t_opt *e, char **s)
 {
 	int i;
 	int j;
@@ -16,23 +27,22 @@ int		rev_args(t_opt *e, char **s)
 			str_switch(&s[j], &s[i]);
 		i++;
 		j--;
-		
 	}
 	return (1);
 }
 
-static void	sort_args_stp(t_opt *e, char **s, int i)
+static void		sort_args_stp(t_opt *e, char **s, int i)
 {
 	struct stat		stp;
 	struct stat		stp2;
 
 	if ((!(stat(s[i], &stp)) && !(stat(s[i + 1], &stp2))) \
 				|| (!(lstat(s[i], &stp) && !(lstat(s[i + 1], &stp2)))))
-	{			
+	{
 		if (e->us)
 		{
 			if (stp.st_size < stp2.st_size)
-				str_switch(&s[i], &s[i+1]);
+				str_switch(&s[i], &s[i + 1]);
 		}
 		else if (e->t)
 		{
@@ -45,7 +55,7 @@ static void	sort_args_stp(t_opt *e, char **s, int i)
 	return ;
 }
 
-int	sort_args(t_opt *e, char **s)
+int				sort_args(t_opt *e, char **s)
 {
 	int				i;
 	int				j;
@@ -68,7 +78,7 @@ int	sort_args(t_opt *e, char **s)
 	return (1);
 }
 
-int sort_args_ascii(t_opt *e, char **s)
+int				sort_args_ascii(t_opt *e, char **s)
 {
 	int i;
 	int j;
@@ -81,7 +91,7 @@ int sort_args_ascii(t_opt *e, char **s)
 		while (i + 1 < e->paths - j)
 		{
 			if (ft_ustrcmp(s[i], s[i + 1]) > 0)
-				str_switch(&s[i], &s[i+1]);
+				str_switch(&s[i], &s[i + 1]);
 			i++;
 		}
 		j++;

@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 22:22:15 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 22:22:31 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 int			print_time(t_opt *e, t_ls *entry)
 {
-	static time_t now;
-	time_t sixmonths = ((365 / 2) * 86400);
+	static time_t	now;
+	time_t			sixmonths;
 
-    now = time(0);
+	sixmonths = ((365 / 2) * 86400);
+	now = time(0);
 	ft_printf(" %s", entry->time->mmon);
 	ft_printf(" %s", entry->time->mdate);
 	if ((entry->MT + sixmonths > now && entry->MT < now + sixmonths) \
@@ -40,6 +53,7 @@ static int	parse_time(char *s_time, t_ls *new)
 int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 {
 	char *s_time;
+
 	new->time = (t_time *)malloc(sizeof(t_time));
 	if (e->u)
 	{
@@ -56,4 +70,3 @@ int			get_mtime(struct stat stp, t_ls *new, t_opt *e)
 	parse_time(s_time, new);
 	return (1);
 }
-

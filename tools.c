@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/04 13:34:04 by ekelen            #+#    #+#             */
-/*   Updated: 2016/12/10 16:18:23 by ekelen           ###   ########.fr       */
+/*   Updated: 2017/04/10 22:51:41 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	place_right(t_ls *new, t_ls **tt, t_ls *tn)
 
 char	*ft_catpath(char *dir, char *name)
 {
-	char *path;
-	size_t dlen;
-	size_t nlen;
-	int i;
+	char	*path;
+	size_t	dlen;
+	size_t	nlen;
+	int		i;
 
 	dlen = ft_strlen(dir);
 	nlen = ft_strlen(name);
@@ -45,14 +45,14 @@ char	*ft_catpath(char *dir, char *name)
 	ft_strncpy(path, dir, dlen);
 	ft_strcat(path, "/");
 	ft_strcat(path, name);
-	return(path);
+	return (path);
 }
 
 char	*ft_strexclude(char *path, char *name)
 {
-	char *s;
-	size_t plen;
-	size_t nlen;
+	char	*s;
+	size_t	plen;
+	size_t	nlen;
 
 	plen = ft_strlen(path);
 	nlen = ft_strlen(name);
@@ -60,7 +60,7 @@ char	*ft_strexclude(char *path, char *name)
 	return (s);
 }
 
-int 	str_switch(char **s1, char **s2)
+int		str_switch(char **s1, char **s2)
 {
 	char *tmp;
 
@@ -70,5 +70,5 @@ int 	str_switch(char **s1, char **s2)
 	ft_strdel(s2);
 	*s2 = ft_strdup(tmp);
 	ft_strdel(&tmp);
-	return(1);
+	return (1);
 }

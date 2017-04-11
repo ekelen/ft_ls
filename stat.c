@@ -1,18 +1,16 @@
-# include "ft_ls.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tmp_get_data.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 22:28:25 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 22:28:27 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int			get_lnk(t_ls *new)
-{
-	char tmp[PATH_MAX];
-
-	if (new->etype == 'l')
-	{
-		ft_bzero(tmp, PATH_MAX);
-		readlink(new->path, tmp, PATH_MAX);
-		ft_strcpy(new->linkname, tmp);
-		return (1);
-	}
-	return(0);
-}
+#include "ft_ls.h"
 
 int			get_size(t_dir *cwd, t_ls *new, struct stat *stp)
 {
@@ -31,20 +29,6 @@ int			get_size(t_dir *cwd, t_ls *new, struct stat *stp)
 		new->size = stp->st_size;
 	if (!new->no_dir)
 		cwd->n += new->blkct;
-	return (1);
-}
-
-int			get_uidgrp(t_ls *new, struct stat *stp)
-{
-	struct passwd *pwd;
-	struct group *grp;
-
-	ft_bzero(new->grp_name, NAME_MAX);
-	ft_bzero(new->uid_name, NAME_MAX);
-	grp = getgrgid(stp->st_gid);
-	pwd = getpwuid(stp->st_uid);
-	ft_strcpy(new->grp_name, grp->gr_name);
-	ft_strcpy(new->uid_name, pwd->pw_name);
 	return (1);
 }
 
@@ -70,15 +54,27 @@ int			get_access(t_ls *new, struct stat *stp)
 	return (1);
 }
 
-int			get_acl(t_ls *new)
+int			get_acl_link_id(t_ls *new, struct stat *stp)
 {
+	char tmp[PATH_MAX];
+
+	ft_bzero(new->grp_name, NAME_MAX);
+	ft_bzero(new->uid_name, NAME_MAX);
+	ft_strcpy(new->grp_name, getgrgid(stp->st_gid)->gr_name);
+	ft_strcpy(new->uid_name, getpwuid(stp->st_uid)->pw_name);
 	if (listxattr(new->path, NULL, 0, XATTR_NOFOLLOW) > 0)
 		new->acl = '@';
 	else if (acl_get_file(new->path, ACL_TYPE_EXTENDED))
 		new->acl = '+';
 	else
 		new->acl = ' ';
-	return(1);
+	if (new->etype == 'l')
+	{
+		ft_bzero(tmp, PATH_MAX);
+		readlink(new->path, tmp, PATH_MAX);
+		ft_strcpy(new->linkname, tmp);
+	}
+	return (1);
 }
 
 int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
@@ -100,11 +96,9 @@ int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 	else
 		return (0);
 	get_access(new, stp);
-	get_uidgrp(new, stp);
 	get_size(cwd, new, stp);
 	get_mtime(*stp, new, e);
-	get_lnk(new);
-	get_acl(new);
+	get_acl_link_id(new, stp);
 	sort_entries(e, &(cwd->tree), new);
-	return(1);
+	return (1);
 }
