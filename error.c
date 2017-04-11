@@ -15,3 +15,21 @@ void	error(char *s)
 	ft_printf("ft_ls: ");
 	perror(s);
 }
+
+// int print_errors(t_opt *e, char **s, int num_paths)
+// {
+// 	int i;
+// 	struct stat stp;
+
+// 	i = 0;
+// 	while (i < num_paths)
+// 	{
+// 		if ((stat(s[i], &stp)) && ((lstat(s[i], &stp))))
+// 		{
+// 			e->errs++;
+// 			error(s[i]);
+// 		}
+// 		i++;
+// 	}
+// 	return (1);
+// }

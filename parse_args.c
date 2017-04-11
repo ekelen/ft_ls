@@ -1,23 +1,8 @@
 #include "ft_ls.h"
 
-
-
-static int		parse_bonus(t_opt *e, char *s)
+static int		parse_bonus_2(t_opt *e, char *s)
 {
-	if (*s == 'A')
-		e->ua = 1;
-	else if (*s == 'G')
-		e->ug = 1;
-	else if (*s == 'g')
-	{
-		e->l = 1;
-		e->g = 1;
-	}
-	else if (*s == 'd')
-		e->d = 1;
-	else if (*s == 'p')
-		e->p = 1;
-	else if (*s == 'S')
+	if (*s == 'S')
 		e->us = 1;
 	else if (*s == 'T')
 		e->ut = 1;
@@ -35,7 +20,44 @@ static int		parse_bonus(t_opt *e, char *s)
 	else if (*s == 'u')
 		e->u = 1;
 	else
+		return(0);
+	return(1);
+}
+
+static int		parse_bonus(t_opt *e, char *s)
+{
+	if (*s == 'A')
+		e->ua = 1;
+	else if (*s == 'G')
+		e->ug = 1;
+	else if (*s == 'g')
+	{
+		e->l = 1;
+		e->g = 1;
+	}
+	else if (*s == 'd')
+		e->d = 1;
+	else if (*s == 'p')
+		e->p = 1;
+	else if (!parse_bonus_2(e, s))
 		return (0);
+	return (1);
+}
+
+static int	init_opts_2(char *s, t_opt *e)
+{
+	if (*s == 'a')
+		e->a = 1;
+	else if (*s == 't')
+		e->t = 1;
+	else if (*s == 'R')
+		e->ur = 1;
+	else if (*s == 'r')
+		e->r = 1;
+	else if (*s == 'l')
+		e->l = 1;
+	else
+		return(0);
 	return (1);
 }
 
@@ -45,9 +67,7 @@ int		init_opts(char *s, t_opt *e)
 	s++;
 	while (*s)
 	{
-		if (*s == 'a')
-			e->a = 1;
-		else if (*s == '-')
+		if (*s == '-')
 		{
 			if (hyphen_as_arg && *(s + 1))
 				usage_err(*s);
@@ -55,15 +75,7 @@ int		init_opts(char *s, t_opt *e)
 				return(0);
 			hyphen_as_arg = 0;
 		}
-		else if (*s == 't')
-			e->t = 1;
-		else if (*s == 'R')
-			e->ur = 1;
-		else if (*s == 'r')
-			e->r = 1;
-		else if (*s == 'l')
-			e->l = 1;
-		else
+		else if (!(init_opts_2(s, e)))
 		{
 			if (!(parse_bonus(e, s)))
 				usage_err(*s);
@@ -89,6 +101,7 @@ void		zero_opt(t_opt *e)
 	e->ut = 0;
 	e->t = 0;
 	e->u = 0;
+	e->paths = 0;
 	e->files = 0;
 	e->dirs = 0;
 	e->errs = 0;

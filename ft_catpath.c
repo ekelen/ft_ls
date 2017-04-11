@@ -31,3 +31,28 @@ char	*ft_catpath(char *dir, char *name)
 	ft_strcat(path, name);
 	return(path);
 }
+
+char		*ft_strexclude(char *path, char *name)
+{
+	char *s;
+	size_t plen;
+	size_t nlen;
+
+	plen = ft_strlen(path);
+	nlen = ft_strlen(name);
+	s = ft_strsub(path, 0, plen - nlen);
+	return (s);
+}
+
+int 		str_switch(char **s1, char **s2)
+{
+	char *tmp;
+
+	tmp = ft_strdup(*s1);
+	ft_strdel(s1);
+	*s1 = ft_strdup(*s2);
+	ft_strdel(s2);
+	*s2 = ft_strdup(tmp);
+	ft_strdel(&tmp);
+	return(1);
+}

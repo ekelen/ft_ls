@@ -1,18 +1,18 @@
 #include "ft_ls.h"
 
 
-static int str_switch(char **s1, char **s2)
-{
-	char *tmp;
+// static int str_switch(char **s1, char **s2)
+// {
+// 	char *tmp;
 
-	tmp = ft_strdup(*s1);
-	ft_strdel(s1);
-	*s1 = ft_strdup(*s2);
-	ft_strdel(s2);
-	*s2 = ft_strdup(tmp);
-	ft_strdel(&tmp);
-	return(1);
-}
+// 	tmp = ft_strdup(*s1);
+// 	ft_strdel(s1);
+// 	*s1 = ft_strdup(*s2);
+// 	ft_strdel(s2);
+// 	*s2 = ft_strdup(tmp);
+// 	ft_strdel(&tmp);
+// 	return(1);
+// }
 
 int		rev_args(char **s, int num_files)
 {
@@ -65,7 +65,8 @@ static int	extract_files(t_opt *e, char **s, int num_files)
 		tree_prrv(file_cwd->tree, *file_cwd, e);
 	else
 		tree_pr(file_cwd->tree, *file_cwd, e);
-	//tree_del(file_cwd->tree);
+	tree_del(file_cwd->tree);
+	free(file_cwd);
 	return (1);
 }
 
@@ -198,6 +199,21 @@ static int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags)
 	return(num_paths);
 }
 
+char	**get_args(char **args, char **av, int num_flags, int num_paths)
+{
+	int i;
+
+	i = 0;
+	
+	i = 0;
+	while (i < num_paths)
+	{
+		args[i] = ft_strdup(av[i + 1 + num_flags]);
+		i++;
+	}
+	args[i] = 0;
+	return(args);
+}
 
 int		main(int ac, char **av)
 {
@@ -211,19 +227,14 @@ int		main(int ac, char **av)
 	zero_opt(&e);
 	i = 1;
 	num_paths = get_num_paths(&e, ac, av, &num_flags);
-	args = (char **)malloc(sizeof(char *) * (num_paths + 1)); //FREED
+	args = (char **)malloc(sizeof(char *) * (num_paths + 1));
 	if (num_paths == 1 && num_flags == ac - 1)
-		args[0] = ft_strdup("."); // FREED
-	else
 	{
-		i = 0;
-		while (i < num_paths)
-		{
-			args[i] = ft_strdup(av[i + 1 + num_flags]); // FREED
-			i++;
-		}
+		args[0] = ft_strdup(".");
+		args[1] = 0;
 	}
-	args[i] = 0; // FREED
+	else
+		args = get_args(args, av, num_flags, num_paths);
 	eval_args(&e, args, num_paths);
 	free_args(args, i);
 	return (0);

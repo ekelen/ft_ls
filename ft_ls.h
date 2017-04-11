@@ -53,8 +53,6 @@ typedef struct			s_dir
 	t_ls				*tree;
 	int					file_dir;
 	int					contents;
-	struct s_dir		*right;
-	struct s_dir		*left;
 }						t_dir;
 
 /*
@@ -62,6 +60,8 @@ typedef struct			s_dir
 */
 
 char					*ft_catpath(char *dir, char *name);
+char					*ft_strexclude(char *path, char *name);
+int 					str_switch(char **s1, char **s2);
 
 /*
 ** Initialize objects
@@ -72,10 +72,21 @@ void					new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
 void					zero_dir(t_dir *cwd, char *path);
 
 /*
+** Eval args
+*/
+
+//char					**get_args(char **args, char **av, int num_flags, int num_paths);
+//int						get_num_paths(t_opt *e, int ac, char **av, int *num_flags);
+//int						eval_args(t_opt *e, char **s, int num_paths);
+//int						extract_files(t_opt *e, char **s, int num_files);
+
+
+/*
 ** Open
 */
 
 int						init_dir_open(t_opt *e, char *d_path, int *first);
+//int 					print_errors(t_opt *e, char **s, int num_paths);
 
 /*
 ** Global/directory settings
@@ -90,15 +101,18 @@ int						get_total(t_ls *entry, t_dir *cwd);
 
 int						get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp);
 int						get_mtime(struct stat stp, t_ls *new, t_opt *e);
+int						get_color(t_ls *new, t_opt *e);
 
 /*
 ** Sort and print
 */
 
 void					sort_entries(t_opt *e, t_ls **tree, t_ls *new);
-int						print_time(t_opt *e, t_ls *entry, t_dir *cwd);
+int						print_time(t_opt *e, t_ls *entry);
 void					tree_pr(t_ls *entry, t_dir cwd, t_opt *e);
 void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
+void					pr_str(char *print, size_t width, int align);
+void					pr_dec(size_t print, size_t width, size_t align);
 
 /*
 ** Free
@@ -106,6 +120,8 @@ void					tree_prrv(t_ls *entry, t_dir cwd, t_opt *e);
 
 void					tree_del(t_ls *tree);
 void					free_args(char **args, int i);
+
+
 
 
 #endif

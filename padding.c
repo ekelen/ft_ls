@@ -39,11 +39,6 @@ static int		init_pad(t_dir *cwd, t_ls *ls, t_opt *e)
 
 int				get_padding(t_dir *cwd, t_ls *ls, t_opt *e)
 {
-	// if (!(PAD = malloc(sizeof(t_pad))))
-	// {
-	// 	error("malloc error");
-	// 	exit(-1);
-	// }
 	PAD.ext = 1;
 	PAD.lnk = 0;
 	PAD.own = 0;

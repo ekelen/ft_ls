@@ -7,9 +7,7 @@ void	open_subdir(t_opt *e, t_dir cwd, t_ls *entry, int first) // after printing 
 	if (entry->left)
 		open_subdir(e, cwd, entry->left, first);
 	if (e->ur && entry->etype == 'd' && !entry->is_rel)
-	{
 		init_dir_open(e, entry->path, &first);
-	}
 	if (entry->right)
 		open_subdir(e, cwd, entry->right, first);
 }
@@ -21,9 +19,7 @@ void	open_subdir_rev(t_opt *e, t_dir cwd, t_ls *entry, int first) // after print
 	if (entry->right)
 		open_subdir_rev(e, cwd, entry->right, first);
 	if (e->ur && entry->etype == 'd' && !entry->is_rel)
-	{
 		init_dir_open(e, entry->path, &first);
-	}
 	if (entry->left)
 		open_subdir_rev(e, cwd, entry->left, first);
 }
@@ -37,7 +33,6 @@ void	open_helper(t_opt *e, t_dir *cwd) // send directory off for printing
     	tree_prrv(cwd->tree, *cwd, e);
     else
     	tree_pr(cwd->tree, *cwd, e);
-    //free(PAD);
     if (e->r)
     	open_subdir_rev(e, *cwd, cwd->tree, 0);
     else
@@ -53,8 +48,6 @@ void	zero_dir(t_dir *cwd, char *path)
 	cwd->n = 0;
 	cwd->contents = 0;
 	cwd->tree = NULL;
-	cwd->left = NULL;
-	cwd->right = NULL;
 	return ;
 }
 
@@ -137,6 +130,7 @@ int		init_dir_open(t_opt *e, char *d_path, int *first)
 		cwd = (t_dir *)ft_memalloc(sizeof(t_dir)); //not freed
 		zero_dir(cwd, d_path);
 		dir_open(e, cwd, dir);
+		tree_del(cwd->tree);
 	}
 	free(cwd);
 	return(1);

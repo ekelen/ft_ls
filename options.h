@@ -53,6 +53,7 @@ typedef struct	s_opt
 	int				ur;
 	int				us;
 	int				ut;
+	int				paths;
 	int				files;
 	int				dirs;
 	int				errs;

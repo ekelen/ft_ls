@@ -1,17 +1,5 @@
 # include "ft_ls.h"
 
-char		*ft_strexclude(char *orig, char *excl)
-{
-	char *s;
-	size_t olen;
-	size_t exclen;
-
-	olen = ft_strlen(orig);
-	exclen = ft_strlen(excl);
-	s = ft_strsub(orig, 0, olen - exclen);
-	return (s);
-}
-
 int			get_lnk(t_ls *new)
 {
 	char tmp[PATH_MAX];
@@ -26,21 +14,7 @@ int			get_lnk(t_ls *new)
 	return(0);
 }
 
-int			get_color(t_ls *new, t_opt *e)
-{
-	if (e->ug)
-	{
-		if (new->etype == 'd')
-			ft_strcpy(new->color.fg, FG_BLU);
-		else if (new->etype == '-' && (new->acc.xuser == 'x' || new->acc.xgrp == 'x' || new->acc.xoth == 'x'))
-			ft_strcpy(new->color.fg, FG_RED);
-		else if (new->etype == 'l')
-			ft_strcpy(new->color.fg, FG_PNK);
-	}
-	return (1);
-}
-
-int			get_size(t_ls *new, struct stat *stp)
+int			get_size(t_dir *cwd, t_ls *new, struct stat *stp)
 {
 	new->blkct = stp->st_blocks;
 	new->hlinks = stp->st_nlink;
@@ -55,6 +29,8 @@ int			get_size(t_ls *new, struct stat *stp)
 	}
 	else
 		new->size = stp->st_size;
+	if (!new->no_dir)
+		cwd->n += new->blkct;
 	return (1);
 }
 
@@ -74,7 +50,6 @@ int			get_uidgrp(t_ls *new, struct stat *stp)
 
 int			get_access(t_ls *new, struct stat *stp)
 {
-
 	new->acc.ruser = (stp->st_mode & S_IRUSR) ? 'r' : '-';
 	new->acc.wuser = (stp->st_mode & S_IWUSR) ? 'w' : '-';
 	new->acc.xuser = (stp->st_mode & S_IXUSR) ? 'x' : '-';
@@ -95,20 +70,10 @@ int			get_access(t_ls *new, struct stat *stp)
 	return (1);
 }
 
-int			get_dir_size(t_dir *cwd, t_ls *new)
+int			get_acl(t_ls *new)
 {
-	cwd->n += new->blkct;
-	return(1);
-}
-
-int			get_acl(t_opt *e, t_dir *cwd, t_ls *new)
-{
-	(void)e;
-	(void)cwd;
 	if (listxattr(new->path, NULL, 0, XATTR_NOFOLLOW) > 0)
 		new->acl = '@';
-	// else if (listxattr(str2, NULL, 0, XATTR_NOFOLLOW) > 0)
-	// 	new->acl = '@';
 	else if (acl_get_file(new->path, ACL_TYPE_EXTENDED))
 		new->acl = '+';
 	else
@@ -133,18 +98,12 @@ int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 	else if (S_ISSOCK(stp->st_mode))
 		new->etype = 's';
 	else
-	{
-		ft_printf("No mode type found; aborting.\n");
 		return (0);
-	}
 	get_access(new, stp);
 	get_uidgrp(new, stp);
-	get_size(new, stp);
-	if (!new->no_dir)
-		get_dir_size(cwd, new);
+	get_size(cwd, new, stp);
 	get_mtime(*stp, new, e);
-	get_color(new, e);
 	get_lnk(new);
-	get_acl(e, cwd, new);
+	get_acl(new);
 	return(1);
 }

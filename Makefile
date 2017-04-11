@@ -23,13 +23,17 @@
 NAME	= ft_ls
 
 SRC		+= main.c
+SRC		+= color.c
 SRC		+= entry.c
 SRC		+= error.c
 SRC		+= ft_catpath.c
 SRC		+= padding.c
 SRC		+= parse_args.c
+SRC		+= parse_args_2.c
+SRC		+= sort_args.c
 SRC		+= tmp_get_data.c
 SRC		+= print.c
+SRC		+= print_2.c
 SRC		+= sort.c 
 SRC		+= time.c
 SRC		+= open.c
@@ -38,7 +42,6 @@ SRC		+= delete.c
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC:.c=.o)
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
-
 
 CFLAGS	= -g -Wall -Wextra -Werror
 

@@ -6,13 +6,12 @@ void	tree_del(t_ls *tree)
 		return ;
 	if (tree->left)
 		tree_del(tree->left);
-	if (tree->right)
-	{
-		if (tree->left)
-			free(tree->left);
-		tree_del(tree->right);
-	}
+	ft_strdel(&tree->name);
+	ft_strdel(&tree->path);
+	free(tree->time);
 	free(tree);
+	if (tree->right)
+		tree_del(tree->right);
 }
 
 void	free_args(char **args, int i)
