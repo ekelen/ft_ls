@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 21:17:50 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 21:20:29 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-int		eval_args(t_opt *e, char **s, int first)
+int			eval_args(t_opt *e, char **s, int first)
 {
 	int					i;
-	struct stat 		stp;
+	struct stat			stp;
 	int					res;
 
 	i = 0;
@@ -16,7 +28,7 @@ int		eval_args(t_opt *e, char **s, int first)
 			res = stat(s[i], &stp);
 			if (!res && (S_ISDIR(stp.st_mode)))
 			{
-				if(!(init_dir_open(e, s[i], &first)))
+				if (!(init_dir_open(e, s[i], &first)))
 					ft_printf(ERR_FILE, s[i]);
 				first = 0;
 			}
@@ -30,9 +42,9 @@ static int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags)
 {
 	int i;
 	int num_paths;
+
 	num_paths = 0;
 	i = 1;
-	
 	while (i < ac && av[i][0] == '-' && (init_opts(av[i], e)) \
 		&& ft_strlen(av[i]) > 1)
 	{
@@ -40,10 +52,10 @@ static int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags)
 		(*num_flags)++;
 	}
 	num_paths = i == ac ? 1 : ac - *num_flags - 1;
-	return(num_paths);
+	return (num_paths);
 }
 
-char	**get_args(t_opt e, char **args, char **av, int num_flags)
+char		**get_args(t_opt e, char **args, char **av, int num_flags)
 {
 	int i;
 
@@ -54,14 +66,14 @@ char	**get_args(t_opt e, char **args, char **av, int num_flags)
 		i++;
 	}
 	args[i] = 0;
-	return(args);
+	return (args);
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	t_opt	e;
-	char 	**args;
-	int 	i;
+	char	**args;
+	int		i;
 	int		num_flags;
 	int		first;
 

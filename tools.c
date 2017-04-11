@@ -12,6 +12,22 @@
 
 #include "ft_ls.h"
 
+void	place_left(t_ls *new, t_ls **tt, t_ls *tn)
+{
+	(*tt) = (*tt)->left;
+	if (!(*tt))
+		tn->left = new;
+}
+
+void	place_right(t_ls *new, t_ls **tt, t_ls *tn)
+{
+	(*tt) = (*tt)->right;
+	if (!(*tt))
+	{
+		tn->right = new;
+	}
+}
+
 char	*ft_catpath(char *dir, char *name)
 {
 	char *path;
@@ -32,7 +48,7 @@ char	*ft_catpath(char *dir, char *name)
 	return(path);
 }
 
-char		*ft_strexclude(char *path, char *name)
+char	*ft_strexclude(char *path, char *name)
 {
 	char *s;
 	size_t plen;
@@ -44,7 +60,7 @@ char		*ft_strexclude(char *path, char *name)
 	return (s);
 }
 
-int 		str_switch(char **s1, char **s2)
+int 	str_switch(char **s1, char **s2)
 {
 	char *tmp;
 

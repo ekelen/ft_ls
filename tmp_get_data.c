@@ -105,5 +105,6 @@ int			get_type(t_opt *e, t_dir *cwd, t_ls *new, struct stat *stp)
 	get_mtime(*stp, new, e);
 	get_lnk(new);
 	get_acl(new);
+	sort_entries(e, &(cwd->tree), new);
 	return(1);
 }

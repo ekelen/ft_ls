@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 21:44:54 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 21:44:57 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static int	print_id(t_opt *e, t_ls *tree, t_dir *cwd)
@@ -24,7 +36,7 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 		ft_putchar(entry->acl);
 	ft_putchar(' ');
 	pr_dec(entry->hlinks, PAD.lnk, 0);
-    ft_putchar(' ');
+	ft_putchar(' ');
 	print_id(e, entry, cwd);
 	if (ft_strchr("bc", entry->etype))
 	{
@@ -38,7 +50,7 @@ static int	tree_lpr(t_ls *entry, t_dir *cwd, t_opt *e)
 	return (1);
 }
 
-int		print_name(t_ls *entry, t_opt *e)
+int			print_name(t_ls *entry, t_opt *e)
 {
 	int i;
 
@@ -57,12 +69,12 @@ int		print_name(t_ls *entry, t_opt *e)
 	if (entry->etype == 'l' && e->l)
 		ft_printf(" -> %s", entry->linkname);
 	if (e->p && entry->etype == 'd')
-			ft_putchar('/');
+		ft_putchar('/');
 	ft_putchar('\n');
 	return (1);
 }
 
-void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e)
+void		tree_pr(t_ls *entry, t_dir cwd, t_opt *e)
 {
 	if (!entry)
 		return ;
@@ -75,7 +87,7 @@ void	tree_pr(t_ls *entry, t_dir cwd, t_opt *e)
 		tree_pr(entry->right, cwd, e);
 }
 
-void	tree_prrv(t_ls *entry, t_dir cwd, t_opt *e)
+void		tree_prrv(t_ls *entry, t_dir cwd, t_opt *e)
 {
 	if (!entry)
 		return ;

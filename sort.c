@@ -1,26 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 21:51:24 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 21:51:59 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-static void	place_left(t_ls *new, t_ls **tt, t_ls *tn)
+static int		sort_size(t_ls *new, t_ls **tree)
 {
-	(*tt) = (*tt)->left;
-	if (!(*tt))
-		tn->left = new;
-}
-
-static void	place_right(t_ls *new, t_ls **tt, t_ls *tn)
-{
-	(*tt) = (*tt)->right;
-	if (!(*tt))
-	{
-		tn->right = new;
-	}
-}
-
-static int	sort_size(t_ls *new, t_ls **tree)
-{
-	t_ls *tt = *tree;
+	t_ls *tt;
 	t_ls *tn;
 
+	tt = *tree;
 	if (!tt)
 		return (0);
 	while (tt)
@@ -37,7 +34,7 @@ static int	sort_size(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-static int	sort_ascii(t_ls *new, t_ls **tree)
+static int		sort_ascii(t_ls *new, t_ls **tree)
 {
 	t_ls *tt;
 	t_ls *tn;
@@ -56,11 +53,12 @@ static int	sort_ascii(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-static int	sort_time(t_ls *new, t_ls **tree)
+static int		sort_time(t_ls *new, t_ls **tree)
 {
-	t_ls *tt = *tree;
+	t_ls *tt;
 	t_ls *tn;
- 
+
+	tt = *tree;
 	if (!tt)
 		return (0);
 	while (tt)
@@ -79,7 +77,7 @@ static int	sort_time(t_ls *new, t_ls **tree)
 	return (1);
 }
 
-void	sort_entries(t_opt *e, t_ls **tree, t_ls *new)
+void			sort_entries(t_opt *e, t_ls **tree, t_ls *new)
 {
 	if (!*tree)
 	{
@@ -89,7 +87,7 @@ void	sort_entries(t_opt *e, t_ls **tree, t_ls *new)
 	if (e->us)
 		sort_size(new, tree);
 	else if (e->t)
-		sort_time(new,tree);
+		sort_time(new, tree);
 	else
 		sort_ascii(new, tree);
 	return ;

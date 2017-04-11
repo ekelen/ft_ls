@@ -27,7 +27,7 @@ static void		make_file_dir(t_opt *e, char **s, t_dir *file_cwd)
 			if (!(S_ISDIR(stp.st_mode)) || e->d)
 			{
 				e->files++;
-				new_file_entry(e, stp, file_cwd, s[i]);
+				get_type(e, file_cwd, new_file_entry(file_cwd, s[i]), &stp);
 			}
 			else
 				e->dirs++;

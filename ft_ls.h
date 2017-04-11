@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 21:16:42 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 21:16:44 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_LS_H
 # define FT_LS_H
 
@@ -10,10 +22,9 @@
 # include <grp.h>
 # include <sys/types.h>
 # include <sys/xattr.h>
-# include <stdio.h> //DELETE
 # include <errno.h>
 # include <limits.h>
-# include <sys/acl.h> //MAYBE DELETE
+# include <sys/acl.h>
 # include "./printf/includes/ft_printf.h"
 # include "./libft/libft.h"
 # include "color.h"
@@ -25,7 +36,7 @@
 typedef struct		s_ls
 {
 	char			etype;
-	long 			hlinks;
+	long			hlinks;
 	size_t			size;
 	char			uid_name[NAME_MAX];
 	char			grp_name[NAME_MAX];
@@ -61,14 +72,16 @@ typedef struct		s_dir
 
 char				*ft_catpath(char *dir, char *name);
 char				*ft_strexclude(char *path, char *name);
-int 				str_switch(char **s1, char **s2);
+int					str_switch(char **s1, char **s2);
+void				place_left(t_ls *new, t_ls **tt, t_ls *tn);
+void				place_right(t_ls *new, t_ls **tt, t_ls *tn);
 
 /*
 ** Initialize objects
 */
 
-void				new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp);
-void				new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s);
+t_ls				*new_entry(t_dir *cwd, struct dirent *dp);
+t_ls				*new_file_entry(t_dir *cwd, char *s);
 void				zero_dir(t_dir *cwd, char *path);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/10 20:38:23 by ekelen            #+#    #+#             */
-/*   Updated: 2017/04/10 20:38:25 by ekelen           ###   ########.fr       */
+/*   Updated: 2017/04/10 21:17:22 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		zero_entry(t_ls *new)
 	return ;
 }
 
-void		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp)
+t_ls		*new_entry(t_dir *cwd, struct dirent *dp)
 {
 	t_ls *new;
 
@@ -41,23 +41,21 @@ void		new_entry(t_opt *e, t_dir *cwd, struct stat stp, struct dirent *dp)
 	zero_entry(new);
 	new->path = ft_catpath(cwd->path, dp->d_name);
 	new->name = ft_strdup(dp->d_name);
-	get_type(e, cwd, new, &stp);
-	sort_entries(e, &(cwd->tree), new);
-	return ;
+	new->no_dir = 0;
+	return (new);
 }
 
-void		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
+t_ls		*new_file_entry(t_dir *cwd, char *s)
 {
 	t_ls *new;
 
+	(void)cwd;
 	new = (t_ls *)ft_memalloc(sizeof(t_ls));
 	zero_entry(new);
 	new->path = ft_strdup(s);
 	new->name = ft_strdup(s);
 	new->no_dir = 1;
-	get_type(e, cwd, new, &stp);
-	sort_entries(e, &(cwd->tree), new);
-	return ;
+	return (new);
 }
 
 void		zero_dir(t_dir *cwd, char *path)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/10 21:43:23 by ekelen            #+#    #+#             */
+/*   Updated: 2017/04/10 21:43:50 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static int		parse_bonus_2(t_opt *e, char *s)
@@ -20,8 +32,8 @@ static int		parse_bonus_2(t_opt *e, char *s)
 	else if (*s == 'u')
 		e->u = 1;
 	else
-		return(0);
-	return(1);
+		return (0);
+	return (1);
 }
 
 static int		parse_bonus(t_opt *e, char *s)
@@ -44,7 +56,7 @@ static int		parse_bonus(t_opt *e, char *s)
 	return (1);
 }
 
-static int	init_opts_2(char *s, t_opt *e)
+static int		init_opts_2(char *s, t_opt *e)
 {
 	if (*s == 'a')
 		e->a = 1;
@@ -57,13 +69,14 @@ static int	init_opts_2(char *s, t_opt *e)
 	else if (*s == 'l')
 		e->l = 1;
 	else
-		return(0);
+		return (0);
 	return (1);
 }
 
-int		init_opts(char *s, t_opt *e)
+int				init_opts(char *s, t_opt *e)
 {
 	static int hyphen_as_arg = 1;
+
 	s++;
 	while (*s)
 	{
@@ -72,7 +85,7 @@ int		init_opts(char *s, t_opt *e)
 			if (hyphen_as_arg && *(s + 1))
 				usage_err(*s);
 			if (!hyphen_as_arg)
-				return(0);
+				return (0);
 			hyphen_as_arg = 0;
 		}
 		else if (!(init_opts_2(s, e)))
@@ -85,7 +98,7 @@ int		init_opts(char *s, t_opt *e)
 	return (1);
 }
 
-void		zero_opt(t_opt *e)
+void			zero_opt(t_opt *e)
 {
 	e->one = 0;
 	e->a = 0;
@@ -107,4 +120,3 @@ void		zero_opt(t_opt *e)
 	e->errs = 0;
 	return ;
 }
-
