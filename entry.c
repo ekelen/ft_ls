@@ -47,3 +47,14 @@ void		new_file_entry(t_opt *e, struct stat stp, t_dir *cwd, char *s)
 	sort_entries(e, &(cwd->tree), new);
 	return ;
 }
+
+void	zero_dir(t_dir *cwd, char *path)
+{
+	ft_bzero(cwd->path, PATH_MAX);
+	ft_strcpy(cwd->path, path);
+	cwd->file_dir = 0;
+	cwd->n = 0;
+	cwd->contents = 0;
+	cwd->tree = NULL;
+	return ;
+}

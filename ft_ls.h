@@ -76,12 +76,8 @@ void					zero_dir(t_dir *cwd, char *path);
 ** Eval args
 */
 
-//char					**get_args(char **args, char **av, int num_flags, int num_paths);
-//int						get_num_paths(t_opt *e, int ac, char **av, int *num_flags);
-//int						eval_args(t_opt *e, char **s, int num_paths);
-//int						extract_files(t_opt *e, char **s, int num_files);
-// int	get_num_paths(t_opt *e, int ac, char **av, int *num_flags);
-
+int sort_args_ascii(t_opt *e, char **s);
+int	extract_files(t_opt *e, char **s);
 
 /*
 ** Open
@@ -89,6 +85,7 @@ void					zero_dir(t_dir *cwd, char *path);
 
 int						init_dir_open(t_opt *e, char *d_path, int *first);
 void	 print_errors(t_opt *e, char **s);
+void	open_helper(t_opt *e, t_dir *cwd);
 
 /*
 ** Global/directory settings
